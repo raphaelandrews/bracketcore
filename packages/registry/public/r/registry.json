@@ -1,0 +1,180 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "bracketcore",
+  "homepage": "https://bracketcore.dev",
+  "items": [
+    {
+      "name": "match-card",
+      "type": "registry:component",
+      "title": "Match Card",
+      "description": "Displays a single match with two teams, scores, best-of label and schedule info.",
+      "dependencies": ["clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "registry/bracketcore/match-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/bracket-types.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "registry/bracketcore/cn.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "bracket-connector",
+      "type": "registry:component",
+      "title": "Bracket Connector",
+      "description": "SVG connector lines between bracket rounds.",
+      "dependencies": ["clsx", "tailwind-merge"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/bracketcore/bracket-connector.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/cn.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "single-elimination",
+      "type": "registry:component",
+      "title": "Single Elimination Bracket",
+      "description": "A full single elimination bracket with rounds, match cards, and connector lines.",
+      "dependencies": ["clsx", "tailwind-merge"],
+      "registryDependencies": [
+        "match-card",
+        "bracket-connector"
+      ],
+      "files": [
+        {
+          "path": "registry/bracketcore/single-elimination.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/round-column.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/match-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/bracket-connector.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/bracket-types.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "registry/bracketcore/cn.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "double-elimination",
+      "type": "registry:component",
+      "title": "Double Elimination Bracket",
+      "description": "A double elimination bracket with upper bracket, lower bracket, and grand final.",
+      "dependencies": ["clsx", "tailwind-merge"],
+      "registryDependencies": [
+        "single-elimination",
+        "match-card"
+      ],
+      "files": [
+        {
+          "path": "registry/bracketcore/double-elimination.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/single-elimination.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/round-column.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/match-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/bracket-connector.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/bracket-types.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "registry/bracketcore/cn.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "swiss-stage",
+      "type": "registry:component",
+      "title": "Swiss Stage",
+      "description": "Swiss system bracket with round-by-round matches and standings table.",
+      "dependencies": ["clsx", "tailwind-merge"],
+      "registryDependencies": [
+        "match-card"
+      ],
+      "files": [
+        {
+          "path": "registry/bracketcore/swiss-stage.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/match-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/bracket-types.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "registry/bracketcore/cn.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "group-stage",
+      "type": "registry:component",
+      "title": "Group Stage",
+      "description": "Group stage with standings tables and match cards per group.",
+      "dependencies": ["clsx", "tailwind-merge"],
+      "registryDependencies": [
+        "match-card"
+      ],
+      "files": [
+        {
+          "path": "registry/bracketcore/group-stage.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/match-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/bracket-types.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "registry/bracketcore/cn.ts",
+          "type": "registry:lib"
+        }
+      ]
+    }
+  ]
+}

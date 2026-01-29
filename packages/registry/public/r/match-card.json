@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "match-card",
+  "title": "Match Card",
+  "description": "Displays a single match with two teams, scores, best-of label and schedule info.",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "registry/bracketcore/match-card.tsx",
+      "content": "import type { Match, MatchTeam } from \"@/bracketcore/bracket-types\";\nimport { cn } from \"@/bracketcore/cn\";\n\nexport interface MatchCardProps {\n  match: Match;\n  className?: string;\n  onMatchClick?: (match: Match) => void;\n}\n\nfunction TeamRow({ entry, isTop }: { entry: MatchTeam; isTop: boolean }) {\n  const isWinner = entry.isWinner === true;\n  const isLoser = entry.isWinner === false;\n\n  return (\n    <div\n      className={cn(\n        \"flex items-center justify-between gap-2 px-2 py-1.5\",\n        isTop ? \"rounded-t\" : \"rounded-b\",\n        isWinner && \"bg-muted/50\",\n        isLoser && \"opacity-50\"\n      )}\n    >\n      <div className=\"flex items-center gap-2 min-w-0\">\n        {entry.team?.logo && (\n          <img\n            src={entry.team.logo}\n            alt={entry.team.name}\n            className=\"h-4 w-4 shrink-0 object-contain\"\n          />\n        )}\n        <span\n          className={cn(\n            \"truncate text-sm\",\n            isWinner && \"font-semibold\",\n            !entry.team && \"text-muted-foreground italic\"\n          )}\n        >\n          {entry.team?.name ?? \"TBD\"}\n        </span>\n      </div>\n      <span\n        className={cn(\n          \"text-sm tabular-nums shrink-0\",\n          isWinner && \"font-semibold\"\n        )}\n      >\n        {entry.score}\n      </span>\n    </div>\n  );\n}\n\nexport function MatchCard({ match, className, onMatchClick }: MatchCardProps) {\n  const bestOfLabel = match.bestOf ? `BO${match.bestOf}` : undefined;\n\n  return (\n    <div\n      className={cn(\n        \"w-52 rounded border border-border bg-card text-card-foreground shadow-sm\",\n        onMatchClick && \"cursor-pointer hover:border-primary/50\",\n        className\n      )}\n      onClick={onMatchClick ? () => onMatchClick(match) : undefined}\n    >\n      {(match.scheduledAt || bestOfLabel) && (\n        <div className=\"flex items-center justify-between px-2 py-1 text-xs text-muted-foreground border-b border-border\">\n          {match.scheduledAt && <span>{match.scheduledAt}</span>}\n          {bestOfLabel && <span>{bestOfLabel}</span>}\n        </div>\n      )}\n      <TeamRow entry={match.teams[0]} isTop={true} />\n      <div className=\"border-t border-border\" />\n      <TeamRow entry={match.teams[1]} isTop={false} />\n    </div>\n  );\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "registry/bracketcore/bracket-types.ts",
+      "content": "export interface Team {\n  id: string;\n  name: string;\n  logo?: string;\n  seed?: number;\n}\n\nexport interface MatchTeam {\n  team: Team | null;\n  score: number;\n  isWinner?: boolean;\n}\n\nexport interface Match {\n  id: string;\n  round: number;\n  position: number;\n  bestOf?: number;\n  scheduledAt?: string;\n  status?: MatchStatus;\n  teams: [MatchTeam, MatchTeam];\n}\n\nexport type MatchStatus = \"upcoming\" | \"live\" | \"completed\";\n\nexport interface Round {\n  name: string;\n  matches: Match[];\n}\n\nexport interface SingleEliminationBracket {\n  type: \"single-elimination\";\n  rounds: Round[];\n}\n\nexport interface DoubleEliminationBracket {\n  type: \"double-elimination\";\n  upper: Round[];\n  lower: Round[];\n  grandFinal: Match;\n}\n\nexport interface SwissStanding {\n  team: Team;\n  wins: number;\n  losses: number;\n  tiebreaker?: number;\n  status?: \"advancing\" | \"eliminated\" | \"pending\";\n}\n\nexport interface SwissRound {\n  name: string;\n  record?: string;\n  matches: Match[];\n}\n\nexport interface SwissBracket {\n  type: \"swiss\";\n  rounds: SwissRound[];\n  standings: SwissStanding[];\n  winsToAdvance: number;\n  lossesToEliminate: number;\n}\n\nexport interface GroupStanding {\n  team: Team;\n  wins: number;\n  losses: number;\n  draws: number;\n  points: number;\n  differential: number;\n}\n\nexport interface Group {\n  name: string;\n  teams: Team[];\n  matches: Match[];\n  standings: GroupStanding[];\n}\n\nexport interface GroupStageBracket {\n  type: \"group-stage\";\n  groups: Group[];\n}\n\nexport type Bracket =\n  | SingleEliminationBracket\n  | DoubleEliminationBracket\n  | SwissBracket\n  | GroupStageBracket;\n",
+      "type": "registry:lib"
+    },
+    {
+      "path": "registry/bracketcore/cn.ts",
+      "content": "import { type ClassValue, clsx } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+      "type": "registry:lib"
+    }
+  ],
+  "type": "registry:component"
+}

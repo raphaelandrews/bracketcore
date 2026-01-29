@@ -1,0 +1,23 @@
+{
+  "name": "@bracketcore/registry",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "shadcn build",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.4.0"
+  },
+  "devDependencies": {
+    "@bracketcore/config": "workspace:*",
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
+    "shadcn": "^3.7.0",
+    "typescript": "^5.9.3"
+  }
+}

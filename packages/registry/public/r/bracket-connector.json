@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bracket-connector",
+  "title": "Bracket Connector",
+  "description": "SVG connector lines between bracket rounds.",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/bracketcore/bracket-connector.tsx",
+      "content": "import { cn } from \"@/bracketcore/cn\";\n\nexport interface BracketConnectorProps {\n  sourceCount: number;\n  targetCount: number;\n  matchHeight?: number;\n  matchGap?: number;\n  className?: string;\n}\n\nexport function BracketConnector({\n  sourceCount,\n  targetCount,\n  matchHeight = 72,\n  matchGap = 24,\n  className,\n}: BracketConnectorProps) {\n  const sourceSlot = matchHeight + matchGap;\n  const targetSlot =\n    targetCount > 0\n      ? (sourceCount * sourceSlot) / targetCount\n      : sourceSlot;\n\n  const width = 32;\n  const totalHeight = sourceCount * sourceSlot;\n  const halfMatch = matchHeight / 2;\n  const midX = width / 2;\n\n  const paths: string[] = [];\n\n  for (let t = 0; t < targetCount; t++) {\n    const topSourceIdx = t * 2;\n    const botSourceIdx = t * 2 + 1;\n\n    if (botSourceIdx >= sourceCount) break;\n\n    const topY = topSourceIdx * sourceSlot + halfMatch;\n    const botY = botSourceIdx * sourceSlot + halfMatch;\n    const targetY = t * targetSlot + targetSlot / 2;\n\n    paths.push(`M 0 ${topY} H ${midX}`);\n    paths.push(`M 0 ${botY} H ${midX}`);\n    paths.push(`M ${midX} ${topY} V ${botY}`);\n    paths.push(`M ${midX} ${targetY} H ${width}`);\n  }\n\n  return (\n    <svg\n      width={width}\n      height={totalHeight}\n      className={cn(\"shrink-0\", className)}\n      aria-hidden\n    >\n      <path\n        d={paths.join(\" \")}\n        fill=\"none\"\n        stroke=\"currentColor\"\n        strokeWidth={1.5}\n        className=\"text-border\"\n      />\n    </svg>\n  );\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "registry/bracketcore/cn.ts",
+      "content": "import { type ClassValue, clsx } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+      "type": "registry:lib"
+    }
+  ],
+  "type": "registry:component"
+}
