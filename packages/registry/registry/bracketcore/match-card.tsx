@@ -33,10 +33,10 @@ function TeamRow({ entry }: { entry: MatchTeam }) {
         <span
           className={cn(
             "truncate text-sm leading-none",
-            isWinner && "font-semibold text-(--bracket-fg,hsl(var(--card-foreground)))",
-            isLoser && "text-(--bracket-muted,hsl(var(--muted-foreground)))",
-            !isWinner && !isLoser && "text-(--bracket-fg,hsl(var(--card-foreground)))",
-            !entry.team && "text-(--bracket-muted,hsl(var(--muted-foreground))) italic"
+            isWinner && "font-semibold text-card-foreground",
+            isLoser && "text-muted-foreground",
+            !isWinner && !isLoser && "text-card-foreground",
+            !entry.team && "text-muted-foreground italic"
           )}
         >
           {entry.team?.name ?? "TBD"}
@@ -45,8 +45,8 @@ function TeamRow({ entry }: { entry: MatchTeam }) {
       <span
         className={cn(
           "text-sm tabular-nums shrink-0 leading-none font-medium",
-          isWinner && "text-(--bracket-fg,hsl(var(--card-foreground)))",
-          isLoser && "text-(--bracket-muted,hsl(var(--muted-foreground)))"
+          isWinner && "text-card-foreground",
+          isLoser && "text-muted-foreground"
         )}
       >
         {entry.score}
@@ -65,17 +65,17 @@ export function MatchCard({ match, className, onMatchClick }: MatchCardProps) {
       className={cn(
         "bracket-match-card",
         "w-(--bracket-match-width,13rem) rounded-md border",
-        "border-(--bracket-border,hsl(var(--border)))",
-        "bg-(--bracket-card,hsl(var(--card)))",
-        "text-(--bracket-fg,hsl(var(--card-foreground)))",
+        "border-border",
+        "bg-card",
+        "text-card-foreground",
         "shadow-sm overflow-hidden",
-        onMatchClick && "cursor-pointer hover:border-(--bracket-accent,hsl(var(--primary)))/50 transition-colors",
+        onMatchClick && "cursor-pointer hover:border-primary/50 transition-colors",
         className
       )}
       onClick={onMatchClick ? () => onMatchClick(match) : undefined}
     >
       {showHeader && (
-        <div className="flex items-center justify-between px-2.5 py-1 text-xs text-(--bracket-muted,hsl(var(--muted-foreground))) border-b border-(--bracket-border,hsl(var(--border)))">
+        <div className="flex items-center justify-between px-2.5 py-1 text-xs text-muted-foreground border-b border-border">
           <span className="flex items-center gap-1.5">
             {isLive && (
               <>
@@ -92,7 +92,7 @@ export function MatchCard({ match, className, onMatchClick }: MatchCardProps) {
         </div>
       )}
       <TeamRow entry={match.teams[0]} />
-      <div className="border-t border-(--bracket-border,hsl(var(--border)))" />
+      <div className="border-t border-border" />
       <TeamRow entry={match.teams[1]} />
     </div>
   );

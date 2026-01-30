@@ -105,16 +105,13 @@ The card adapts to match state:
 
 ## Theming
 
-All colors use CSS custom properties with fallbacks to shadcn theme variables:
+Colors use your shadcn theme variables directly (`--card`, `--border`, `--card-foreground`, `--muted-foreground`, `--primary`). No extra configuration needed.
+
+The card width can be customized via a CSS custom property:
 
 | Property | Default | Description |
 | --- | --- | --- |
 | `--bracket-match-width` | `13rem` | Card width. |
-| `--bracket-card` | `hsl(var(--card))` | Card background. |
-| `--bracket-border` | `hsl(var(--border))` | Card border and dividers. |
-| `--bracket-fg` | `hsl(var(--card-foreground))` | Primary text. |
-| `--bracket-muted` | `hsl(var(--muted-foreground))` | Secondary text (losers, schedule, BO label). |
-| `--bracket-accent` | `hsl(var(--primary))` | Hover border color (when `onMatchClick` is set). |
 
 ```tsx
 <div style={{ "--bracket-match-width": "16rem" }}>

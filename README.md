@@ -1,42 +1,51 @@
-# bracketcore
+# Bracketcore
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack.
+Reusable tournament bracket components for React, available as a [shadcn registry](https://ui.shadcn.com/docs/registry).
 
-## Features
+## Components
 
-- **TypeScript** - For type safety and improved developer experience
-- **Oxlint** - Oxlint + Oxfmt (linting & formatting)
-- **Turborepo** - Optimized monorepo build system
+- **Match Card** - The atomic building block displaying a single match with teams, scores, and status
+- **Single Elimination** - Bracket with automatic SVG connector lines between rounds
+- **Double Elimination** - Upper bracket, lower bracket, and grand final
+- **Swiss Stage** - Swiss-system rounds with standings table
+- **Group Stage** - Round-robin groups with standings
 
-## Getting Started
+## Installation
 
-First, install the dependencies:
+Install components directly from the registry:
+
+```bash
+npx shadcn add https://bracketcore.dev/r/single-elimination.json
+```
+
+Or install the package:
+
+```bash
+npm install @bracketcore/registry
+```
+
+## Development
 
 ```bash
 bun install
-```
-
-Then, run the development server:
-
-```bash
 bun run dev
 ```
-
-## Git Hooks and Formatting
-
-- Format and lint fix: `bun run check`
 
 ## Project Structure
 
 ```
 bracketcore/
 ├── apps/
+│   └── fumadocs/          # Documentation site (Next.js)
+├── packages/
+│   ├── registry/          # shadcn component registry
+│   ├── env/               # Shared environment variables
+│   └── config/            # Shared TypeScript configuration
 ```
 
-## Available Scripts
+## Scripts
 
-- `bun run dev`: Start all applications in development mode
-- `bun run build`: Build all applications
-- `bun run dev:web`: Start only the web application
-- `bun run check-types`: Check TypeScript types across all apps
-- `bun run check`: Run Oxlint and Oxfmt
+- `bun run dev` - Start all apps in development mode
+- `bun run build` - Build all apps
+- `bun run check-types` - Type check all packages
+- `bun run check` - Run Oxlint and Oxfmt

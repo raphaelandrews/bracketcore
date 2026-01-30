@@ -16,10 +16,6 @@ export interface SingleEliminationProps {
  * - `--bracket-match-height` (default 4.25rem / 68px)
  * - `--bracket-round-gap`    (default 3rem / 48px) — horizontal space between rounds
  * - `--bracket-match-gap`    (default 1rem / 16px)  — base vertical gap (round 0)
- *
- * Theming via CSS custom properties:
- * - `--bracket-bg`, `--bracket-card`, `--bracket-border`,
- *   `--bracket-fg`, `--bracket-muted`, `--bracket-accent`
  */
 export function SingleElimination({
   bracket,
@@ -34,7 +30,7 @@ export function SingleElimination({
         "bracket-single-elimination",
         "inline-flex overflow-x-auto",
         "rounded-lg p-6",
-        "bg-(--bracket-bg,hsl(var(--background)))",
+        "bg-background",
         className
       )}
     >
@@ -80,7 +76,7 @@ function RoundColumn({
 
   return (
     <div className="flex flex-col items-center shrink-0">
-      <div className="text-xs font-medium text-(--bracket-muted,hsl(var(--muted-foreground))) mb-3 whitespace-nowrap">
+      <div className="text-xs font-medium text-muted-foreground mb-3 whitespace-nowrap">
         {name}
       </div>
       <div
@@ -154,7 +150,7 @@ function ConnectorColumn({
       {Array.from({ length: pairCount }, (_, i) => (
         <svg
           key={i}
-          className="w-full text-(--bracket-border,hsl(var(--border)))"
+          className="w-full text-border"
           style={{ height: `var(--_pair-h)` }}
           viewBox="0 0 100 100"
           preserveAspectRatio="none"

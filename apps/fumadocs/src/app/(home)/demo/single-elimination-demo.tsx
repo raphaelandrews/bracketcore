@@ -68,19 +68,7 @@ function match(
 
 export function SingleEliminationDemo() {
   return (
-    <div
-      className="rounded-xl border border-fd-border overflow-x-auto"
-      style={
-        {
-          "--bracket-bg": "hsl(var(--background))",
-          "--bracket-card": "hsl(220 20% 14%)",
-          "--bracket-border": "hsl(220 15% 22%)",
-          "--bracket-fg": "hsl(210 20% 92%)",
-          "--bracket-muted": "hsl(215 15% 55%)",
-          "--bracket-accent": "hsl(142 70% 45%)",
-        } as React.CSSProperties
-      }
-    >
+    <div className="rounded-xl border border-fd-border overflow-x-auto">
       <SingleElimination
         bracket={bracket}
         onMatchClick={(m: Match) =>

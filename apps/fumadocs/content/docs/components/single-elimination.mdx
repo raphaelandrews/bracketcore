@@ -170,28 +170,4 @@ Control dimensions via CSS custom properties on a parent element:
 
 ## Theming
 
-All colors are driven by CSS custom properties with sensible defaults that map to your shadcn theme:
-
-| Property | Default | Description |
-| --- | --- | --- |
-| `--bracket-bg` | `hsl(var(--background))` | Bracket container background. |
-| `--bracket-card` | `hsl(var(--card))` | Match card background. |
-| `--bracket-border` | `hsl(var(--border))` | Card and connector line color. |
-| `--bracket-fg` | `hsl(var(--card-foreground))` | Primary text color. |
-| `--bracket-muted` | `hsl(var(--muted-foreground))` | Secondary text (round names, losers). |
-| `--bracket-accent` | `hsl(var(--primary))` | Hover accent color. |
-
-```tsx
-<div
-  style={{
-    "--bracket-bg": "hsl(220 20% 10%)",
-    "--bracket-card": "hsl(220 20% 14%)",
-    "--bracket-border": "hsl(220 15% 22%)",
-    "--bracket-fg": "hsl(210 20% 92%)",
-    "--bracket-muted": "hsl(215 15% 55%)",
-    "--bracket-accent": "hsl(142 70% 45%)",
-  }}
->
-  <SingleElimination bracket={bracket} />
-</div>
-```
+All colors use your shadcn theme variables directly (`--background`, `--card`, `--border`, `--card-foreground`, `--muted-foreground`, `--primary`). No extra configuration needed.
