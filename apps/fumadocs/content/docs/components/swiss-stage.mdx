@@ -1,0 +1,153 @@
+---
+title: Swiss Stage
+description: A Swiss system bracket with round-by-round matches and standings table showing win/loss records.
+---
+
+## Preview
+
+<SwissStagePreview />
+
+## Installation
+
+```bash
+npx shadcn add https://bracketcore.dev/r/swiss-stage.json
+```
+
+Or install the package directly:
+
+```bash
+npm install @bracketcore/registry
+```
+
+## Usage
+
+```tsx
+import { SwissStage, type SwissBracket } from "@bracketcore/registry";
+
+const bracket: SwissBracket = {
+  type: "swiss",
+  winsToAdvance: 3,
+  lossesToEliminate: 3,
+  rounds: [
+    {
+      name: "Round 1",
+      record: "0-0",
+      matches: [
+        {
+          id: "r1-1",
+          round: 0,
+          position: 0,
+          bestOf: 1,
+          status: "completed",
+          teams: [
+            { team: { id: "a", name: "Team A" }, score: 1, isWinner: true },
+            { team: { id: "b", name: "Team B" }, score: 0, isWinner: false },
+          ],
+        },
+        {
+          id: "r1-2",
+          round: 0,
+          position: 1,
+          bestOf: 1,
+          status: "completed",
+          teams: [
+            { team: { id: "c", name: "Team C" }, score: 1, isWinner: true },
+            { team: { id: "d", name: "Team D" }, score: 0, isWinner: false },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Round 2",
+      record: "1-0 / 0-1",
+      matches: [
+        {
+          id: "r2-1",
+          round: 1,
+          position: 0,
+          bestOf: 1,
+          status: "completed",
+          teams: [
+            { team: { id: "a", name: "Team A" }, score: 1, isWinner: true },
+            { team: { id: "c", name: "Team C" }, score: 0, isWinner: false },
+          ],
+        },
+        {
+          id: "r2-2",
+          round: 1,
+          position: 1,
+          bestOf: 1,
+          status: "completed",
+          teams: [
+            { team: { id: "b", name: "Team B" }, score: 1, isWinner: true },
+            { team: { id: "d", name: "Team D" }, score: 0, isWinner: false },
+          ],
+        },
+      ],
+    },
+  ],
+  standings: [
+    { team: { id: "a", name: "Team A" }, wins: 2, losses: 0, status: "advancing" },
+    { team: { id: "c", name: "Team C" }, wins: 1, losses: 1, status: "pending" },
+    { team: { id: "b", name: "Team B" }, wins: 1, losses: 1, status: "pending" },
+    { team: { id: "d", name: "Team D" }, wins: 0, losses: 2, status: "eliminated" },
+  ],
+};
+
+export default function Page() {
+  return <SwissStage bracket={bracket} />;
+}
+```
+
+## Props
+
+### `SwissStage`
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `bracket` | `SwissBracket` | The Swiss bracket data with rounds and standings. |
+| `className` | `string` | Additional CSS classes for the root element. |
+| `onMatchClick` | `(match: Match) => void` | Callback fired when a match card is clicked. |
+
+### `SwissBracket`
+
+```ts
+interface SwissBracket {
+  type: "swiss";
+  rounds: SwissRound[];
+  standings: SwissStanding[];
+  winsToAdvance: number;      // e.g. 3 for a 3-win advance format
+  lossesToEliminate: number;   // e.g. 3 for a 3-loss elimination format
+}
+```
+
+### `SwissRound`
+
+```ts
+interface SwissRound {
+  name: string;
+  record?: string;  // e.g. "1-0 / 0-1" — displayed next to round name
+  matches: Match[];
+}
+```
+
+### `SwissStanding`
+
+```ts
+interface SwissStanding {
+  team: Team;
+  wins: number;
+  losses: number;
+  tiebreaker?: number;  // Buchholz or similar
+  status?: "advancing" | "eliminated" | "pending";
+}
+```
+
+## Structure
+
+The component renders two sections:
+
+1. **Rounds** — horizontally scrollable columns of match cards, each with a round name and optional win/loss record label
+2. **Standings** — a table sorted by record with columns for rank, team, wins, losses, and status (Advanced / Eliminated)
+
+Teams with `status: "advancing"` show a green "Advanced" badge. Teams with `status: "eliminated"` show a red "Eliminated" badge and dimmed text.

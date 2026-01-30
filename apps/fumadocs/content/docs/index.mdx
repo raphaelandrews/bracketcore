@@ -1,13 +1,54 @@
 ---
-title: Hello World
-description: Your first document
+title: Getting Started
+description: Reusable tournament bracket components for React, distributed via the shadcn registry.
 ---
 
-Welcome to the docs! You can start writing documents in `/content/docs`.
+Bracketcore provides tournament bracket components you can drop into any React project. Install individual components via the shadcn CLI or use the `@bracketcore/registry` package directly.
 
-## What is Next?
+## Installation
+
+### shadcn registry
+
+Add components one at a time:
+
+```bash
+npx shadcn add https://bracketcore.dev/r/single-elimination.json
+```
+
+### Package
+
+Or install everything at once:
+
+```bash
+npm install @bracketcore/registry
+```
+
+## Components
 
 <Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.dev" />
+  <Card
+    title="Match Card"
+    description="The atomic match card used by all bracket types."
+    href="/docs/components/match-card"
+  />
+  <Card
+    title="Single Elimination"
+    description="Standard knockout bracket with connector lines."
+    href="/docs/components/single-elimination"
+  />
+  <Card
+    title="Double Elimination"
+    description="Upper bracket, lower bracket, and grand final."
+    href="/docs/components/double-elimination"
+  />
+  <Card
+    title="Swiss Stage"
+    description="Round-by-round matches with standings table."
+    href="/docs/components/swiss-stage"
+  />
+  <Card
+    title="Group Stage"
+    description="Round-robin groups with standings and match cards."
+    href="/docs/components/group-stage"
+  />
 </Cards>

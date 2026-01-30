@@ -1,7 +1,7 @@
-import type { DoubleEliminationBracket, Match } from "@/bracketcore/bracket-types";
-import { SingleElimination } from "@/bracketcore/single-elimination";
-import { MatchCard } from "@/bracketcore/match-card";
-import { cn } from "@/bracketcore/cn";
+import type { DoubleEliminationBracket, Match } from "./bracket-types";
+import { SingleElimination } from "./single-elimination";
+import { MatchCard } from "./match-card";
+import { cn } from "./cn";
 
 export interface DoubleEliminationProps {
   bracket: DoubleEliminationBracket;
@@ -39,7 +39,7 @@ export function DoubleElimination({
       </section>
 
       <section>
-        <h2 className="text-sm font-medium text-muted-foreground mb-4">
+        <h2 className="text-sm font-medium text-(--bracket-muted,hsl(var(--muted-foreground))) mb-4">
           Grand Final
         </h2>
         <MatchCard match={bracket.grandFinal} onMatchClick={onMatchClick} />

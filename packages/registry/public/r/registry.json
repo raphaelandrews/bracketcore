@@ -25,32 +25,13 @@
       ]
     },
     {
-      "name": "bracket-connector",
-      "type": "registry:component",
-      "title": "Bracket Connector",
-      "description": "SVG connector lines between bracket rounds.",
-      "dependencies": ["clsx", "tailwind-merge"],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "registry/bracketcore/bracket-connector.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "registry/bracketcore/cn.ts",
-          "type": "registry:lib"
-        }
-      ]
-    },
-    {
       "name": "single-elimination",
       "type": "registry:component",
       "title": "Single Elimination Bracket",
       "description": "A full single elimination bracket with rounds, match cards, and connector lines.",
       "dependencies": ["clsx", "tailwind-merge"],
       "registryDependencies": [
-        "match-card",
-        "bracket-connector"
+        "match-card"
       ],
       "files": [
         {
@@ -58,15 +39,7 @@
           "type": "registry:component"
         },
         {
-          "path": "registry/bracketcore/round-column.tsx",
-          "type": "registry:component"
-        },
-        {
           "path": "registry/bracketcore/match-card.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "registry/bracketcore/bracket-connector.tsx",
           "type": "registry:component"
         },
         {
@@ -99,15 +72,7 @@
           "type": "registry:component"
         },
         {
-          "path": "registry/bracketcore/round-column.tsx",
-          "type": "registry:component"
-        },
-        {
           "path": "registry/bracketcore/match-card.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "registry/bracketcore/bracket-connector.tsx",
           "type": "registry:component"
         },
         {

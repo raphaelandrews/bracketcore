@@ -1,0 +1,197 @@
+---
+title: Single Elimination
+description: A bracket component for single elimination tournaments with automatic connector lines between rounds.
+---
+
+## Preview
+
+<SingleEliminationPreview />
+
+## Installation
+
+```bash
+npx shadcn add https://bracketcore.dev/r/single-elimination.json
+```
+
+Or install the package directly:
+
+```bash
+npm install @bracketcore/registry
+```
+
+## Usage
+
+```tsx
+import {
+  SingleElimination,
+  type SingleEliminationBracket,
+} from "@bracketcore/registry";
+
+const bracket: SingleEliminationBracket = {
+  type: "single-elimination",
+  rounds: [
+    {
+      name: "Semi-finals",
+      matches: [
+        {
+          id: "sf-1",
+          round: 0,
+          position: 0,
+          bestOf: 3,
+          status: "completed",
+          teams: [
+            { team: { id: "a", name: "Team Alpha" }, score: 2, isWinner: true },
+            { team: { id: "b", name: "Team Bravo" }, score: 1, isWinner: false },
+          ],
+        },
+        {
+          id: "sf-2",
+          round: 0,
+          position: 1,
+          bestOf: 3,
+          status: "completed",
+          teams: [
+            { team: { id: "c", name: "Team Charlie" }, score: 0, isWinner: false },
+            { team: { id: "d", name: "Team Delta" }, score: 2, isWinner: true },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Final",
+      matches: [
+        {
+          id: "f-1",
+          round: 1,
+          position: 0,
+          bestOf: 5,
+          status: "completed",
+          teams: [
+            { team: { id: "a", name: "Team Alpha" }, score: 3, isWinner: true },
+            { team: { id: "d", name: "Team Delta" }, score: 1, isWinner: false },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export default function Page() {
+  return <SingleElimination bracket={bracket} />;
+}
+```
+
+## Props
+
+### `SingleElimination`
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `bracket` | `SingleEliminationBracket` | The bracket data containing rounds and matches. |
+| `className` | `string` | Additional CSS classes for the root element. |
+| `onMatchClick` | `(match: Match) => void` | Callback fired when a match card is clicked. |
+
+### `SingleEliminationBracket`
+
+```ts
+interface SingleEliminationBracket {
+  type: "single-elimination";
+  rounds: Round[];
+}
+```
+
+### `Round`
+
+```ts
+interface Round {
+  name: string;
+  matches: Match[];
+}
+```
+
+### `Match`
+
+```ts
+interface Match {
+  id: string;
+  round: number;     // 0-based round index
+  position: number;  // 0-based position within the round
+  bestOf?: number;   // Best-of series count (1, 3, 5)
+  scheduledAt?: string;
+  status?: "upcoming" | "live" | "completed";
+  teams: [MatchTeam, MatchTeam];
+}
+```
+
+### `MatchTeam`
+
+```ts
+interface MatchTeam {
+  team: Team | null;
+  score: number;
+  isWinner?: boolean;
+}
+```
+
+### `Team`
+
+```ts
+interface Team {
+  id: string;
+  name: string;
+  logo?: string;
+  seed?: number;
+}
+```
+
+## Sizing
+
+Control dimensions via CSS custom properties on a parent element:
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `--bracket-match-width` | `13rem` | Width of each match card. |
+| `--bracket-match-height` | `4.25rem` | Height of each match card. |
+| `--bracket-round-gap` | `3rem` | Horizontal gap between rounds. |
+| `--bracket-match-gap` | `1rem` | Base vertical gap between matches in round 0. |
+
+```tsx
+<div
+  style={{
+    "--bracket-match-width": "16rem",
+    "--bracket-match-height": "5rem",
+    "--bracket-round-gap": "4rem",
+    "--bracket-match-gap": "1.5rem",
+  }}
+>
+  <SingleElimination bracket={bracket} />
+</div>
+```
+
+## Theming
+
+All colors are driven by CSS custom properties with sensible defaults that map to your shadcn theme:
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `--bracket-bg` | `hsl(var(--background))` | Bracket container background. |
+| `--bracket-card` | `hsl(var(--card))` | Match card background. |
+| `--bracket-border` | `hsl(var(--border))` | Card and connector line color. |
+| `--bracket-fg` | `hsl(var(--card-foreground))` | Primary text color. |
+| `--bracket-muted` | `hsl(var(--muted-foreground))` | Secondary text (round names, losers). |
+| `--bracket-accent` | `hsl(var(--primary))` | Hover accent color. |
+
+```tsx
+<div
+  style={{
+    "--bracket-bg": "hsl(220 20% 10%)",
+    "--bracket-card": "hsl(220 20% 14%)",
+    "--bracket-border": "hsl(220 15% 22%)",
+    "--bracket-fg": "hsl(210 20% 92%)",
+    "--bracket-muted": "hsl(215 15% 55%)",
+    "--bracket-accent": "hsl(142 70% 45%)",
+  }}
+>
+  <SingleElimination bracket={bracket} />
+</div>
+```

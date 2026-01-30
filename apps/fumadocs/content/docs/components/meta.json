@@ -1,0 +1,10 @@
+{
+  "title": "Components",
+  "pages": [
+    "match-card",
+    "single-elimination",
+    "double-elimination",
+    "swiss-stage",
+    "group-stage"
+  ]
+}

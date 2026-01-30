@@ -1,6 +1,6 @@
-import type { GroupStageBracket, Match, Group } from "@/bracketcore/bracket-types";
-import { MatchCard } from "@/bracketcore/match-card";
-import { cn } from "@/bracketcore/cn";
+import type { GroupStageBracket, Match, Group } from "./bracket-types";
+import { MatchCard } from "./match-card";
+import { cn } from "./cn";
 
 export interface GroupStageProps {
   bracket: GroupStageBracket;

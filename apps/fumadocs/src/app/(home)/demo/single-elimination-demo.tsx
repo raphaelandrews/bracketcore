@@ -4,7 +4,7 @@ import {
   SingleElimination,
   type SingleEliminationBracket,
   type Match,
-} from "@bracketcore/ui";
+} from "@bracketcore/registry";
 
 const bracket: SingleEliminationBracket = {
   type: "single-elimination",

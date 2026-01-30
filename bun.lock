@@ -19,7 +19,7 @@
       "name": "fumadocs",
       "version": "0.0.0",
       "dependencies": {
-        "@bracketcore/ui": "workspace:*",
+        "@bracketcore/registry": "workspace:*",
         "fumadocs-core": "16.4.10",
         "fumadocs-mdx": "14.2.6",
         "fumadocs-ui": "16.4.10",
@@ -59,26 +59,6 @@
         "@types/react-dom": "^19.2.3",
         "shadcn": "^3.7.0",
         "typescript": "^5.9.3",
-      },
-    },
-    "packages/ui": {
-      "name": "@bracketcore/ui",
-      "version": "0.0.0",
-      "dependencies": {
-        "clsx": "^2.1.1",
-        "tailwind-merge": "^3.4.0",
-      },
-      "devDependencies": {
-        "@bracketcore/config": "workspace:*",
-        "@types/react": "^19.2.9",
-        "@types/react-dom": "^19.2.3",
-        "react": "^19.2.3",
-        "react-dom": "^19.2.3",
-        "typescript": "^5.9.3",
-      },
-      "peerDependencies": {
-        "react": "^18.0.0 || ^19.0.0",
-        "react-dom": "^18.0.0 || ^19.0.0",
       },
     },
   },
@@ -146,8 +126,6 @@
     "@bracketcore/config": ["@bracketcore/config@workspace:packages/config"],
 
     "@bracketcore/registry": ["@bracketcore/registry@workspace:packages/registry"],
-
-    "@bracketcore/ui": ["@bracketcore/ui@workspace:packages/ui"],
 
     "@dotenvx/dotenvx": ["@dotenvx/dotenvx@1.52.0", "", { "dependencies": { "commander": "^11.1.0", "dotenv": "^17.2.1", "eciesjs": "^0.4.10", "execa": "^5.1.1", "fdir": "^6.2.0", "ignore": "^5.3.0", "object-treeify": "1.1.33", "picomatch": "^4.0.2", "which": "^4.0.0" }, "bin": { "dotenvx": "src/cli/dotenvx.js" } }, "sha512-CaQcc8JvtzQhUSm9877b6V4Tb7HCotkcyud9X2YwdqtQKwgljkMRwU96fVYKnzN3V0Hj74oP7Es+vZ0mS+Aa1w=="],
 

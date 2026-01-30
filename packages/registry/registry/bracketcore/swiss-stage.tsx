@@ -1,6 +1,6 @@
-import type { SwissBracket, Match } from "@/bracketcore/bracket-types";
-import { MatchCard } from "@/bracketcore/match-card";
-import { cn } from "@/bracketcore/cn";
+import type { SwissBracket, Match } from "./bracket-types";
+import { MatchCard } from "./match-card";
+import { cn } from "./cn";
 
 export interface SwissStageProps {
   bracket: SwissBracket;

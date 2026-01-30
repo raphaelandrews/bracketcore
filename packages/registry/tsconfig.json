@@ -10,5 +10,5 @@
       "@/*": ["./registry/*"]
     }
   },
-  "include": ["registry"]
+  "include": ["index.ts", "registry"]
 }

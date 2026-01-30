@@ -1,0 +1,136 @@
+---
+title: Group Stage
+description: A group stage component with standings tables and match cards for round-robin group formats.
+---
+
+## Preview
+
+<GroupStagePreview />
+
+## Installation
+
+```bash
+npx shadcn add https://bracketcore.dev/r/group-stage.json
+```
+
+Or install the package directly:
+
+```bash
+npm install @bracketcore/registry
+```
+
+## Usage
+
+```tsx
+import { GroupStage, type GroupStageBracket } from "@bracketcore/registry";
+
+const bracket: GroupStageBracket = {
+  type: "group-stage",
+  groups: [
+    {
+      name: "Group A",
+      teams: [
+        { id: "a", name: "Team Alpha" },
+        { id: "b", name: "Team Bravo" },
+        { id: "c", name: "Team Charlie" },
+      ],
+      matches: [
+        {
+          id: "ga-1",
+          round: 0,
+          position: 0,
+          bestOf: 3,
+          status: "completed",
+          teams: [
+            { team: { id: "a", name: "Team Alpha" }, score: 2, isWinner: true },
+            { team: { id: "b", name: "Team Bravo" }, score: 1, isWinner: false },
+          ],
+        },
+        {
+          id: "ga-2",
+          round: 0,
+          position: 1,
+          bestOf: 3,
+          status: "completed",
+          teams: [
+            { team: { id: "a", name: "Team Alpha" }, score: 2, isWinner: true },
+            { team: { id: "c", name: "Team Charlie" }, score: 0, isWinner: false },
+          ],
+        },
+        {
+          id: "ga-3",
+          round: 1,
+          position: 0,
+          bestOf: 3,
+          status: "completed",
+          teams: [
+            { team: { id: "b", name: "Team Bravo" }, score: 2, isWinner: true },
+            { team: { id: "c", name: "Team Charlie" }, score: 1, isWinner: false },
+          ],
+        },
+      ],
+      standings: [
+        { team: { id: "a", name: "Team Alpha" }, wins: 2, losses: 0, draws: 0, points: 6, differential: 3 },
+        { team: { id: "b", name: "Team Bravo" }, wins: 1, losses: 1, draws: 0, points: 3, differential: 0 },
+        { team: { id: "c", name: "Team Charlie" }, wins: 0, losses: 2, draws: 0, points: 0, differential: -3 },
+      ],
+    },
+  ],
+};
+
+export default function Page() {
+  return <GroupStage bracket={bracket} />;
+}
+```
+
+## Props
+
+### `GroupStage`
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `bracket` | `GroupStageBracket` | The group stage data with groups, matches, and standings. |
+| `className` | `string` | Additional CSS classes for the root element. |
+| `onMatchClick` | `(match: Match) => void` | Callback fired when a match card is clicked. |
+
+### `GroupStageBracket`
+
+```ts
+interface GroupStageBracket {
+  type: "group-stage";
+  groups: Group[];
+}
+```
+
+### `Group`
+
+```ts
+interface Group {
+  name: string;
+  teams: Team[];
+  matches: Match[];
+  standings: GroupStanding[];
+}
+```
+
+### `GroupStanding`
+
+```ts
+interface GroupStanding {
+  team: Team;
+  wins: number;
+  losses: number;
+  draws: number;
+  points: number;
+  differential: number;  // map/game differential
+}
+```
+
+## Structure
+
+The component renders two sections:
+
+1. **Standings tables** — a responsive grid of tables (one per group) showing rank, team, wins, draws, losses, differential (+/-), and points
+2. **Match cards** — grouped by group name, displayed as a flex-wrap grid of `MatchCard` components
+
+Groups are laid out in a 2-column grid on medium screens and stacked on mobile.

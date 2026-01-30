@@ -1,0 +1,123 @@
+---
+title: Match Card
+description: The atomic building block for all bracket types — displays a single match with two teams, scores, and status indicators.
+---
+
+## Preview
+
+<MatchCardPreview />
+
+## Installation
+
+```bash
+npx shadcn add https://bracketcore.dev/r/match-card.json
+```
+
+Or install the package directly:
+
+```bash
+npm install @bracketcore/registry
+```
+
+## Usage
+
+```tsx
+import { MatchCard, type Match } from "@bracketcore/registry";
+
+const match: Match = {
+  id: "demo",
+  round: 0,
+  position: 0,
+  bestOf: 3,
+  status: "completed",
+  teams: [
+    {
+      team: { id: "spirit", name: "Spirit" },
+      score: 2,
+      isWinner: true,
+    },
+    {
+      team: { id: "falcons", name: "Falcons" },
+      score: 0,
+      isWinner: false,
+    },
+  ],
+};
+
+export default function Page() {
+  return <MatchCard match={match} />;
+}
+```
+
+## Props
+
+### `MatchCard`
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `match` | `Match` | The match data to display. |
+| `className` | `string` | Additional CSS classes for the root element. |
+| `onMatchClick` | `(match: Match) => void` | Callback fired when the card is clicked. Adds hover styles when set. |
+
+### `Match`
+
+```ts
+interface Match {
+  id: string;
+  round: number;
+  position: number;
+  bestOf?: number;         // Displays as "BO3", "BO5", etc.
+  scheduledAt?: string;    // Displayed in the header bar
+  status?: "upcoming" | "live" | "completed";
+  teams: [MatchTeam, MatchTeam];
+}
+```
+
+### `MatchTeam`
+
+```ts
+interface MatchTeam {
+  team: Team | null;  // null renders "TBD" in italic
+  score: number;
+  isWinner?: boolean; // true = green border, false = red border, undefined = neutral
+}
+```
+
+### `Team`
+
+```ts
+interface Team {
+  id: string;
+  name: string;
+  logo?: string;   // URL to team logo image
+  seed?: number;
+}
+```
+
+## Visual States
+
+The card adapts to match state:
+
+- **Completed** — winner row gets a green left border and bold name, loser gets a red left border and muted text
+- **Live / Upcoming** — both rows show neutral borders when `isWinner` is not set
+- **TBD** — when `team` is `null`, shows italic "TBD" text in muted color
+- **Header bar** — appears when `scheduledAt` or `bestOf` is set, showing schedule info on the left and "BO3" etc. on the right
+
+## Theming
+
+All colors use CSS custom properties with fallbacks to shadcn theme variables:
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `--bracket-match-width` | `13rem` | Card width. |
+| `--bracket-card` | `hsl(var(--card))` | Card background. |
+| `--bracket-border` | `hsl(var(--border))` | Card border and dividers. |
+| `--bracket-fg` | `hsl(var(--card-foreground))` | Primary text. |
+| `--bracket-muted` | `hsl(var(--muted-foreground))` | Secondary text (losers, schedule, BO label). |
+| `--bracket-accent` | `hsl(var(--primary))` | Hover border color (when `onMatchClick` is set). |
+
+```tsx
+<div style={{ "--bracket-match-width": "16rem" }}>
+  <MatchCard match={match} />
+</div>
+```
