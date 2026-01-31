@@ -3,7 +3,6 @@
   "pages": [
     "match-card",
     "single-elimination",
-    "double-elimination",
     "double-elimination-1",
     "swiss-stage",
     "group-stage"

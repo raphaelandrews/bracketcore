@@ -13,6 +13,18 @@ description: A bracket component for single elimination tournaments with automat
 npx shadcn@latest add https://bracketcore.dev/r/single-elimination.json
 ```
 
+## Connector Styles
+
+You can customize the connector style using the `connectorStyle` prop. Available options are `default` (standard bracket lines) and `simple` (squared lines).
+
+### Simple Style
+
+<SingleEliminationSimplePreview />
+
+```tsx
+<SingleElimination bracket={bracket} connectorStyle="simple" />
+```
+
 ## Usage
 
 ```tsx

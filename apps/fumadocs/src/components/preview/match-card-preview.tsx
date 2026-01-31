@@ -10,12 +10,12 @@ const completed: Match = {
   status: "completed",
   teams: [
     {
-      team: { id: "spirit", name: "Spirit" },
+      team: { id: "team-liquid", name: "Team Liquid" },
       score: 2,
       isWinner: true,
     },
     {
-      team: { id: "falcons", name: "Falcons" },
+      team: { id: "og", name: "OG" },
       score: 0,
       isWinner: false,
     },
@@ -44,11 +44,11 @@ const live: Match = {
   scheduledAt: todayAt(14, 0),
   teams: [
     {
-      team: { id: "vitality", name: "Vitality" },
+      team: { id: "evil-geniuses", name: "Evil Geniuses" },
       score: 2,
     },
     {
-      team: { id: "faze", name: "FaZe" },
+      team: { id: "team-secret", name: "Team Secret" },
       score: 1,
     },
   ],
@@ -63,11 +63,11 @@ const upcoming: Match = {
   scheduledAt: daysFromNow(1, 18, 0),
   teams: [
     {
-      team: { id: "navi", name: "Natus Vincere" },
+      team: { id: "navi", name: "NaVi" },
       score: 0,
     },
     {
-      team: { id: "mouz", name: "MOUZ" },
+      team: { id: "virtus-pro", name: "Virtus.pro" },
       score: 0,
     },
   ],

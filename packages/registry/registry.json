@@ -51,36 +51,6 @@
       ]
     },
     {
-      "name": "double-elimination",
-      "type": "registry:component",
-      "title": "Double Elimination Bracket",
-      "description": "A double elimination bracket with upper bracket, lower bracket, and grand final.",
-      "dependencies": ["clsx", "tailwind-merge"],
-      "registryDependencies": ["single-elimination", "match-card"],
-      "files": [
-        {
-          "path": "registry/bracketcore/double-elimination.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "registry/bracketcore/single-elimination.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "registry/bracketcore/match-card.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "registry/bracketcore/bracket-types.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "registry/bracketcore/cn.ts",
-          "type": "registry:lib"
-        }
-      ]
-    },
-    {
       "name": "swiss-stage",
       "type": "registry:component",
       "title": "Swiss Stage",

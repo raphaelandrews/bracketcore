@@ -4,12 +4,7 @@ import type { ComponentProps } from "react";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import { CodeBlockTabsList } from "fumadocs-ui/components/codeblock";
 import { SquareTerminal } from "lucide-react";
-import { SingleEliminationPreview } from "@/components/preview/single-elimination-preview";
-import {
-  DoubleEliminationPreview,
-  DoubleEliminationNoGF,
-  DoubleEliminationRatio2,
-} from "@/components/preview/double-elimination-preview";
+import { SingleEliminationPreview, SingleEliminationSimplePreview } from "@/components/preview/single-elimination-preview";
 import { SwissStagePreview } from "@/components/preview/swiss-stage-preview";
 import { GroupStagePreview } from "@/components/preview/group-stage-preview";
 import {
@@ -23,6 +18,7 @@ import {
   DoubleElimination1Preview,
   DoubleElimination1Ratio2,
   DoubleElimination1LBStartsEarlier,
+  DoubleElimination1SimplePreview,
 } from "@/components/preview/double-elimination-1-preview";
 
 function CustomCodeBlockTabsList({ children, ...props }: ComponentProps<typeof CodeBlockTabsList>) {
@@ -39,9 +35,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ...defaultMdxComponents,
     CodeBlockTabsList: CustomCodeBlockTabsList,
     SingleEliminationPreview,
-    DoubleEliminationPreview,
-    DoubleEliminationNoGF,
-    DoubleEliminationRatio2,
+    SingleEliminationSimplePreview,
     SwissStagePreview,
     GroupStagePreview,
     MatchCardPreview,
@@ -52,6 +46,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     DoubleElimination1Preview,
     DoubleElimination1Ratio2,
     DoubleElimination1LBStartsEarlier,
+    DoubleElimination1SimplePreview,
     ...components,
   };
 }

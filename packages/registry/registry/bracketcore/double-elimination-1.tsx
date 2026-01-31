@@ -12,6 +12,7 @@ export interface DoubleElimination1Props {
    * Default: 0.
    */
   ubAlignToLBRound?: number;
+  connectorStyle?: "default" | "simple";
 }
 
 // Each match occupies 2 grid rows (one per team row).
@@ -78,6 +79,7 @@ export function DoubleElimination1({
   className,
   onMatchClick,
   ubAlignToLBRound = 0,
+  connectorStyle = "default",
 }: DoubleElimination1Props) {
   const { upper, lower, grandFinal } = bracket;
 
@@ -104,9 +106,6 @@ export function DoubleElimination1({
 
   // Function to map UB round index to Grid Column
   const getUBCol = (rIdx: number) => {
-    // If LB is shorter or we force align 0, existing logic might apply,
-    // but allowing ubAlignToLBRound gives control.
-
     const startInd = ubAlignToLBRound;
     const endInd = lbCount - 1;
 
@@ -117,7 +116,6 @@ export function DoubleElimination1({
     if (rIdx === ubCount - 1) return getLBCol(endInd);
 
     // Interpolate indices between startInd and endInd
-    // We want to snap to valid match columns (odd numbers: 1, 3, 5...)
 
     const step = (endInd - startInd) / (ubCount - 1);
     const targetLBIdx = Math.round(startInd + rIdx * step);
@@ -150,7 +148,6 @@ export function DoubleElimination1({
   }
 
   // Grand Final Column
-  // Aligns after the last bracket column
   const lastBracketCol = Math.max(
     lbMatchCols[lbMatchCols.length - 1] ?? 0,
     ubMatchCols[ubMatchCols.length - 1] ?? 0,
@@ -168,9 +165,6 @@ export function DoubleElimination1({
   // --- Row computation ---
   const headerRow = 1;
   const ubStartRow = 2;
-  // UB Connectors are always 'merge' visually in standard DE tree, 
-  // but logically, if we stretch, they might just be straight lines?
-  // Actually, UB consistently reduces count -> Merge.
   const ubRows = computeBracketRows(upper, ubStartRow, Array(upper.length - 1).fill("merge"));
 
   // Total rows used by UB
@@ -191,18 +185,11 @@ export function DoubleElimination1({
   // Build grid-template-columns
   const colDefs: string[] = [];
   for (let c = 1; c <= totalCols; c++) {
-    // Check if this column is ANY match column
     const isMatchCol = ubMatchCols.includes(c) || lbMatchCols.includes(c) || c === gfMatchCol;
 
     if (isMatchCol) {
       colDefs.push("var(--bracket-match-width, 11rem)");
     } else {
-      // It's a gap/connector column. 
-      // If it's a wide span connector, we might want multiple 'gap' columns?
-      // No, grid handles spans. 
-      // But we need to ensure the grid DEFINITION has slots.
-      // E.g. if we span 3 columns, we need 3 track definitions.
-      // Yes, we iterate 1..totalCols so we define each track.
       colDefs.push("var(--bracket-round-gap, 3rem)");
     }
   }
@@ -223,14 +210,12 @@ export function DoubleElimination1({
   }
 
   // --- GF vertical positioning ---
-  // GF should be vertically centered between UB final and LB final
   const ubFinalPos = ubRows[ubRows.length - 1]?.[0];
   const lbFinalPos = lbRows[lbRows.length - 1]?.[0];
 
   const gfRowStart = ubFinalPos ? ubFinalPos.topRow : ubStartRow;
   const gfRowEnd = lbFinalPos ? lbFinalPos.botRow + 1 : lbStartRow + 2;
 
-  // Render
   return (
     <div
       className={cn("inline-grid overflow-x-auto", "rounded-lg p-6", "bg-background", className)}
@@ -282,6 +267,7 @@ export function DoubleElimination1({
             nextPositions={nextRound}
             gridCol={col}
             gridColSpan={span}
+            style={connectorStyle}
           />
         );
       })}
@@ -329,10 +315,18 @@ export function DoubleElimination1({
               nextPositions={nextRound}
               gridCol={col}
               gridColSpan={1}
+              style={connectorStyle}
             />
           );
         }
-        return <StraightConnectors key={`lb-conn-${i}`} positions={prevRound} gridCol={col} />;
+        return (
+          <StraightConnectors
+            key={`lb-conn-${i}`}
+            positions={prevRound}
+            gridCol={col}
+            style={connectorStyle}
+          />
+        );
       })}
 
       {/* === Grand Final === */}
@@ -379,7 +373,6 @@ export function DoubleElimination1({
   );
 }
 
-// --- Grid-positioned match card ---
 function GridMatch({
   match,
   topRow,
@@ -411,17 +404,18 @@ function GridMatch({
   );
 }
 
-// --- Merge connectors (2→1) ---
 function MergeConnectors({
   prevPositions,
   nextPositions,
   gridCol,
   gridColSpan,
+  style = "default",
 }: {
   prevPositions: MatchPos[];
   nextPositions: MatchPos[];
   gridCol: number;
   gridColSpan: number;
+  style?: "default" | "simple";
 }) {
   const elements: React.ReactElement[] = [];
 
@@ -432,38 +426,100 @@ function MergeConnectors({
     const startRow = topFeeder.topRow;
     const endRow = botFeeder.botRow + 1;
 
-    elements.push(
-      <div
-        key={`merge-${i}`}
-        className="relative"
-        style={{
-          gridRow: `${startRow} / ${endRow}`,
-          gridColumn: gridColSpan > 1 ? `${gridCol} / ${gridCol + gridColSpan}` : gridCol,
-        }}
-      >
-        <svg
-          className="w-full h-full text-border"
-          preserveAspectRatio="none"
-          viewBox="0 0 100 100"
-          aria-hidden
+    if (style === "simple") {
+
+      elements.push(
+        <div
+          key={`merge-${i}`}
+          className="relative"
+          style={{
+            gridRow: `${startRow} / ${endRow}`,
+            gridColumn: gridColSpan > 1 ? `${gridCol} / ${gridCol + gridColSpan}` : gridCol,
+          }}
         >
-          <path
-            d={["M 0 25 H 50", "M 0 75 H 50", "M 50 25 V 75", "M 50 50 H 100"].join(" ")}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.5}
-            vectorEffect="non-scaling-stroke"
+          {/* Top Path: Feeder Center */}
+          <div
+            className="absolute border-t border-r border-border"
+            style={{
+              top: "calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+              right: "50%",
+              width: "50%",
+              height: "calc(50% - var(--bracket-match-height) * 0.25 - (var(--bracket-match-height) + var(--bracket-match-gap)) / 2)",
+            }}
           />
-        </svg>
-      </div>,
-    );
+          {/* Top Inbound Stub */}
+          <div
+            className="absolute border-b border-border"
+            style={{
+              top: "calc(50% - var(--bracket-match-height) * 0.25)",
+              left: "50%",
+              width: "50%",
+            }}
+          />
+
+          {/* Bot Path: Feeder Center */}
+          <div
+            className="absolute border-b border-r border-border"
+            style={{
+              bottom: "calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+              right: "50%",
+              width: "50%",
+              height: "calc(50% - var(--bracket-match-height) * 0.25 - (var(--bracket-match-height) + var(--bracket-match-gap)) / 2)",
+            }}
+          />
+          {/* Bot Inbound Stub */}
+          <div
+            className="absolute border-b border-border"
+            style={{
+              bottom: "calc(50% - var(--bracket-match-height) * 0.25)",
+              left: "50%",
+              width: "50%",
+            }}
+          />
+        </div>
+      );
+    } else {
+      // Default SVG style
+      elements.push(
+        <div
+          key={`merge-${i}`}
+          className="relative"
+          style={{
+            gridRow: `${startRow} / ${endRow}`,
+            gridColumn: gridColSpan > 1 ? `${gridCol} / ${gridCol + gridColSpan}` : gridCol,
+          }}
+        >
+          <svg
+            className="w-full h-full text-border"
+            preserveAspectRatio="none"
+            viewBox="0 0 100 100"
+            aria-hidden
+          >
+            <path
+              d={["M 0 25 H 50", "M 0 75 H 50", "M 50 25 V 75", "M 50 50 H 100"].join(" ")}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+        </div>,
+      );
+    }
   }
 
   return <>{elements}</>;
 }
 
-// --- Straight connectors (1→1) ---
-function StraightConnectors({ positions, gridCol }: { positions: MatchPos[]; gridCol: number }) {
+function StraightConnectors({
+  positions,
+  gridCol,
+  style = "default",
+}: {
+  positions: MatchPos[];
+  gridCol: number;
+  style?: "default" | "simple";
+}) {
   return (
     <>
       {positions.map((pos, i) => (
@@ -475,27 +531,53 @@ function StraightConnectors({ positions, gridCol }: { positions: MatchPos[]; gri
             gridColumn: gridCol,
           }}
         >
-          <svg
-            className="w-full h-full text-border"
-            preserveAspectRatio="none"
-            viewBox="0 0 100 100"
-            aria-hidden
-          >
-            <path
-              d="M 0 50 H 100"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.5}
-              vectorEffect="non-scaling-stroke"
-            />
-          </svg>
+          {style === "simple" ? (
+            <>
+              {/* Path from Source(Left) to Target Bottom Row (50% + 1/4H). 
+                  Source is at 50% relative height (center of match). 
+                  Target Bottom Row is at 50% + 1/4 Match Height. 
+              */}
+              <div
+                className="absolute border-l border-b border-border"
+                style={{
+                  top: "50%",
+                  left: "0",
+                  width: "100%",
+                  height: "calc(var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+                }}
+              />
+              {/* Stub for Top Row (Coming from nowhere/drop) */}
+              <div
+                className="absolute border-b border-border"
+                style={{
+                  top: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+                  left: "0",
+                  width: "100%",
+                }}
+              />
+            </>
+          ) : (
+            <svg
+              className="w-full h-full text-border"
+              preserveAspectRatio="none"
+              viewBox="0 0 100 100"
+              aria-hidden
+            >
+              <path
+                d="M 0 50 H 100"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.5}
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+          )}
         </div>
       ))}
     </>
   );
 }
 
-// --- Grand Final connector ---
 function GrandFinalConnector({
   ubFinalPos,
   lbFinalPos,

@@ -46,22 +46,22 @@ const sampleBracket: SingleEliminationBracket = {
     {
       name: "Quarter-finals",
       matches: [
-        makeMatch("qf-1", 0, 0, "Spirit", 2, "Falcons", 0, 3),
-        makeMatch("qf-2", 0, 1, "Vitality", 2, "The MongolZ", 0, 3),
-        makeMatch("qf-3", 0, 2, "FURIA", 1, "Natus Vincere", 2, 3),
-        makeMatch("qf-4", 0, 3, "MOUZ", 0, "FaZe", 2, 3),
+        makeMatch("qf-1", 0, 0, "Team Liquid", 2, "OG", 0, 3), // Liquid
+        makeMatch("qf-2", 0, 1, "Evil Geniuses", 2, "Team Secret", 0, 3), // EG
+        makeMatch("qf-3", 0, 2, "NaVi", 1, "Virtus.pro", 2, 3), // VP
+        makeMatch("qf-4", 0, 3, "LGD", 0, "Invictus Gaming", 2, 3), // IG
       ],
     },
     {
       name: "Semi-finals",
       matches: [
-        makeMatch("sf-1", 1, 0, "Spirit", 0, "Vitality", 2, 3),
-        makeMatch("sf-2", 1, 1, "Natus Vincere", 1, "FaZe", 2, 3),
+        makeMatch("sf-1", 1, 0, "Team Liquid", 0, "Evil Geniuses", 2, 3), // EG
+        makeMatch("sf-2", 1, 1, "Virtus.pro", 1, "Invictus Gaming", 2, 3), // IG
       ],
     },
     {
       name: "Grand Final",
-      matches: [makeMatch("gf", 2, 0, "Vitality", 3, "FaZe", 1, 5)],
+      matches: [makeMatch("gf", 2, 0, "Evil Geniuses", 3, "Invictus Gaming", 1, 5)], // EG
     },
   ],
 };
@@ -70,6 +70,14 @@ export function SingleEliminationPreview() {
   return (
     <div className="not-prose overflow-x-auto rounded-xl border border-border">
       <SingleElimination bracket={sampleBracket} />
+    </div>
+  );
+}
+
+export function SingleEliminationSimplePreview() {
+  return (
+    <div className="not-prose overflow-x-auto rounded-xl border border-border">
+      <SingleElimination bracket={sampleBracket} connectorStyle="simple" />
     </div>
   );
 }

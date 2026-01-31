@@ -6,9 +6,15 @@ export interface SingleEliminationProps {
   bracket: SingleEliminationBracket;
   className?: string;
   onMatchClick?: (match: Match) => void;
+  connectorStyle?: "default" | "simple";
 }
 
-export function SingleElimination({ bracket, className, onMatchClick }: SingleEliminationProps) {
+export function SingleElimination({
+  bracket,
+  className,
+  onMatchClick,
+  connectorStyle = "default",
+}: SingleEliminationProps) {
   const rounds = bracket.rounds;
 
   return (
@@ -25,7 +31,13 @@ export function SingleElimination({ bracket, className, onMatchClick }: SingleEl
               matches={round.matches}
               onMatchClick={onMatchClick}
             />
-            {!isLast && <ConnectorColumn roundIdx={roundIdx} sourceCount={round.matches.length} />}
+            {!isLast && (
+              <ConnectorColumn
+                roundIdx={roundIdx}
+                sourceCount={round.matches.length}
+                style={connectorStyle}
+              />
+            )}
           </div>
         );
       })}
@@ -85,7 +97,15 @@ function RoundColumn({
   );
 }
 
-function ConnectorColumn({ roundIdx, sourceCount }: { roundIdx: number; sourceCount: number }) {
+function ConnectorColumn({
+  roundIdx,
+  sourceCount,
+  style,
+}: {
+  roundIdx: number;
+  sourceCount: number;
+  style: "default" | "simple";
+}) {
   const pairCount = Math.floor(sourceCount / 2);
   const exp = Math.pow(2, roundIdx);
 
@@ -106,24 +126,79 @@ function ConnectorColumn({ roundIdx, sourceCount }: { roundIdx: number; sourceCo
           } as React.CSSProperties
         }
       >
-        {Array.from({ length: pairCount }, (_, i) => (
-          <svg
-            key={i}
-            className="w-full text-border"
-            style={{ height: `var(--_pair-h)` }}
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            aria-hidden
-          >
-            <path
-              d={["M 0 25 H 50", "M 0 75 H 50", "M 50 25 V 75", "M 50 50 H 100"].join(" ")}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.5}
-              vectorEffect="non-scaling-stroke"
-            />
-          </svg>
-        ))}
+        {Array.from({ length: pairCount }, (_, i) => {
+          if (style === "simple") {
+            return (
+              <div
+                key={i}
+                className="relative w-full"
+                style={{ height: `var(--_pair-h)` }}
+                aria-hidden
+              >
+                {/* Top Path: Source(25%) -> Target Top Team Row (approx 50% - 1/4 match height) */}
+                <div
+                  className="absolute border-t border-r border-border"
+                  style={{
+                    top: "25%",
+                    right: "50%",
+                    width: "50%",
+                    height:
+                      "calc(25% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+                  }}
+                />
+                {/* Connector to target top row */}
+                <div
+                  className="absolute border-b border-border"
+                  style={{
+                    top: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+                    left: "50%",
+                    width: "50%",
+                  }}
+                />
+
+                {/* Bot Path: Source(75%) -> Target Bot Team Row (approx 50% + 1/4 match height) */}
+                <div
+                  className="absolute border-b border-r border-border"
+                  style={{
+                    bottom: "25%",
+                    right: "50%",
+                    width: "50%",
+                    height:
+                      "calc(25% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+                  }}
+                />
+                {/* Connector to target bot row */}
+                <div
+                  className="absolute border-b border-border"
+                  style={{
+                    bottom: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+                    left: "50%",
+                    width: "50%",
+                  }}
+                />
+              </div>
+            );
+          }
+
+          return (
+            <svg
+              key={i}
+              className="w-full text-border"
+              style={{ height: `var(--_pair-h)` }}
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              aria-hidden
+            >
+              <path
+                d={["M 0 25 H 50", "M 0 75 H 50", "M 50 25 V 75", "M 50 50 H 100"].join(" ")}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.5}
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+          );
+        })}
       </div>
     </div>
   );
