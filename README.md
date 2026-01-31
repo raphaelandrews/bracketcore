@@ -39,7 +39,6 @@ bracketcore/
 │   └── fumadocs/          # Documentation site (Next.js)
 ├── packages/
 │   ├── registry/          # shadcn component registry
-│   ├── env/               # Shared environment variables
 │   └── config/            # Shared TypeScript configuration
 ```
 

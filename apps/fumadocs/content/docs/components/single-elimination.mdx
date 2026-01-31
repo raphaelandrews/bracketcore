@@ -90,9 +90,10 @@ export default function Page() {
 
 | Prop           | Type                       | Description                                     |
 | -------------- | -------------------------- | ----------------------------------------------- |
-| `bracket`      | `SingleEliminationBracket` | The bracket data containing rounds and matches. |
-| `className`    | `string`                   | Additional CSS classes for the root element.    |
-| `onMatchClick` | `(match: Match) => void`   | Callback fired when a match card is clicked.    |
+| `bracket`        | `SingleEliminationBracket` | The bracket data containing rounds and matches.                                                |
+| `className`      | `string`                   | Additional CSS classes for the root element.                                                   |
+| `onMatchClick`   | `(match: Match) => void`   | Callback fired when a match card is clicked.                                                   |
+| `connectorStyle` | `"default" \| "simple"`    | Connector line style. `"default"` uses curved/merged lines, `"simple"` uses squared-off lines. |
 
 ### `SingleEliminationBracket`
 

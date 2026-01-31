@@ -141,15 +141,17 @@ export default function Page() {
 
 | Prop           | Type                       | Description                                                   |
 | -------------- | -------------------------- | ------------------------------------------------------------- |
-| `bracket`      | `DoubleEliminationBracket` | The bracket data with upper, lower, and optional grand final. |
-| `className`    | `string`                   | Additional CSS classes for the root element.                  |
-| `onMatchClick` | `(match: Match) => void`   | Callback fired when a match card is clicked.                  |
+| `bracket`          | `DoubleEliminationBracket` | The bracket data with upper, lower, and optional grand final.                                   |
+| `className`        | `string`                   | Additional CSS classes for the root element.                                                    |
+| `onMatchClick`     | `(match: Match) => void`   | Callback fired when a match card is clicked.                                                    |
+| `ubAlignToLBRound` | `number`                   | Lower bracket round index where the upper bracket starts. Defaults to `0`.                      |
+| `connectorStyle`   | `"default" \| "simple"`    | Connector line style. `"default"` uses curved/merged lines, `"simple"` uses squared-off lines.  |
 
 ## How It Works
 
-Unlike the standard `DoubleElimination` component which uses separate flex containers for upper and lower brackets, this component places **every match and connector on a single CSS Grid**. This means:
+The component places **every match and connector on a single CSS Grid**. This means:
 
-- The Grand Final card naturally centers between the UB and LB finals without any `calc()` midpoint hacks
+- The Grand Final card naturally centers between the UB and LB finals without midpoint hacks
 - All matches share the same row coordinate system, so alignment is guaranteed
 - Connectors are SVG elements placed at explicit grid positions
 

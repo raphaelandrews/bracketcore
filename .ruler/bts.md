@@ -7,7 +7,6 @@ Bracketcore is a shadcn registry for reusable tournament bracket components buil
 This is a Turborepo monorepo using bun workspaces:
 
 - **`packages/registry/`** - The shadcn component registry (match-card, single-elimination, double-elimination, swiss-stage, group-stage)
-- **`packages/env/`** - Shared environment variables and validation
 - **`packages/config/`** - Shared TypeScript configuration
 - **`apps/fumadocs/`** - Documentation site built with Fumadocs (Next.js)
 
