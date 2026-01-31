@@ -6,8 +6,6 @@ import {
   type Match,
 } from "@bracketcore/registry";
 
-// ── helpers ──────────────────────────────────────────────────────────────────
-
 function makeMatch(
   id: string,
   round: number,
@@ -42,8 +40,6 @@ function makeMatch(
   };
 }
 
-// ── sample data ──────────────────────────────────────────────────────────────
-
 const sampleBracket: SingleEliminationBracket = {
   type: "single-elimination",
   rounds: [
@@ -69,8 +65,6 @@ const sampleBracket: SingleEliminationBracket = {
     },
   ],
 };
-
-// ── component ────────────────────────────────────────────────────────────────
 
 export function SingleEliminationPreview() {
   return (

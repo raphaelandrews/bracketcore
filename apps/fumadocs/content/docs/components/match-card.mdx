@@ -86,8 +86,8 @@ interface Match {
   id: string;
   round: number;
   position: number;
-  bestOf?: number;              // Displays as "BO3", "BO5", etc.
-  scheduledAt?: Date | string;  // Auto-formatted: "12:30 Today", "18:00 Tomorrow", weekday, or "Mon 25"
+  bestOf?: number;           
+  scheduledAt?: Date | string; 
   status?: "upcoming" | "live" | "completed";
   teams: [MatchTeam, MatchTeam];
 }
@@ -97,9 +97,9 @@ interface Match {
 
 ```ts
 interface MatchTeam {
-  team: Team | null;  // null renders "TBD" in italic
+  team: Team | null;  
   score: number;
-  isWinner?: boolean; // true = green border, false = red border, undefined = neutral
+  isWinner?: boolean; 
 }
 ```
 
@@ -109,7 +109,7 @@ interface MatchTeam {
 interface Team {
   id: string;
   name: string;
-  logo?: string;   // URL to team logo image
+  logo?: string;   
   seed?: number;
 }
 ```

@@ -8,15 +8,6 @@ export interface SingleEliminationProps {
   onMatchClick?: (match: Match) => void;
 }
 
-/**
- * Single elimination bracket with SVG connector lines.
- *
- * Uses CSS custom properties for sizing:
- * - `--bracket-match-width`  (default 13rem / 208px)
- * - `--bracket-match-height` (default calc(3.25rem + 1px) / 53px)
- * - `--bracket-round-gap`    (default 3rem / 48px) — horizontal space between rounds
- * - `--bracket-match-gap`    (default 1rem / 16px)  — base vertical gap (round 0)
- */
 export function SingleElimination({
   bracket,
   className,
@@ -55,10 +46,6 @@ export function SingleElimination({
     </div>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Internal: Round column
-// ---------------------------------------------------------------------------
 
 function RoundColumn({
   roundIdx,
@@ -118,10 +105,6 @@ function RoundColumn({
     </div>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Internal: SVG connector column between two rounds
-// ---------------------------------------------------------------------------
 
 function ConnectorColumn({
   roundIdx,

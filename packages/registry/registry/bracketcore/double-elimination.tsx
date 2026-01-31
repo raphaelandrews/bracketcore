@@ -8,15 +8,6 @@ export interface DoubleEliminationProps {
   onMatchClick?: (match: Match) => void;
 }
 
-/**
- * Double elimination bracket with aligned upper and lower rows.
- *
- * Uses CSS custom properties for sizing:
- * - `--bracket-match-width`  (default 13rem / 208px)
- * - `--bracket-match-height` (default calc(3.25rem + 1px) / 53px)
- * - `--bracket-round-gap`    (default 3rem / 48px)
- * - `--bracket-match-gap`    (default 1rem / 16px)
- */
 export function DoubleElimination({
   bracket,
   className,
@@ -24,20 +15,12 @@ export function DoubleElimination({
 }: DoubleEliminationProps) {
   const { upper, lower, grandFinal } = bracket;
 
-  // Detect whether the lower bracket has more rounds than the upper bracket
-  // ratio=2 means lower bracket has ~2x rounds (pairs of drop-down + play-off)
-  // ratio=1 means lower bracket rounds map 1:1 to upper bracket rounds
   const ratio =
     lower.length > upper.length + (grandFinal ? 1 : 0) ? 2 : 1;
 
-  // Precompute the max match count in the lower bracket (for exp calculation)
   const maxLBMatches = Math.max(...lower.map((r) => r.matches.length));
-
-  // Compute exp (slot multiplier) for each lower bracket round
   const lbExps = lower.map((r) => maxLBMatches / r.matches.length);
 
-  // Determine connector types for the lower bracket
-  // "merge" = 2:1 (match count halves), "straight" = 1:1 (same match count)
   const lbConnectors: Array<"merge" | "straight"> = [];
   for (let i = 0; i < lower.length - 1; i++) {
     lbConnectors.push(
@@ -47,11 +30,138 @@ export function DoubleElimination({
     );
   }
 
-  // Upper bracket columns — for ratio=2, connectors are double-wide
   const connectorWidth =
     ratio === 2
-      ? "calc(var(--bracket-match-width, 13rem) + 2 * var(--bracket-round-gap, 3rem))"
+      ? "calc(var(--bracket-match-width, 11rem) + 2 * var(--bracket-round-gap, 3rem))"
       : "var(--bracket-round-gap, 3rem)";
+
+  const ubLastExp = Math.pow(2, upper.length - 1);
+  const lbLastExp = lbExps[lbExps.length - 1]!;
+
+  const ubRow = (
+    <div className="inline-flex">
+      {upper.map((round, i) => {
+        const isLast = i === upper.length - 1;
+        const exp = Math.pow(2, i);
+        return (
+          <div key={round.name} className="flex">
+            <RoundColumn
+              name={round.name}
+              matches={round.matches}
+              exp={exp}
+              onMatchClick={onMatchClick}
+            />
+            {!isLast && (
+              <MergeConnectorColumn
+                exp={exp}
+                pairCount={Math.floor(round.matches.length / 2)}
+                width={connectorWidth}
+              />
+            )}
+          </div>
+        );
+      })}
+      {grandFinal && (
+        <StraightConnectorColumn
+          exp={ubLastExp}
+          count={1}
+          width="calc(var(--bracket-match-width, 11rem) + var(--bracket-round-gap, 3rem))"
+        />
+      )}
+    </div>
+  );
+
+  const lbRow = (
+    <div className="inline-flex">
+      {lower.map((round, i) => {
+        const isLast = i === lower.length - 1;
+        const exp = lbExps[i]!;
+        return (
+          <div key={round.name} className="flex">
+            <RoundColumn
+              name={round.name}
+              matches={round.matches}
+              exp={exp}
+              onMatchClick={onMatchClick}
+            />
+            {!isLast &&
+              (lbConnectors[i] === "merge" ? (
+                <MergeConnectorColumn
+                  exp={exp}
+                  pairCount={Math.floor(round.matches.length / 2)}
+                />
+              ) : (
+                <StraightConnectorColumn
+                  exp={exp}
+                  count={round.matches.length}
+                />
+              ))}
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  if (grandFinal) {
+    return (
+      <div
+        className={cn(
+          "inline-grid overflow-x-auto",
+          "rounded-lg p-6",
+          "bg-background",
+          className
+        )}
+        style={
+          {
+            gridTemplateRows: "auto auto",
+            gridTemplateColumns: "auto auto auto",
+          } as React.CSSProperties
+        }
+      >
+        <section style={{ gridRow: 1, gridColumn: 1 }}>{ubRow}</section>
+        <section style={{ gridRow: 2, gridColumn: 1 }}>{lbRow}</section>
+
+        {/* GF connector — unified column spanning both rows */}
+        <GrandFinalConnectorColumn
+          gridRow="1 / 3"
+          gridColumn={2}
+          ubExp={ubLastExp}
+          lbExp={lbLastExp}
+        />
+
+        {/* GF card spanning both rows, vertically centered */}
+        <div
+          className="flex items-center shrink-0"
+          style={
+            {
+              gridRow: "1 / 3",
+              gridColumn: 3,
+            } as React.CSSProperties
+          }
+        >
+          <div className="flex flex-col items-center">
+            <div className="text-xs font-medium text-muted-foreground mb-3 whitespace-nowrap">
+              Grand Final
+            </div>
+            <div
+              style={
+                {
+                  height:
+                    "var(--bracket-match-height, calc(3.25rem + 1px))",
+                } as React.CSSProperties
+              }
+            >
+              <MatchCard
+                match={grandFinal}
+                onMatchClick={onMatchClick}
+                className="h-full"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -62,87 +172,11 @@ export function DoubleElimination({
         className
       )}
     >
-      {/* Upper bracket */}
-      <section>
-        <div className="inline-flex">
-          {upper.map((round, i) => {
-            const isLast = i === upper.length - 1;
-            const exp = Math.pow(2, i);
-            return (
-              <div key={round.name} className="flex">
-                <RoundColumn
-                  name={round.name}
-                  matches={round.matches}
-                  exp={exp}
-                  onMatchClick={onMatchClick}
-                />
-                {!isLast && (
-                  <MergeConnectorColumn
-                    exp={exp}
-                    pairCount={Math.floor(round.matches.length / 2)}
-                    width={connectorWidth}
-                  />
-                )}
-              </div>
-            );
-          })}
-
-          {/* Grand Final as the last column of the upper row */}
-          {grandFinal && (
-            <div className="flex">
-              <StraightConnectorColumn
-                exp={Math.pow(2, upper.length - 1)}
-                count={1}
-              />
-              <RoundColumn
-                name="Grand Final"
-                matches={[grandFinal]}
-                exp={Math.pow(2, upper.length - 1)}
-                onMatchClick={onMatchClick}
-              />
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Lower bracket */}
-      <section>
-        <div className="inline-flex">
-          {lower.map((round, i) => {
-            const isLast = i === lower.length - 1;
-            const exp = lbExps[i]!;
-            return (
-              <div key={round.name} className="flex">
-                <RoundColumn
-                  name={round.name}
-                  matches={round.matches}
-                  exp={exp}
-                  onMatchClick={onMatchClick}
-                />
-                {!isLast &&
-                  (lbConnectors[i] === "merge" ? (
-                    <MergeConnectorColumn
-                      exp={exp}
-                      pairCount={Math.floor(round.matches.length / 2)}
-                    />
-                  ) : (
-                    <StraightConnectorColumn
-                      exp={exp}
-                      count={round.matches.length}
-                    />
-                  ))}
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      <section>{ubRow}</section>
+      <section>{lbRow}</section>
     </div>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Internal: Round column — renders a column of matches at a given exp height
-// ---------------------------------------------------------------------------
 
 function RoundColumn({
   name,
@@ -179,7 +213,8 @@ function RoundColumn({
             <div
               style={
                 {
-                  height: "var(--bracket-match-height, calc(3.25rem + 1px))",
+                  height:
+                    "var(--bracket-match-height, calc(3.25rem + 1px))",
                 } as React.CSSProperties
               }
             >
@@ -195,10 +230,6 @@ function RoundColumn({
     </div>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Internal: Merge connector (2:1) — pairs of matches converge into one
-// ---------------------------------------------------------------------------
 
 function MergeConnectorColumn({
   exp,
@@ -253,16 +284,88 @@ function MergeConnectorColumn({
   );
 }
 
-// ---------------------------------------------------------------------------
-// Internal: Straight connector (1:1) — horizontal pass-through lines
-// ---------------------------------------------------------------------------
+function GrandFinalConnectorColumn({
+  gridRow,
+  gridColumn,
+  ubExp,
+  lbExp,
+}: {
+  gridRow: string;
+  gridColumn: number;
+  ubExp: number;
+  lbExp: number;
+}) {
+  return (
+    <div
+      className="flex flex-col w-full h-full"
+      style={
+        {
+          gridRow,
+          gridColumn,
+          width: "var(--bracket-round-gap, 3rem)",
+        } as React.CSSProperties
+      }
+    >
+      {/* Spacer to match RoundColumn header height */}
+      <div className="text-xs mb-3 invisible" aria-hidden="true">
+        &nbsp;
+      </div>
+
+      <div
+        className="relative w-full flex-1"
+        style={
+          {
+            "--_base":
+              "calc(var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem))",
+            "--_ub-h": `calc(${ubExp} * var(--_base))`,
+            "--_lb-h": `calc(${lbExp} * var(--_base))`,
+            "--_head": "1.75rem", // text-xs (1rem) + mb-3 (0.75rem)
+          } as React.CSSProperties
+        }
+      >
+        {/* Upper Arm: Start at UB Center, go Down to GF Match Center */}
+        <div
+          className="absolute left-0 w-1/2 border-border"
+          style={{
+            top: "calc(var(--_ub-h) / 2 - 0.75px)",
+            height: "calc(50% - var(--_head) / 2 - var(--_ub-h) / 2 + 0.75px)",
+            borderTopWidth: "1.5px",
+            borderRightWidth: "1.5px",
+          }}
+        />
+
+        {/* Lower Arm: Start at LB Center, go Up to GF Match Center */}
+        <div
+          className="absolute left-0 w-1/2 border-border"
+          style={{
+            bottom: "calc(var(--_lb-h) / 2 - 0.75px)",
+            height: "calc(50% + var(--_head) / 2 - var(--_lb-h) / 2 + 0.75px)",
+            borderBottomWidth: "1.5px",
+            borderRightWidth: "1.5px",
+          }}
+        />
+
+        {/* Final Leg: Horizontal to right */}
+        <div
+          className="absolute right-0 w-1/2 border-border"
+          style={{
+            top: "calc(50% - var(--_head) / 2 - 0.75px)",
+            borderTopWidth: "1.5px",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
 
 function StraightConnectorColumn({
   exp,
   count,
+  width,
 }: {
   exp: number;
   count: number;
+  width?: string;
 }) {
   return (
     <div className="flex flex-col shrink-0">
@@ -276,7 +379,7 @@ function StraightConnectorColumn({
             "--_base":
               "calc(var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem))",
             "--_slot-h": `calc(${exp} * var(--_base))`,
-            width: "var(--bracket-round-gap, 3rem)",
+            width: width ?? "var(--bracket-round-gap, 3rem)",
           } as React.CSSProperties
         }
       >
