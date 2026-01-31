@@ -97,7 +97,7 @@ export function MatchCard({ match, className, onMatchClick }: MatchCardProps) {
       onClick={onMatchClick ? () => onMatchClick(match) : undefined}
     >
       {hasHeader && (
-        <div className={`flex items-center justify-between px-2.5 py-1 text-xs text-muted-foreground bg-muted border-b border-border ${isLive && "text-primary bg-destructive!"}`}>
+        <div className={`flex items-center justify-between px-2.5 py-1 text-xs text-muted-foreground bg-muted ${isLive && "text-primary bg-destructive!"}`}>
           <span className="flex items-center gap-1.5">
             {isLive && (
               <>

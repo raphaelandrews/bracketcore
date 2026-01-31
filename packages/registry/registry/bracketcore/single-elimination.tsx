@@ -13,7 +13,7 @@ export interface SingleEliminationProps {
  *
  * Uses CSS custom properties for sizing:
  * - `--bracket-match-width`  (default 13rem / 208px)
- * - `--bracket-match-height` (default 4.25rem / 68px)
+ * - `--bracket-match-height` (default calc(3.25rem + 1px) / 53px)
  * - `--bracket-round-gap`    (default 3rem / 48px) — horizontal space between rounds
  * - `--bracket-match-gap`    (default 1rem / 16px)  — base vertical gap (round 0)
  */
@@ -83,30 +83,35 @@ function RoundColumn({
         style={
           {
             "--_base":
-              "calc(var(--bracket-match-height, 4.25rem) + var(--bracket-match-gap, 1rem))",
+              "calc(var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem))",
             "--_slot": `calc(${exp} * var(--_base))`,
-            "--_gap":
-              "calc(var(--_slot) - var(--bracket-match-height, 4.25rem))",
-            "--_pad": "calc(var(--_gap) / 2)",
-            gap: "var(--_gap)",
-            paddingTop: roundIdx > 0 ? "var(--_pad)" : undefined,
           } as React.CSSProperties
         }
       >
         {matches.map((match) => (
           <div
             key={match.id}
+            className="flex items-center"
             style={
               {
-                height: "var(--bracket-match-height, 4.25rem)",
+                height: "var(--_slot)",
               } as React.CSSProperties
             }
           >
-            <MatchCard
-              match={match}
-              onMatchClick={onMatchClick}
-              className="h-full"
-            />
+            <div
+              style={
+                {
+                  height:
+                    "var(--bracket-match-height, calc(3.25rem + 1px))",
+                } as React.CSSProperties
+              }
+            >
+              <MatchCard
+                match={match}
+                onMatchClick={onMatchClick}
+                className="h-full"
+              />
+            </div>
           </div>
         ))}
       </div>
@@ -129,24 +134,21 @@ function ConnectorColumn({
   const exp = Math.pow(2, roundIdx);
 
   return (
-    <div
-      className="flex flex-col shrink-0"
-      style={
-        {
-          "--_base":
-            "calc(var(--bracket-match-height, 4.25rem) + var(--bracket-match-gap, 1rem))",
-          "--_src-slot": `calc(${exp} * var(--_base))`,
-          "--_pair-h": `calc(${exp * 2} * var(--_base))`,
-          "--_pad":
-            roundIdx > 0
-              ? "calc((var(--_src-slot) - var(--bracket-match-height, 4.25rem)) / 2)"
-              : "0px",
-          width: "var(--bracket-round-gap, 3rem)",
-          paddingTop: "var(--_pad)",
-        } as React.CSSProperties
-      }
-    >
-      {Array.from({ length: pairCount }, (_, i) => (
+    <div className="flex flex-col shrink-0">
+      {/* Invisible spacer matching the round name height */}
+      <div className="text-xs mb-3 invisible" aria-hidden="true">&nbsp;</div>
+      <div
+        className="flex flex-col"
+        style={
+          {
+            "--_base":
+              "calc(var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem))",
+            "--_pair-h": `calc(${exp * 2} * var(--_base))`,
+            width: "var(--bracket-round-gap, 3rem)",
+          } as React.CSSProperties
+        }
+      >
+        {Array.from({ length: pairCount }, (_, i) => (
         <svg
           key={i}
           className="w-full text-border"
@@ -169,6 +171,7 @@ function ConnectorColumn({
           />
         </svg>
       ))}
+      </div>
     </div>
   );
 }
