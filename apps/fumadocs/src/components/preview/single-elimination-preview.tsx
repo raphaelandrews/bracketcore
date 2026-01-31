@@ -74,7 +74,7 @@ const sampleBracket: SingleEliminationBracket = {
 
 export function SingleEliminationPreview() {
   return (
-    <div className="not-prose overflow-x-auto rounded-xl border border-fd-border">
+    <div className="not-prose overflow-x-auto rounded-xl border border-border">
       <SingleElimination bracket={sampleBracket} />
     </div>
   );

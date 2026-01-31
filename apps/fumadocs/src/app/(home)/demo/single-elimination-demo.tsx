@@ -68,7 +68,7 @@ function match(
 
 export function SingleEliminationDemo() {
   return (
-    <div className="rounded-xl border border-fd-border overflow-x-auto">
+    <div className="rounded-xl border border-border overflow-x-auto">
       <SingleElimination
         bracket={bracket}
         onMatchClick={(m: Match) =>

@@ -27,7 +27,6 @@ export function SingleElimination({
   return (
     <div
       className={cn(
-        "bracket-single-elimination",
         "inline-flex overflow-x-auto",
         "rounded-lg p-6",
         "bg-background",

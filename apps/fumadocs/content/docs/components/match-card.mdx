@@ -9,14 +9,8 @@ description: The atomic building block for all bracket types — displays a sing
 
 ## Installation
 
-```bash
-npx shadcn add https://bracketcore.dev/r/match-card.json
-```
-
-Or install the package directly:
-
-```bash
-npm install @bracketcore/registry
+```package-install
+npx shadcn@latest add https://bracketcore.dev/r/match-card.json
 ```
 
 ## Usage
@@ -49,6 +43,32 @@ export default function Page() {
 }
 ```
 
+## Examples
+
+### Live
+
+A live match shows a destructive border, a pulsing live indicator in the header, and colored scores — green for the leading team, red for the trailing team.
+
+<MatchCardLive />
+
+### Upcoming
+
+An upcoming match displays the scheduled time and relative day in the header. The format adapts automatically: "Today", "Tomorrow", weekday name (within 7 days), or "Month Day".
+
+<MatchCardUpcoming />
+
+### Scheduled (TBD teams)
+
+When teams are not yet determined but the match is already scheduled, the header shows the date while both team slots display "TBD".
+
+<MatchCardScheduled />
+
+### TBD
+
+When `team` is `null` and no schedule is set, the card shows italic "TBD" text with no header.
+
+<MatchCardTBD />
+
 ## Props
 
 ### `MatchCard`
@@ -66,8 +86,8 @@ interface Match {
   id: string;
   round: number;
   position: number;
-  bestOf?: number;         // Displays as "BO3", "BO5", etc.
-  scheduledAt?: string;    // Displayed in the header bar
+  bestOf?: number;              // Displays as "BO3", "BO5", etc.
+  scheduledAt?: Date | string;  // Auto-formatted: "12:30 Today", "18:00 Tomorrow", weekday, or "Mon 25"
   status?: "upcoming" | "live" | "completed";
   teams: [MatchTeam, MatchTeam];
 }
@@ -93,15 +113,6 @@ interface Team {
   seed?: number;
 }
 ```
-
-## Visual States
-
-The card adapts to match state:
-
-- **Completed** — winner row gets a green left border and bold name, loser gets a red left border and muted text
-- **Live / Upcoming** — both rows show neutral borders when `isWinner` is not set
-- **TBD** — when `team` is `null`, shows italic "TBD" text in muted color
-- **Header bar** — appears when `scheduledAt` or `bestOf` is set, showing schedule info on the left and "BO3" etc. on the right
 
 ## Theming
 

@@ -86,7 +86,7 @@ const bracket: GroupStageBracket = {
 
 export function GroupStagePreview() {
   return (
-    <div className="not-prose overflow-x-auto rounded-xl border border-fd-border">
+    <div className="not-prose overflow-x-auto rounded-xl border border-border">
       <GroupStage bracket={bracket} />
     </div>
   );

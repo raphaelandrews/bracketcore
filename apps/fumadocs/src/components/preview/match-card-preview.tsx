@@ -22,13 +22,26 @@ const completed: Match = {
   ],
 };
 
+function todayAt(hours: number, minutes: number) {
+  const d = new Date();
+  d.setHours(hours, minutes, 0, 0);
+  return d;
+}
+
+function daysFromNow(days: number, hours: number, minutes: number) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  d.setHours(hours, minutes, 0, 0);
+  return d;
+}
+
 const live: Match = {
   id: "demo-live",
   round: 0,
   position: 0,
   bestOf: 5,
   status: "live",
-  scheduledAt: "Live",
+  scheduledAt: todayAt(14, 0),
   teams: [
     {
       team: { id: "vitality", name: "Vitality" },
@@ -47,7 +60,7 @@ const upcoming: Match = {
   position: 0,
   bestOf: 3,
   status: "upcoming",
-  scheduledAt: "Aug 25, 18:00",
+  scheduledAt: daysFromNow(1, 18, 0),
   teams: [
     {
       team: { id: "navi", name: "Natus Vincere" },
@@ -60,38 +73,75 @@ const upcoming: Match = {
   ],
 };
 
-const tbd: Match = {
-  id: "demo-tbd",
+const scheduled: Match = {
+  id: "demo-scheduled",
   round: 0,
   position: 0,
-  bestOf: 5,
+  bestOf: 3,
   status: "upcoming",
-  scheduledAt: "TBD",
+  scheduledAt: daysFromNow(3, 16, 30),
   teams: [
     { team: null, score: 0 },
     { team: null, score: 0 },
   ],
 };
 
+const tbd: Match = {
+  id: "demo-tbd",
+  round: 0,
+  position: 0,
+  bestOf: 5,
+  status: "upcoming",
+  teams: [
+    { team: null, score: 0 },
+    { team: null, score: 0 },
+  ],
+};
+
+function PreviewWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="not-prose flex items-center justify-center h-72 w-full p-10 rounded-xl border border-border">
+      {children}
+    </div>
+  );
+}
+
 export function MatchCardPreview() {
   return (
-    <div className="not-prose flex flex-wrap gap-6 p-4 rounded-xl border border-fd-border">
-      <div className="flex flex-col gap-2">
-        <span className="text-xs text-fd-muted-foreground">Completed</span>
-        <MatchCard match={completed} />
-      </div>
-      <div className="flex flex-col gap-2">
-        <span className="text-xs text-fd-muted-foreground">Live</span>
-        <MatchCard match={live} />
-      </div>
-      <div className="flex flex-col gap-2">
-        <span className="text-xs text-fd-muted-foreground">Upcoming</span>
-        <MatchCard match={upcoming} />
-      </div>
-      <div className="flex flex-col gap-2">
-        <span className="text-xs text-fd-muted-foreground">TBD</span>
-        <MatchCard match={tbd} />
-      </div>
-    </div>
+    <PreviewWrapper>
+      <MatchCard match={completed} />
+    </PreviewWrapper>
+  );
+}
+
+export function MatchCardLive() {
+  return (
+    <PreviewWrapper>
+      <MatchCard match={live} />
+    </PreviewWrapper>
+  );
+}
+
+export function MatchCardUpcoming() {
+  return (
+    <PreviewWrapper>
+      <MatchCard match={upcoming} />
+    </PreviewWrapper>
+  );
+}
+
+export function MatchCardScheduled() {
+  return (
+    <PreviewWrapper>
+      <MatchCard match={scheduled} />
+    </PreviewWrapper>
+  );
+}
+
+export function MatchCardTBD() {
+  return (
+    <PreviewWrapper>
+      <MatchCard match={tbd} />
+    </PreviewWrapper>
   );
 }

@@ -19,8 +19,8 @@ export interface Match {
   position: number;
   /** Best-of series count (e.g. 1, 3, 5) */
   bestOf?: number;
-  /** Scheduled date/time */
-  scheduledAt?: string;
+  /** Scheduled date/time (Date object or ISO string) */
+  scheduledAt?: Date | string;
   /** Status label (e.g. "Live", "Upcoming") */
   status?: MatchStatus;
   teams: [MatchTeam, MatchTeam];

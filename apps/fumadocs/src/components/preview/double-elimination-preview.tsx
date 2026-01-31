@@ -91,7 +91,7 @@ const bracket: DoubleEliminationBracket = {
 
 export function DoubleEliminationPreview() {
   return (
-    <div className="not-prose overflow-x-auto rounded-xl border border-fd-border">
+    <div className="not-prose overflow-x-auto rounded-xl border border-border">
       <DoubleElimination bracket={bracket} />
     </div>
   );
