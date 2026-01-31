@@ -73,10 +73,10 @@ When `team` is `null` and no schedule is set, the card shows italic "TBD" text w
 
 ### `MatchCard`
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `match` | `Match` | The match data to display. |
-| `className` | `string` | Additional CSS classes for the root element. |
+| Prop           | Type                     | Description                                                          |
+| -------------- | ------------------------ | -------------------------------------------------------------------- |
+| `match`        | `Match`                  | The match data to display.                                           |
+| `className`    | `string`                 | Additional CSS classes for the root element.                         |
 | `onMatchClick` | `(match: Match) => void` | Callback fired when the card is clicked. Adds hover styles when set. |
 
 ### `Match`
@@ -86,8 +86,8 @@ interface Match {
   id: string;
   round: number;
   position: number;
-  bestOf?: number;           
-  scheduledAt?: Date | string; 
+  bestOf?: number;
+  scheduledAt?: Date | string;
   status?: "upcoming" | "live" | "completed";
   teams: [MatchTeam, MatchTeam];
 }
@@ -97,9 +97,9 @@ interface Match {
 
 ```ts
 interface MatchTeam {
-  team: Team | null;  
+  team: Team | null;
   score: number;
-  isWinner?: boolean; 
+  isWinner?: boolean;
 }
 ```
 
@@ -109,7 +109,7 @@ interface MatchTeam {
 interface Team {
   id: string;
   name: string;
-  logo?: string;   
+  logo?: string;
   seed?: number;
 }
 ```
@@ -120,8 +120,8 @@ Colors use your shadcn theme variables directly (`--card`, `--border`, `--card-f
 
 The card width can be customized via a CSS custom property:
 
-| Property | Default | Description |
-| --- | --- | --- |
+| Property                | Default | Description |
+| ----------------------- | ------- | ----------- |
 | `--bracket-match-width` | `13rem` | Card width. |
 
 ```tsx

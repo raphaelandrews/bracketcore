@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  DoubleElimination,
+  DoubleElimination1,
   type DoubleEliminationBracket,
   type Match,
 } from "@bracketcore/registry";
@@ -89,49 +89,6 @@ const bracket: DoubleEliminationBracket = {
   grandFinal: m("gf", 0, 0, "Spirit", 3, "FaZe", 2, 5),
 };
 
-const bracketNoGF: DoubleEliminationBracket = {
-  type: "double-elimination",
-  upper: [
-    {
-      name: "UB Round 1",
-      matches: [
-        m("ng-ub1-1", 0, 0, "Spirit", 2, "Falcons", 0, 3),
-        m("ng-ub1-2", 0, 1, "Vitality", 2, "The MongolZ", 1, 3),
-        m("ng-ub1-3", 0, 2, "FURIA", 0, "Natus Vincere", 2, 3),
-        m("ng-ub1-4", 0, 3, "MOUZ", 1, "FaZe", 2, 3),
-      ],
-    },
-    {
-      name: "UB Semi-final",
-      matches: [
-        m("ng-ub2-1", 1, 0, "Spirit", 2, "Vitality", 1, 3),
-        m("ng-ub2-2", 1, 1, "Natus Vincere", 0, "FaZe", 2, 3),
-      ],
-    },
-    {
-      name: "UB Final",
-      matches: [m("ng-ub3-1", 2, 0, "Spirit", 2, "FaZe", 1, 3)],
-    },
-  ],
-  lower: [
-    {
-      name: "LB Round 1",
-      matches: [
-        m("ng-lb1-1", 0, 0, "Falcons", 2, "The MongolZ", 0, 3),
-        m("ng-lb1-2", 0, 1, "FURIA", 1, "MOUZ", 2, 3),
-      ],
-    },
-    {
-      name: "LB Semi-final",
-      matches: [m("ng-lb2-1", 1, 0, "Falcons", 0, "MOUZ", 2, 3)],
-    },
-    {
-      name: "LB Final",
-      matches: [m("ng-lb3-1", 2, 0, "FaZe", 2, "MOUZ", 1, 3)],
-    },
-  ],
-};
-
 const bracketRatio2: DoubleEliminationBracket = {
   type: "double-elimination",
   upper: [
@@ -201,26 +158,18 @@ const bracketRatio2: DoubleEliminationBracket = {
   grandFinal: m("r2-gf", 0, 0, "Team Liquid", 3, "PSG.LGD", 1, 5),
 };
 
-export function DoubleEliminationPreview() {
+export function DoubleElimination1Preview() {
   return (
     <div className="not-prose overflow-x-auto rounded-xl border border-border">
-      <DoubleElimination bracket={bracket} />
+      <DoubleElimination1 bracket={bracket} />
     </div>
   );
 }
 
-export function DoubleEliminationNoGF() {
+export function DoubleElimination1Ratio2() {
   return (
     <div className="not-prose overflow-x-auto rounded-xl border border-border">
-      <DoubleElimination bracket={bracketNoGF} />
-    </div>
-  );
-}
-
-export function DoubleEliminationRatio2() {
-  return (
-    <div className="not-prose overflow-x-auto rounded-xl border border-border">
-      <DoubleElimination bracket={bracketRatio2} />
+      <DoubleElimination1 bracket={bracketRatio2} />
     </div>
   );
 }

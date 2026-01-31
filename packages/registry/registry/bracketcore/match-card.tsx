@@ -27,7 +27,15 @@ export interface MatchCardProps {
   onMatchClick?: (match: Match) => void;
 }
 
-function TeamRow({ entry, isLive, isLeading }: { entry: MatchTeam; isLive?: boolean; isLeading?: boolean }) {
+function TeamRow({
+  entry,
+  isLive,
+  isLeading,
+}: {
+  entry: MatchTeam;
+  isLive?: boolean;
+  isLeading?: boolean;
+}) {
   const isWinner = entry.isWinner === true;
   const isLoser = entry.isWinner === false;
 
@@ -38,7 +46,7 @@ function TeamRow({ entry, isLive, isLeading }: { entry: MatchTeam; isLive?: bool
         "border-l-3",
         isWinner && "border-l-emerald-500",
         isLoser && "border-l-destructive",
-        !isWinner && !isLoser && "border-l-transparent"
+        !isWinner && !isLoser && "border-l-transparent",
       )}
     >
       <div className="flex items-center gap-2 min-w-0 flex-1">
@@ -55,7 +63,7 @@ function TeamRow({ entry, isLive, isLeading }: { entry: MatchTeam; isLive?: bool
             isWinner && "font-semibold text-card-foreground",
             isLoser && "text-card-foreground/40",
             !isWinner && !isLoser && "text-card-foreground",
-            !entry.team && "text-muted-foreground"
+            !entry.team && "text-muted-foreground",
           )}
         >
           {entry.team?.name ?? "TBD"}
@@ -67,7 +75,7 @@ function TeamRow({ entry, isLive, isLeading }: { entry: MatchTeam; isLive?: bool
           isLive && isLeading && "text-emerald-500",
           isLive && isLeading === false && "text-destructive",
           !isLive && isWinner && "text-card-foreground",
-          !isLive && isLoser && "text-card-foreground/40"
+          !isLive && isLoser && "text-card-foreground/40",
         )}
       >
         {entry.score}
@@ -92,12 +100,14 @@ export function MatchCard({ match, className, onMatchClick }: MatchCardProps) {
         "shadow-sm overflow-hidden",
         isLive && "border-destructive border",
         onMatchClick && "cursor-pointer hover:border-primary/50 transition-colors",
-        className
+        className,
       )}
       onClick={onMatchClick ? () => onMatchClick(match) : undefined}
     >
       {hasHeader && (
-        <div className={`flex items-center justify-between px-2.5 py-1 text-xs text-muted-foreground bg-muted ${isLive && "text-primary bg-destructive!"}`}>
+        <div
+          className={`flex items-center justify-between px-2.5 py-1 text-xs text-muted-foreground bg-muted ${isLive && "text-primary bg-destructive!"}`}
+        >
           <span className="flex items-center gap-1.5">
             {isLive && (
               <>
@@ -108,30 +118,50 @@ export function MatchCard({ match, className, onMatchClick }: MatchCardProps) {
                 <span className="font-semibold uppercase">Live</span>
               </>
             )}
-            {!isLive && match.scheduledAt && (() => {
-              const schedule = formatSchedule(match.scheduledAt!);
-              return (
-                <span className="flex items-center gap-1">
-                  <span className="font-bold text-[10px] mt-[1px]">{schedule.time}</span>
-                  <span>{schedule.day}</span>
-                </span>
-              );
-            })()}
+            {!isLive &&
+              match.scheduledAt &&
+              (() => {
+                const schedule = formatSchedule(match.scheduledAt!);
+                return (
+                  <span className="flex items-center gap-1">
+                    <span className="font-bold text-[10px] mt-[1px]">{schedule.time}</span>
+                    <span>{schedule.day}</span>
+                  </span>
+                );
+              })()}
             {!isLive && !match.scheduledAt && <span>Unscheduled</span>}
           </span>
-          {bestOfLabel && <span className={`ml-auto ${isLive && "font-semibold"}`}>{bestOfLabel}</span>}
+          {bestOfLabel && (
+            <span className={`ml-auto ${isLive && "font-semibold"}`}>{bestOfLabel}</span>
+          )}
         </div>
       )}
       <TeamRow
         entry={match.teams[0]}
         isLive={isLive}
-        isLeading={isLive ? match.teams[0].score > match.teams[1].score ? true : match.teams[0].score < match.teams[1].score ? false : undefined : undefined}
+        isLeading={
+          isLive
+            ? match.teams[0].score > match.teams[1].score
+              ? true
+              : match.teams[0].score < match.teams[1].score
+                ? false
+                : undefined
+            : undefined
+        }
       />
       <div className="border-t border-border" />
       <TeamRow
         entry={match.teams[1]}
         isLive={isLive}
-        isLeading={isLive ? match.teams[1].score > match.teams[0].score ? true : match.teams[1].score < match.teams[0].score ? false : undefined : undefined}
+        isLeading={
+          isLive
+            ? match.teams[1].score > match.teams[0].score
+              ? true
+              : match.teams[1].score < match.teams[0].score
+                ? false
+                : undefined
+            : undefined
+        }
       />
     </div>
   );

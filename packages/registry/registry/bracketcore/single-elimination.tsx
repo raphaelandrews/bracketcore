@@ -8,21 +8,12 @@ export interface SingleEliminationProps {
   onMatchClick?: (match: Match) => void;
 }
 
-export function SingleElimination({
-  bracket,
-  className,
-  onMatchClick,
-}: SingleEliminationProps) {
+export function SingleElimination({ bracket, className, onMatchClick }: SingleEliminationProps) {
   const rounds = bracket.rounds;
 
   return (
     <div
-      className={cn(
-        "inline-flex overflow-x-auto",
-        "rounded-lg p-6",
-        "bg-background",
-        className
-      )}
+      className={cn("inline-flex overflow-x-auto", "rounded-lg p-6", "bg-background", className)}
     >
       {rounds.map((round, roundIdx) => {
         const isLast = roundIdx === rounds.length - 1;
@@ -34,12 +25,7 @@ export function SingleElimination({
               matches={round.matches}
               onMatchClick={onMatchClick}
             />
-            {!isLast && (
-              <ConnectorColumn
-                roundIdx={roundIdx}
-                sourceCount={round.matches.length}
-              />
-            )}
+            {!isLast && <ConnectorColumn roundIdx={roundIdx} sourceCount={round.matches.length} />}
           </div>
         );
       })}
@@ -62,9 +48,7 @@ function RoundColumn({
 
   return (
     <div className="flex flex-col items-center shrink-0">
-      <div className="text-xs font-medium text-muted-foreground mb-3 whitespace-nowrap">
-        {name}
-      </div>
+      <div className="text-xs font-medium text-muted-foreground mb-3 whitespace-nowrap">{name}</div>
       <div
         className="flex flex-col"
         style={
@@ -88,16 +72,11 @@ function RoundColumn({
             <div
               style={
                 {
-                  height:
-                    "var(--bracket-match-height, calc(3.25rem + 1px))",
+                  height: "var(--bracket-match-height, calc(3.25rem + 1px))",
                 } as React.CSSProperties
               }
             >
-              <MatchCard
-                match={match}
-                onMatchClick={onMatchClick}
-                className="h-full"
-              />
+              <MatchCard match={match} onMatchClick={onMatchClick} className="h-full" />
             </div>
           </div>
         ))}
@@ -106,20 +85,16 @@ function RoundColumn({
   );
 }
 
-function ConnectorColumn({
-  roundIdx,
-  sourceCount,
-}: {
-  roundIdx: number;
-  sourceCount: number;
-}) {
+function ConnectorColumn({ roundIdx, sourceCount }: { roundIdx: number; sourceCount: number }) {
   const pairCount = Math.floor(sourceCount / 2);
   const exp = Math.pow(2, roundIdx);
 
   return (
     <div className="flex flex-col shrink-0">
       {/* Invisible spacer matching the round name height */}
-      <div className="text-xs mb-3 invisible" aria-hidden="true">&nbsp;</div>
+      <div className="text-xs mb-3 invisible" aria-hidden="true">
+        &nbsp;
+      </div>
       <div
         className="flex flex-col"
         style={
@@ -132,28 +107,23 @@ function ConnectorColumn({
         }
       >
         {Array.from({ length: pairCount }, (_, i) => (
-        <svg
-          key={i}
-          className="w-full text-border"
-          style={{ height: `var(--_pair-h)` }}
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-          aria-hidden
-        >
-          <path
-            d={[
-              "M 0 25 H 50",
-              "M 0 75 H 50",
-              "M 50 25 V 75",
-              "M 50 50 H 100",
-            ].join(" ")}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.5}
-            vectorEffect="non-scaling-stroke"
-          />
-        </svg>
-      ))}
+          <svg
+            key={i}
+            className="w-full text-border"
+            style={{ height: `var(--_pair-h)` }}
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            aria-hidden
+          >
+            <path
+              d={["M 0 25 H 50", "M 0 75 H 50", "M 50 25 V 75", "M 50 50 H 100"].join(" ")}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+        ))}
       </div>
     </div>
   );

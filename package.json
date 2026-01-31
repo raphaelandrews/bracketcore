@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@bracketcore/config": "workspace:*",
+    "@types/node": "^25.1.0",
     "oxfmt": "^0.26.0",
     "oxlint": "^1.41.0",
     "turbo": "^2.6.3",

@@ -97,11 +97,11 @@ export default function Page() {
 
 ### `SwissStage`
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `bracket` | `SwissBracket` | The Swiss bracket data with rounds and standings. |
-| `className` | `string` | Additional CSS classes for the root element. |
-| `onMatchClick` | `(match: Match) => void` | Callback fired when a match card is clicked. |
+| Prop           | Type                     | Description                                       |
+| -------------- | ------------------------ | ------------------------------------------------- |
+| `bracket`      | `SwissBracket`           | The Swiss bracket data with rounds and standings. |
+| `className`    | `string`                 | Additional CSS classes for the root element.      |
+| `onMatchClick` | `(match: Match) => void` | Callback fired when a match card is clicked.      |
 
 ### `SwissBracket`
 
@@ -110,8 +110,8 @@ interface SwissBracket {
   type: "swiss";
   rounds: SwissRound[];
   standings: SwissStanding[];
-  winsToAdvance: number;      // e.g. 3 for a 3-win advance format
-  lossesToEliminate: number;   // e.g. 3 for a 3-loss elimination format
+  winsToAdvance: number; // e.g. 3 for a 3-win advance format
+  lossesToEliminate: number; // e.g. 3 for a 3-loss elimination format
 }
 ```
 
@@ -120,7 +120,7 @@ interface SwissBracket {
 ```ts
 interface SwissRound {
   name: string;
-  record?: string;  // e.g. "1-0 / 0-1"
+  record?: string; // e.g. "1-0 / 0-1"
   matches: Match[];
 }
 ```
@@ -132,7 +132,7 @@ interface SwissStanding {
   team: Team;
   wins: number;
   losses: number;
-  tiebreaker?: number;  // Buchholz or similar
+  tiebreaker?: number; // Buchholz or similar
   status?: "advancing" | "eliminated" | "pending";
 }
 ```

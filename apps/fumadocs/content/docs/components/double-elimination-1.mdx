@@ -1,32 +1,28 @@
 ---
-title: Double Elimination
-description: A bracket component for double elimination tournaments with upper bracket, lower bracket, and optional grand final.
+title: Double Elimination 1
+description: A double elimination bracket using CSS Grid for precise GF alignment.
 ---
 
 ## Preview
 
-<DoubleEliminationPreview />
-
-### Without Grand Final
-
-<DoubleEliminationNoGF />
+<DoubleElimination1Preview />
 
 ### Ratio 2 (TI-style)
 
-Lower bracket has twice as many rounds as the upper bracket (drop-down + play-off pairs). Upper bracket connectors widen automatically to keep both rows aligned.
+Lower bracket has twice as many rounds as the upper bracket. Upper bracket columns automatically space out to stay aligned with the lower bracket.
 
-<DoubleEliminationRatio2 />
+<DoubleElimination1Ratio2 />
 
 ## Installation
 
 ```package-install
-npx shadcn@latest add https://bracketcore.dev/r/double-elimination.json
+npx shadcn@latest add https://bracketcore.dev/r/double-elimination-1.json
 ```
 
 ## Usage
 
 ```tsx
-import { DoubleElimination, type DoubleEliminationBracket } from "@bracketcore/registry";
+import { DoubleElimination1, type DoubleEliminationBracket } from "@bracketcore/registry";
 
 const bracket: DoubleEliminationBracket = {
   type: "double-elimination",
@@ -123,13 +119,13 @@ const bracket: DoubleEliminationBracket = {
 };
 
 export default function Page() {
-  return <DoubleElimination bracket={bracket} />;
+  return <DoubleElimination1 bracket={bracket} />;
 }
 ```
 
 ## Props
 
-### `DoubleElimination`
+### `DoubleElimination1`
 
 | Prop           | Type                       | Description                                                   |
 | -------------- | -------------------------- | ------------------------------------------------------------- |
@@ -137,87 +133,21 @@ export default function Page() {
 | `className`    | `string`                   | Additional CSS classes for the root element.                  |
 | `onMatchClick` | `(match: Match) => void`   | Callback fired when a match card is clicked.                  |
 
-### `DoubleEliminationBracket`
+## How It Works
 
-```ts
-interface DoubleEliminationBracket {
-  type: "double-elimination";
-  upper: Round[];
-  lower: Round[];
-  grandFinal?: Match;
-}
-```
+Unlike the standard `DoubleElimination` component which uses separate flex containers for upper and lower brackets, this component places **every match and connector on a single CSS Grid**. This means:
 
-### `Round`
-
-```ts
-interface Round {
-  name: string;
-  matches: Match[];
-}
-```
-
-### `Match`
-
-```ts
-interface Match {
-  id: string;
-  round: number;
-  position: number;
-  bestOf?: number;
-  scheduledAt?: string;
-  status?: "upcoming" | "live" | "completed";
-  teams: [MatchTeam, MatchTeam];
-}
-```
-
-### `MatchTeam`
-
-```ts
-interface MatchTeam {
-  team: Team | null;
-  score: number;
-  isWinner?: boolean;
-}
-```
-
-### `Team`
-
-```ts
-interface Team {
-  id: string;
-  name: string;
-  logo?: string;
-  seed?: number;
-}
-```
-
-## Layout Variants
-
-The component automatically detects the bracket shape and adjusts its layout:
-
-### Standard (ratio 1:1)
-
-When the lower bracket has roughly the same number of rounds as the upper bracket. Each upper bracket round aligns with one lower bracket round. If a grand final is provided, it appears as the last column of the upper bracket row.
-
-### Extended lower bracket (ratio 2:1)
-
-When the lower bracket has significantly more rounds than the upper bracket. The upper bracket automatically uses wider connectors so that both rows stay aligned.
-
-### Lower bracket connectors
-
-The component inspects adjacent lower bracket rounds to choose the right connector:
-
-- **Merge connector** — when match count halves between rounds (2:1 bracket lines)
-- **Straight connector** — when match count stays the same (horizontal pass-through lines)
+- The Grand Final card naturally centers between the UB and LB finals without any `calc()` midpoint hacks
+- All matches share the same row coordinate system, so alignment is guaranteed
+- Connectors are SVG elements placed at explicit grid positions
 
 ## Sizing
 
-Uses the same CSS custom properties as `SingleElimination`:
+Uses the same CSS custom properties as other bracket components:
 
 | Property                 | Default               | Description                        |
 | ------------------------ | --------------------- | ---------------------------------- |
-| `--bracket-match-width`  | `13rem`               | Width of each match card.          |
+| `--bracket-match-width`  | `11rem`               | Width of each match card.          |
 | `--bracket-match-height` | `calc(3.25rem + 1px)` | Height of each match card.         |
 | `--bracket-round-gap`    | `3rem`                | Horizontal gap between rounds.     |
 | `--bracket-match-gap`    | `1rem`                | Base vertical gap between matches. |

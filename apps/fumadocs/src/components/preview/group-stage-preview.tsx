@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  GroupStage,
-  type GroupStageBracket,
-  type Match,
-} from "@bracketcore/registry";
+import { GroupStage, type GroupStageBracket, type Match } from "@bracketcore/registry";
 
 function m(
   id: string,
@@ -14,7 +10,7 @@ function m(
   sa: number,
   b: string,
   sb: number,
-  bo: number
+  bo: number,
 ): Match {
   const aWins = sa > sb;
   return {

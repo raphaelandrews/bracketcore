@@ -16,6 +16,7 @@ This is a Turborepo monorepo using bun workspaces:
 Components live in `packages/registry/registry/bracketcore/`. The registry is built with `shadcn build`, which generates JSON files in `packages/registry/public/r/`.
 
 When modifying a component in the registry:
+
 1. Edit the source file in `packages/registry/registry/bracketcore/`
 2. Run `bun run build` in `packages/registry/` to regenerate the JSON artifacts
 3. Update the corresponding docs in `apps/fumadocs/content/docs/components/`

@@ -16,10 +16,7 @@ npx shadcn@latest add https://bracketcore.dev/r/single-elimination.json
 ## Usage
 
 ```tsx
-import {
-  SingleElimination,
-  type SingleEliminationBracket,
-} from "@bracketcore/registry";
+import { SingleElimination, type SingleEliminationBracket } from "@bracketcore/registry";
 
 const bracket: SingleEliminationBracket = {
   type: "single-elimination",
@@ -79,11 +76,11 @@ export default function Page() {
 
 ### `SingleElimination`
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `bracket` | `SingleEliminationBracket` | The bracket data containing rounds and matches. |
-| `className` | `string` | Additional CSS classes for the root element. |
-| `onMatchClick` | `(match: Match) => void` | Callback fired when a match card is clicked. |
+| Prop           | Type                       | Description                                     |
+| -------------- | -------------------------- | ----------------------------------------------- |
+| `bracket`      | `SingleEliminationBracket` | The bracket data containing rounds and matches. |
+| `className`    | `string`                   | Additional CSS classes for the root element.    |
+| `onMatchClick` | `(match: Match) => void`   | Callback fired when a match card is clicked.    |
 
 ### `SingleEliminationBracket`
 
@@ -108,9 +105,9 @@ interface Round {
 ```ts
 interface Match {
   id: string;
-  round: number;   
-  position: number; 
-  bestOf?: number; 
+  round: number;
+  position: number;
+  bestOf?: number;
   scheduledAt?: string;
   status?: "upcoming" | "live" | "completed";
   teams: [MatchTeam, MatchTeam];
@@ -142,12 +139,12 @@ interface Team {
 
 Control dimensions via CSS custom properties on a parent element:
 
-| Property | Default | Description |
-| --- | --- | --- |
-| `--bracket-match-width` | `13rem` | Width of each match card. |
+| Property                 | Default               | Description                                             |
+| ------------------------ | --------------------- | ------------------------------------------------------- |
+| `--bracket-match-width`  | `13rem`               | Width of each match card.                               |
 | `--bracket-match-height` | `calc(3.25rem + 1px)` | Height of each match card (rows only, excludes header). |
-| `--bracket-round-gap` | `3rem` | Horizontal gap between rounds. |
-| `--bracket-match-gap` | `1rem` | Base vertical gap between matches in round 0. |
+| `--bracket-round-gap`    | `3rem`                | Horizontal gap between rounds.                          |
+| `--bracket-match-gap`    | `1rem`                | Base vertical gap between matches in round 0.           |
 
 ```tsx
 <div

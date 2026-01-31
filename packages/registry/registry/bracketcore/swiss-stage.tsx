@@ -26,28 +26,18 @@ function StandingsTable({ bracket }: { bracket: SwissBracket }) {
             <td className="py-2 px-3 text-muted-foreground">{i + 1}</td>
             <td className="py-2 px-3 flex items-center gap-2">
               {s.team.logo && (
-                <img
-                  src={s.team.logo}
-                  alt={s.team.name}
-                  className="h-4 w-4 object-contain"
-                />
+                <img src={s.team.logo} alt={s.team.name} className="h-4 w-4 object-contain" />
               )}
-              <span className={cn(s.status === "eliminated" && "opacity-50")}>
-                {s.team.name}
-              </span>
+              <span className={cn(s.status === "eliminated" && "opacity-50")}>{s.team.name}</span>
             </td>
             <td className="py-2 px-3 text-center tabular-nums">{s.wins}</td>
             <td className="py-2 px-3 text-center tabular-nums">{s.losses}</td>
             <td className="py-2 px-3">
               {s.status === "advancing" && (
-                <span className="text-emerald-500 text-xs font-medium">
-                  Advanced
-                </span>
+                <span className="text-emerald-500 text-xs font-medium">Advanced</span>
               )}
               {s.status === "eliminated" && (
-                <span className="text-red-500 text-xs font-medium">
-                  Eliminated
-                </span>
+                <span className="text-red-500 text-xs font-medium">Eliminated</span>
               )}
             </td>
           </tr>
@@ -57,11 +47,7 @@ function StandingsTable({ bracket }: { bracket: SwissBracket }) {
   );
 }
 
-export function SwissStage({
-  bracket,
-  className,
-  onMatchClick,
-}: SwissStageProps) {
+export function SwissStage({ bracket, className, onMatchClick }: SwissStageProps) {
   return (
     <div className={cn("flex flex-col gap-8 p-4", className)}>
       <div className="flex gap-6 overflow-x-auto">
@@ -72,18 +58,12 @@ export function SwissStage({
                 {round.name}
               </h3>
               {round.record && (
-                <span className="text-xs text-muted-foreground/70">
-                  {round.record}
-                </span>
+                <span className="text-xs text-muted-foreground/70">{round.record}</span>
               )}
             </div>
             <div className="flex flex-col gap-4">
               {round.matches.map((match) => (
-                <MatchCard
-                  key={match.id}
-                  match={match}
-                  onMatchClick={onMatchClick}
-                />
+                <MatchCard key={match.id} match={match} onMatchClick={onMatchClick} />
               ))}
             </div>
           </div>
@@ -91,9 +71,7 @@ export function SwissStage({
       </div>
 
       <section className="rounded border border-border bg-card">
-        <h3 className="text-sm font-medium px-3 py-2 border-b border-border">
-          Standings
-        </h3>
+        <h3 className="text-sm font-medium px-3 py-2 border-b border-border">Standings</h3>
         <StandingsTable bracket={bracket} />
       </section>
     </div>

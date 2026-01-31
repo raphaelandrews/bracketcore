@@ -8,15 +8,10 @@ export interface DoubleEliminationProps {
   onMatchClick?: (match: Match) => void;
 }
 
-export function DoubleElimination({
-  bracket,
-  className,
-  onMatchClick,
-}: DoubleEliminationProps) {
+export function DoubleElimination({ bracket, className, onMatchClick }: DoubleEliminationProps) {
   const { upper, lower, grandFinal } = bracket;
 
-  const ratio =
-    lower.length > upper.length + (grandFinal ? 1 : 0) ? 2 : 1;
+  const ratio = lower.length > upper.length + (grandFinal ? 1 : 0) ? 2 : 1;
 
   const maxLBMatches = Math.max(...lower.map((r) => r.matches.length));
   const lbExps = lower.map((r) => maxLBMatches / r.matches.length);
@@ -24,9 +19,7 @@ export function DoubleElimination({
   const lbConnectors: Array<"merge" | "straight"> = [];
   for (let i = 0; i < lower.length - 1; i++) {
     lbConnectors.push(
-      lower[i + 1]!.matches.length < lower[i]!.matches.length
-        ? "merge"
-        : "straight"
+      lower[i + 1]!.matches.length < lower[i]!.matches.length ? "merge" : "straight",
     );
   }
 
@@ -86,15 +79,9 @@ export function DoubleElimination({
             />
             {!isLast &&
               (lbConnectors[i] === "merge" ? (
-                <MergeConnectorColumn
-                  exp={exp}
-                  pairCount={Math.floor(round.matches.length / 2)}
-                />
+                <MergeConnectorColumn exp={exp} pairCount={Math.floor(round.matches.length / 2)} />
               ) : (
-                <StraightConnectorColumn
-                  exp={exp}
-                  count={round.matches.length}
-                />
+                <StraightConnectorColumn exp={exp} count={round.matches.length} />
               ))}
           </div>
         );
@@ -105,12 +92,7 @@ export function DoubleElimination({
   if (grandFinal) {
     return (
       <div
-        className={cn(
-          "inline-grid overflow-x-auto",
-          "rounded-lg p-6",
-          "bg-background",
-          className
-        )}
+        className={cn("inline-grid overflow-x-auto", "rounded-lg p-6", "bg-background", className)}
         style={
           {
             gridTemplateRows: "auto auto",
@@ -129,9 +111,9 @@ export function DoubleElimination({
           lbExp={lbLastExp}
         />
 
-        {/* GF card spanning both rows, vertically centered */}
+        {/* GF card spanning both rows — same header+flex-1 structure as connector */}
         <div
-          className="flex items-center shrink-0"
+          className="flex flex-col items-center shrink-0"
           style={
             {
               gridRow: "1 / 3",
@@ -139,23 +121,18 @@ export function DoubleElimination({
             } as React.CSSProperties
           }
         >
-          <div className="flex flex-col items-center">
-            <div className="text-xs font-medium text-muted-foreground mb-3 whitespace-nowrap">
-              Grand Final
-            </div>
+          <div className="text-xs font-medium text-muted-foreground mb-3 whitespace-nowrap">
+            Grand Final
+          </div>
+          <div className="flex-1 flex items-center">
             <div
               style={
                 {
-                  height:
-                    "var(--bracket-match-height, calc(3.25rem + 1px))",
+                  height: "var(--bracket-match-height, calc(3.25rem + 1px))",
                 } as React.CSSProperties
               }
             >
-              <MatchCard
-                match={grandFinal}
-                onMatchClick={onMatchClick}
-                className="h-full"
-              />
+              <MatchCard match={grandFinal} onMatchClick={onMatchClick} className="h-full" />
             </div>
           </div>
         </div>
@@ -169,7 +146,7 @@ export function DoubleElimination({
         "inline-flex flex-col gap-8 overflow-x-auto",
         "rounded-lg p-6",
         "bg-background",
-        className
+        className,
       )}
     >
       <section>{ubRow}</section>
@@ -191,9 +168,7 @@ function RoundColumn({
 }) {
   return (
     <div className="flex flex-col items-center shrink-0">
-      <div className="text-xs font-medium text-muted-foreground mb-3 whitespace-nowrap">
-        {name}
-      </div>
+      <div className="text-xs font-medium text-muted-foreground mb-3 whitespace-nowrap">{name}</div>
       <div
         className="flex flex-col"
         style={
@@ -213,16 +188,11 @@ function RoundColumn({
             <div
               style={
                 {
-                  height:
-                    "var(--bracket-match-height, calc(3.25rem + 1px))",
+                  height: "var(--bracket-match-height, calc(3.25rem + 1px))",
                 } as React.CSSProperties
               }
             >
-              <MatchCard
-                match={match}
-                onMatchClick={onMatchClick}
-                className="h-full"
-              />
+              <MatchCard match={match} onMatchClick={onMatchClick} className="h-full" />
             </div>
           </div>
         ))}
@@ -266,12 +236,7 @@ function MergeConnectorColumn({
             aria-hidden
           >
             <path
-              d={[
-                "M 0 25 H 50",
-                "M 0 75 H 50",
-                "M 50 25 V 75",
-                "M 50 50 H 100",
-              ].join(" ")}
+              d={["M 0 25 H 50", "M 0 75 H 50", "M 50 25 V 75", "M 50 50 H 100"].join(" ")}
               fill="none"
               stroke="currentColor"
               strokeWidth={1.5}
@@ -319,7 +284,6 @@ function GrandFinalConnectorColumn({
               "calc(var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem))",
             "--_ub-h": `calc(${ubExp} * var(--_base))`,
             "--_lb-h": `calc(${lbExp} * var(--_base))`,
-            "--_head": "1.75rem", // text-xs (1rem) + mb-3 (0.75rem)
           } as React.CSSProperties
         }
       >
@@ -327,10 +291,10 @@ function GrandFinalConnectorColumn({
         <div
           className="absolute left-0 w-1/2 border-border"
           style={{
-            top: "calc(var(--_ub-h) / 2 - 0.75px)",
-            height: "calc(50% - var(--_head) / 2 - var(--_ub-h) / 2 + 0.75px)",
-            borderTopWidth: "1.5px",
-            borderRightWidth: "1.5px",
+            top: "calc(var(--_ub-h) / 2 - 1px)",
+            height: "calc(50% - var(--_ub-h) / 2 + 1px)",
+            borderTopWidth: "2px",
+            borderRightWidth: "2px",
           }}
         />
 
@@ -338,10 +302,10 @@ function GrandFinalConnectorColumn({
         <div
           className="absolute left-0 w-1/2 border-border"
           style={{
-            bottom: "calc(var(--_lb-h) / 2 - 0.75px)",
-            height: "calc(50% + var(--_head) / 2 - var(--_lb-h) / 2 + 0.75px)",
-            borderBottomWidth: "1.5px",
-            borderRightWidth: "1.5px",
+            bottom: "calc(var(--_lb-h) / 2 - 1px)",
+            height: "calc(50% - var(--_lb-h) / 2 + 1px)",
+            borderBottomWidth: "2px",
+            borderRightWidth: "2px",
           }}
         />
 
@@ -349,8 +313,8 @@ function GrandFinalConnectorColumn({
         <div
           className="absolute right-0 w-1/2 border-border"
           style={{
-            top: "calc(50% - var(--_head) / 2 - 0.75px)",
-            borderTopWidth: "1.5px",
+            top: "calc(50% - 1px)",
+            borderTopWidth: "2px",
           }}
         />
       </div>

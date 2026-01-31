@@ -15,7 +15,7 @@ function makeMatch(
   nameB: string,
   scoreB: number,
   bestOf: number,
-  status: Match["status"] = "completed"
+  status: Match["status"] = "completed",
 ): Match {
   const aWins = scoreA > scoreB;
   const done = status === "completed";

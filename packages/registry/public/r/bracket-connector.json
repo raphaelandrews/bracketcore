@@ -3,10 +3,7 @@
   "name": "bracket-connector",
   "title": "Bracket Connector",
   "description": "SVG connector lines between bracket rounds.",
-  "dependencies": [
-    "clsx",
-    "tailwind-merge"
-  ],
+  "dependencies": ["clsx", "tailwind-merge"],
   "registryDependencies": [],
   "files": [
     {

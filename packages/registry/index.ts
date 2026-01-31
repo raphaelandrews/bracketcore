@@ -28,6 +28,10 @@ export {
 } from "./registry/bracketcore/double-elimination";
 export { SwissStage, type SwissStageProps } from "./registry/bracketcore/swiss-stage";
 export { GroupStage, type GroupStageProps } from "./registry/bracketcore/group-stage";
+export {
+  DoubleElimination1,
+  type DoubleElimination1Props,
+} from "./registry/bracketcore/double-elimination-1";
 
 // Utilities
 export { cn } from "./registry/bracketcore/cn";
