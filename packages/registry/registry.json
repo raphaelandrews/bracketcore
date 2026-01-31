@@ -103,15 +103,15 @@
       ]
     },
     {
-      "name": "double-elimination-1",
+      "name": "double-elimination",
       "type": "registry:component",
-      "title": "Double Elimination 1",
+      "title": "Double Elimination",
       "description": "A double elimination bracket using CSS Grid for precise alignment.",
       "dependencies": ["clsx", "tailwind-merge"],
       "registryDependencies": ["match-card"],
       "files": [
         {
-          "path": "registry/bracketcore/double-elimination-1.tsx",
+          "path": "registry/bracketcore/double-elimination.tsx",
           "type": "registry:component"
         },
         {

@@ -2,7 +2,7 @@ import type { DoubleEliminationBracket, Match, Round } from "./bracket-types";
 import { MatchCard } from "./match-card";
 import { cn } from "./cn";
 
-export interface DoubleElimination1Props {
+export interface DoubleEliminationProps {
   bracket: DoubleEliminationBracket;
   className?: string;
   onMatchClick?: (match: Match) => void;
@@ -74,13 +74,13 @@ function computeConnectorTypes(rounds: Round[]): Array<"merge" | "straight"> {
   return types;
 }
 
-export function DoubleElimination1({
+export function DoubleElimination({
   bracket,
   className,
   onMatchClick,
   ubAlignToLBRound = 0,
   connectorStyle = "default",
-}: DoubleElimination1Props) {
+}: DoubleEliminationProps) {
   const { upper, lower, grandFinal } = bracket;
 
   // LB dictates the specific columns because it has more rounds (usually).
@@ -105,21 +105,33 @@ export function DoubleElimination1({
 
 
   // Function to map UB round index to Grid Column
+  // We identify which LB rounds receive drops (Drop Rounds) and align UB rounds to them.
+  // A Drop Round is LB Round 0, plus any subsequent round where match count >= previous round match count
+  // (implying new teams entered to sustain the count).
+  const lbDropRoundIndices = [0];
+  for (let i = 0; i < lbCount - 1; i++) {
+    const currCount = lower[i]!.matches.length;
+    const nextCount = lower[i + 1]!.matches.length;
+    if (nextCount >= currCount) {
+      lbDropRoundIndices.push(i + 1);
+    }
+  }
+
   const getUBCol = (rIdx: number) => {
-    const startInd = ubAlignToLBRound;
-    const endInd = lbCount - 1;
+    // If we have a mapped drop round, use it.
+    if (rIdx < lbDropRoundIndices.length) {
+      const targetLBIdx = lbDropRoundIndices[rIdx]! + ubAlignToLBRound;
+      return getLBCol(targetLBIdx);
+    }
 
-    // Safety: if counts are small
-    if (lbCount === 0) return 1 + rIdx * 2;
-
-    if (rIdx === 0) return getLBCol(startInd);
-    if (rIdx === ubCount - 1) return getLBCol(endInd);
-
-    // Interpolate indices between startInd and endInd
-
-    const step = (endInd - startInd) / (ubCount - 1);
-    const targetLBIdx = Math.round(startInd + rIdx * step);
-    return getLBCol(targetLBIdx);
+    // Fallback if UB has more rounds than detected drops (unlikely in standard DE):
+    // Just place it after the last known drop, spacing by 2 columns (standard round gap)
+    const lastMappedLBIdx = lbDropRoundIndices[lbDropRoundIndices.length - 1]! + ubAlignToLBRound;
+    const extra = rIdx - lbDropRoundIndices.length + 1;
+    return getLBCol(lastMappedLBIdx) + extra * 4; // Arbitrary wide spacing or project?
+    // Better: maintain the visual gap of "Drop -> Play -> Drop" (step of 2 rounds = 4 cols)
+    // But safely:
+    return getLBCol(lastMappedLBIdx + extra * 2);
   };
 
   const ubMatchCols: number[] = [];
@@ -348,6 +360,7 @@ export function DoubleElimination1({
             ubFinalPos={ubFinalPos}
             lbFinalPos={lbFinalPos}
             gridCol={gfConnCol}
+            style={connectorStyle}
           />
 
           {/* GF match card */}
@@ -427,7 +440,6 @@ function MergeConnectors({
     const endRow = botFeeder.botRow + 1;
 
     if (style === "simple") {
-
       elements.push(
         <div
           key={`merge-${i}`}
@@ -444,14 +456,14 @@ function MergeConnectors({
               top: "calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
               right: "50%",
               width: "50%",
-              height: "calc(50% - var(--bracket-match-height) * 0.25 - (var(--bracket-match-height) + var(--bracket-match-gap)) / 2)",
+              height: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
             }}
           />
           {/* Top Inbound Stub */}
           <div
             className="absolute border-b border-border"
             style={{
-              top: "calc(50% - var(--bracket-match-height) * 0.25)",
+              top: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
               left: "50%",
               width: "50%",
             }}
@@ -461,22 +473,23 @@ function MergeConnectors({
           <div
             className="absolute border-b border-r border-border"
             style={{
-              bottom: "calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+              bottom:
+                "calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
               right: "50%",
               width: "50%",
-              height: "calc(50% - var(--bracket-match-height) * 0.25 - (var(--bracket-match-height) + var(--bracket-match-gap)) / 2)",
+              height: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
             }}
           />
           {/* Bot Inbound Stub */}
           <div
             className="absolute border-b border-border"
             style={{
-              bottom: "calc(50% - var(--bracket-match-height) * 0.25)",
+              bottom: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
               left: "50%",
               width: "50%",
             }}
           />
-        </div>
+        </div>,
       );
     } else {
       // Default SVG style
@@ -533,26 +546,32 @@ function StraightConnectors({
         >
           {style === "simple" ? (
             <>
-              {/* Path from Source(Left) to Target Bottom Row (50% + 1/4H). 
-                  Source is at 50% relative height (center of match). 
-                  Target Bottom Row is at 50% + 1/4 Match Height. 
-              */}
-              <div
-                className="absolute border-l border-b border-border"
-                style={{
-                  top: "50%",
-                  left: "0",
-                  width: "100%",
-                  height: "calc(var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
-                }}
-              />
-              {/* Stub for Top Row (Coming from nowhere/drop) */}
+              {/* Half stub: UB drop entry at top team row */}
               <div
                 className="absolute border-b border-border"
                 style={{
                   top: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+                  left: "50%",
+                  width: "50%",
+                }}
+              />
+
+              {/* Main Path: Source (Left, 50%) -> Down -> Target Bottom Team Row (LB carry) */}
+              <div
+                className="absolute border-t border-r border-border"
+                style={{
+                  top: "50%",
                   left: "0",
-                  width: "100%",
+                  width: "50%",
+                  height: "calc(var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+                }}
+              />
+              <div
+                className="absolute border-t border-border"
+                style={{
+                  top: "calc(50% + var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+                  left: "50%",
+                  width: "50%",
                 }}
               />
             </>
@@ -582,13 +601,69 @@ function GrandFinalConnector({
   ubFinalPos,
   lbFinalPos,
   gridCol,
+  style = "default",
 }: {
   ubFinalPos: MatchPos;
   lbFinalPos: MatchPos;
   gridCol: number;
+  style?: "default" | "simple";
 }) {
   const startRow = ubFinalPos.topRow;
   const endRow = lbFinalPos.botRow + 1;
+
+  if (style === "simple") {
+    // Height of match+gap
+    // var(--bracket-match-height, calc(3.25rem + 1px))
+    // var(--bracket-match-gap, 1rem)
+    return (
+      <div
+        className="relative"
+        style={{
+          gridRow: `${startRow} / ${endRow}`,
+          gridColumn: gridCol,
+        }}
+      >
+        {/* Upper arm: UB Center -> Down-Right -> GF Top Slot */}
+        <div
+          className="absolute border-t border-r border-border"
+          style={{
+            top: "calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+            left: "0",
+            width: "50%",
+            height: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+          }}
+        />
+        <div
+          className="absolute border-b border-border"
+          style={{
+            top: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+            left: "50%",
+            width: "50%",
+          }}
+        />
+
+        {/* Lower arm: LB Center -> Up-Right -> GF Bottom Slot */}
+        <div
+          className="absolute border-b border-r border-border"
+          style={{
+            bottom:
+              "calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+            left: "0",
+            width: "50%",
+            height: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+          }}
+        />
+        <div
+          className="absolute border-b border-border"
+          style={{
+            bottom: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+            left: "50%",
+            width: "50%",
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div

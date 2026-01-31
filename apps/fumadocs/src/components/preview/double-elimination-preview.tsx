@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  DoubleElimination1,
+  DoubleElimination,
   type DoubleEliminationBracket,
   type Match,
 } from "@bracketcore/registry";
@@ -227,34 +227,34 @@ const bracketLBStartsEarlier: DoubleEliminationBracket = {
   grandFinal: m("gf", 0, 0, "Team Liquid", 3, "Vici Gaming", 1, 5),
 };
 
-export function DoubleElimination1Preview() {
+export function DoubleEliminationPreview() {
   return (
     <div className="not-prose overflow-x-auto rounded-xl border border-border">
-      <DoubleElimination1 bracket={bracket} />
+      <DoubleElimination bracket={bracket} />
     </div>
   );
 }
 
-export function DoubleElimination1Ratio2() {
+export function DoubleEliminationRatio2() {
   return (
     <div className="not-prose overflow-x-auto rounded-xl border border-border">
-      <DoubleElimination1 bracket={bracketRatio2} />
+      <DoubleElimination bracket={bracketRatio2} />
     </div>
   );
 }
 
-export function DoubleElimination1LBStartsEarlier() {
+export function DoubleEliminationLBStartsEarlier() {
   return (
     <div className="not-prose overflow-x-auto rounded-xl border border-border">
-      <DoubleElimination1 bracket={bracketLBStartsEarlier} ubAlignToLBRound={1} />
+      <DoubleElimination bracket={bracketLBStartsEarlier} ubAlignToLBRound={1} />
     </div>
   );
 }
 
-export function DoubleElimination1SimplePreview() {
+export function DoubleEliminationSimplePreview() {
   return (
     <div className="not-prose overflow-x-auto rounded-xl border border-border">
-      <DoubleElimination1 bracket={bracket} connectorStyle="simple" />
+      <DoubleElimination bracket={bracket} connectorStyle="simple" />
     </div>
   );
 }

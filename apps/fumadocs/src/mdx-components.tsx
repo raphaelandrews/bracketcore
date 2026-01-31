@@ -15,11 +15,11 @@ import {
   MatchCardTBD,
 } from "@/components/preview/match-card-preview";
 import {
-  DoubleElimination1Preview,
-  DoubleElimination1Ratio2,
-  DoubleElimination1LBStartsEarlier,
-  DoubleElimination1SimplePreview,
-} from "@/components/preview/double-elimination-1-preview";
+  DoubleEliminationPreview,
+  DoubleEliminationRatio2,
+  DoubleEliminationLBStartsEarlier,
+  DoubleEliminationSimplePreview,
+} from "@/components/preview/double-elimination-preview";
 
 function CustomCodeBlockTabsList({ children, ...props }: ComponentProps<typeof CodeBlockTabsList>) {
   return (
@@ -43,10 +43,10 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     MatchCardUpcoming,
     MatchCardScheduled,
     MatchCardTBD,
-    DoubleElimination1Preview,
-    DoubleElimination1Ratio2,
-    DoubleElimination1LBStartsEarlier,
-    DoubleElimination1SimplePreview,
+    DoubleEliminationPreview,
+    DoubleEliminationRatio2,
+    DoubleEliminationLBStartsEarlier,
+    DoubleEliminationSimplePreview,
     ...components,
   };
 }

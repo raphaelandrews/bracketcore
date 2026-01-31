@@ -1,40 +1,40 @@
 ---
-title: Double Elimination 1
+title: Double Elimination
 description: A double elimination bracket using CSS Grid for precise GF alignment.
 ---
 
 ## Preview
 
-<DoubleElimination1Preview />
+<DoubleEliminationPreview />
 
 ### Ratio 2 (TI-style)
 
 Lower bracket has twice as many rounds as the upper bracket. Upper bracket columns automatically space out to stay aligned with the lower bracket.
 
-<DoubleElimination1Ratio2 />
+<DoubleEliminationRatio2 />
 
 ### Lower Bracket Starts First
 
 Use the `ubAlignToLBRound` prop to start the upper bracket at a specific lower bracket round index. This is useful when the lower bracket has preliminary rounds (e.g. losers from a previous stage) before the upper bracket losers drop down.
 
-<DoubleElimination1LBStartsEarlier />
+<DoubleEliminationLBStartsEarlier />
 
 ### Simple Connectors
 
 Use the `connectorStyle="simple"` prop to switch from standard curved/merged lines to squared-off, direct lines. This style features distinct paths for each match feed and "stub" connectors for drops from the Upper Bracket.
 
-<DoubleElimination1SimplePreview />
+<DoubleEliminationSimplePreview />
 
 ## Installation
 
 ```package-install
-npx shadcn@latest add https://bracketcore.dev/r/double-elimination-1.json
+npx shadcn@latest add https://bracketcore.dev/r/double-elimination.json
 ```
 
 ## Usage
 
 ```tsx
-import { DoubleElimination1, type DoubleEliminationBracket } from "@bracketcore/registry";
+import { DoubleElimination, type DoubleEliminationBracket } from "@bracketcore/registry";
 
 const bracket: DoubleEliminationBracket = {
   type: "double-elimination",
@@ -131,13 +131,13 @@ const bracket: DoubleEliminationBracket = {
 };
 
 export default function Page() {
-  return <DoubleElimination1 bracket={bracket} />;
+  return <DoubleElimination bracket={bracket} />;
 }
 ```
 
 ## Props
 
-### `DoubleElimination1`
+### `DoubleElimination`
 
 | Prop           | Type                       | Description                                                   |
 | -------------- | -------------------------- | ------------------------------------------------------------- |
