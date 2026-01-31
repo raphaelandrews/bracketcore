@@ -5,7 +5,7 @@ import defaultMdxComponents from "fumadocs-ui/mdx";
 import { CodeBlockTabsList } from "fumadocs-ui/components/codeblock";
 import { SquareTerminal } from "lucide-react";
 import { SingleEliminationPreview } from "@/components/preview/single-elimination-preview";
-import { DoubleEliminationPreview } from "@/components/preview/double-elimination-preview";
+import { DoubleEliminationPreview, DoubleEliminationNoGF, DoubleEliminationRatio2 } from "@/components/preview/double-elimination-preview";
 import { SwissStagePreview } from "@/components/preview/swiss-stage-preview";
 import { GroupStagePreview } from "@/components/preview/group-stage-preview";
 import { MatchCardPreview, MatchCardLive, MatchCardUpcoming, MatchCardScheduled, MatchCardTBD } from "@/components/preview/match-card-preview";
@@ -25,6 +25,8 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     CodeBlockTabsList: CustomCodeBlockTabsList,
     SingleEliminationPreview,
     DoubleEliminationPreview,
+    DoubleEliminationNoGF,
+    DoubleEliminationRatio2,
     SwissStagePreview,
     GroupStagePreview,
     MatchCardPreview,

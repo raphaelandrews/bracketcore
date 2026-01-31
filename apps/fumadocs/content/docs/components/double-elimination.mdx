@@ -1,11 +1,21 @@
 ---
 title: Double Elimination
-description: A bracket component for double elimination tournaments with upper bracket, lower bracket, and grand final.
+description: A bracket component for double elimination tournaments with upper bracket, lower bracket, and optional grand final.
 ---
 
 ## Preview
 
 <DoubleEliminationPreview />
+
+### Without Grand Final
+
+<DoubleEliminationNoGF />
+
+### Ratio 2 (TI-style)
+
+Lower bracket has twice as many rounds as the upper bracket (drop-down + play-off pairs). Upper bracket connectors widen automatically to keep both rows aligned.
+
+<DoubleEliminationRatio2 />
 
 ## Installation
 
@@ -126,7 +136,7 @@ export default function Page() {
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `bracket` | `DoubleEliminationBracket` | The bracket data with upper, lower, and grand final. |
+| `bracket` | `DoubleEliminationBracket` | The bracket data with upper, lower, and optional grand final. |
 | `className` | `string` | Additional CSS classes for the root element. |
 | `onMatchClick` | `(match: Match) => void` | Callback fired when a match card is clicked. |
 
@@ -135,9 +145,9 @@ export default function Page() {
 ```ts
 interface DoubleEliminationBracket {
   type: "double-elimination";
-  upper: Round[];   // Upper bracket rounds
-  lower: Round[];   // Lower bracket rounds
-  grandFinal: Match;
+  upper: Round[];    // Upper bracket rounds
+  lower: Round[];    // Lower bracket rounds
+  grandFinal?: Match; // Optional grand final match
 }
 ```
 
@@ -185,12 +195,32 @@ interface Team {
 }
 ```
 
-## Structure
+## Layout Variants
 
-The component renders three sections stacked vertically:
+The component automatically detects the bracket shape and adjusts its layout:
 
-1. **Upper Bracket** — labeled in green, uses `SingleElimination` internally
-2. **Lower Bracket** — labeled in red, uses `SingleElimination` internally
-3. **Grand Final** — a single `MatchCard`
+### Standard (ratio 1:1)
 
-Both upper and lower brackets inherit all sizing CSS custom properties from `SingleElimination`. Colors use your shadcn theme variables directly.
+When the lower bracket has roughly the same number of rounds as the upper bracket. Each upper bracket round aligns with one lower bracket round. If a grand final is provided, it appears as the last column of the upper bracket row.
+
+### Extended lower bracket (ratio 2:1)
+
+When the lower bracket has significantly more rounds than the upper bracket. The upper bracket automatically uses wider connectors so that both rows stay aligned.
+
+### Lower bracket connectors
+
+The component inspects adjacent lower bracket rounds to choose the right connector:
+
+- **Merge connector** — when match count halves between rounds (2:1 bracket lines)
+- **Straight connector** — when match count stays the same (horizontal pass-through lines)
+
+## Sizing
+
+Uses the same CSS custom properties as `SingleElimination`:
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `--bracket-match-width` | `13rem` | Width of each match card. |
+| `--bracket-match-height` | `calc(3.25rem + 1px)` | Height of each match card. |
+| `--bracket-round-gap` | `3rem` | Horizontal gap between rounds. |
+| `--bracket-match-gap` | `1rem` | Base vertical gap between matches. |

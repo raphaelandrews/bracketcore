@@ -46,7 +46,7 @@ export interface DoubleEliminationBracket {
   type: "double-elimination";
   upper: Round[];
   lower: Round[];
-  grandFinal: Match;
+  grandFinal?: Match;
 }
 
 // --- Swiss ---
