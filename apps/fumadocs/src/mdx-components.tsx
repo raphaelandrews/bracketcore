@@ -22,6 +22,7 @@ import {
 import {
   DoubleElimination1Preview,
   DoubleElimination1Ratio2,
+  DoubleElimination1LBStartsEarlier,
 } from "@/components/preview/double-elimination-1-preview";
 
 function CustomCodeBlockTabsList({ children, ...props }: ComponentProps<typeof CodeBlockTabsList>) {
@@ -50,6 +51,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     MatchCardTBD,
     DoubleElimination1Preview,
     DoubleElimination1Ratio2,
+    DoubleElimination1LBStartsEarlier,
     ...components,
   };
 }

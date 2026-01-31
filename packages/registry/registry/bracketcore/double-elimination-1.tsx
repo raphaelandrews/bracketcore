@@ -6,6 +6,12 @@ export interface DoubleElimination1Props {
   bracket: DoubleEliminationBracket;
   className?: string;
   onMatchClick?: (match: Match) => void;
+  /**
+   * The LB round index that the first UB round should align with.
+   * Useful when LB starts "earlier" (has preliminary rounds) than UB.
+   * Default: 0.
+   */
+  ubAlignToLBRound?: number;
 }
 
 // Each match occupies 2 grid rows (one per team row).
@@ -67,7 +73,12 @@ function computeConnectorTypes(rounds: Round[]): Array<"merge" | "straight"> {
   return types;
 }
 
-export function DoubleElimination1({ bracket, className, onMatchClick }: DoubleElimination1Props) {
+export function DoubleElimination1({
+  bracket,
+  className,
+  onMatchClick,
+  ubAlignToLBRound = 0,
+}: DoubleElimination1Props) {
   const { upper, lower, grandFinal } = bracket;
 
   // LB dictates the specific columns because it has more rounds (usually).
@@ -93,24 +104,23 @@ export function DoubleElimination1({ bracket, className, onMatchClick }: DoubleE
 
   // Function to map UB round index to Grid Column
   const getUBCol = (rIdx: number) => {
-    if (lbCount <= ubCount) {
-      // Fallback if LB is shorter or same: just 1:1 mapping
-      return 1 + rIdx * 2;
-    }
+    // If LB is shorter or we force align 0, existing logic might apply,
+    // but allowing ubAlignToLBRound gives control.
 
-    // If UB is shorter, we map:
-    // rIdx 0 -> 0 using index
-    // rIdx last -> lbCount - 1 using index
+    const startInd = ubAlignToLBRound;
+    const endInd = lbCount - 1;
 
-    if (rIdx === 0) return getLBCol(0);
-    if (rIdx === ubCount - 1) return getLBCol(lbCount - 1);
+    // Safety: if counts are small
+    if (lbCount === 0) return 1 + rIdx * 2;
 
-    // Interpolate indices between 0 and (lbCount - 1)
+    if (rIdx === 0) return getLBCol(startInd);
+    if (rIdx === ubCount - 1) return getLBCol(endInd);
+
+    // Interpolate indices between startInd and endInd
     // We want to snap to valid match columns (odd numbers: 1, 3, 5...)
-    // (lbCount - 1) is the maximum *index*.
 
-    const step = (lbCount - 1) / (ubCount - 1);
-    const targetLBIdx = Math.round(rIdx * step);
+    const step = (endInd - startInd) / (ubCount - 1);
+    const targetLBIdx = Math.round(startInd + rIdx * step);
     return getLBCol(targetLBIdx);
   };
 

@@ -158,6 +158,77 @@ const bracketRatio2: DoubleEliminationBracket = {
   grandFinal: m("r2-gf", 0, 0, "Team Liquid", 3, "PSG.LGD", 1, 5),
 };
 
+const bracketLBStartsEarlier: DoubleEliminationBracket = {
+  type: "double-elimination",
+  upper: [
+    {
+      name: "UB Round 1",
+      matches: [
+        m("ub1-1", 0, 0, "UB Team 1", 2, "UB Team 2", 1, 3), // Loser -> LB R2
+        m("ub1-2", 0, 1, "UB Team 3", 2, "UB Team 4", 0, 3),
+        m("ub1-3", 0, 2, "UB Team 5", 2, "UB Team 6", 0, 3),
+        m("ub1-4", 0, 3, "UB Team 7", 2, "UB Team 8", 1, 3),
+      ],
+    },
+    {
+      name: "UB Round 2",
+      matches: [
+        m("ub2-1", 1, 0, "UB Team 1", 2, "UB Team 3", 1, 3), // Loser -> LB R4
+        m("ub2-2", 1, 1, "UB Team 5", 0, "UB Team 7", 2, 3),
+      ],
+    },
+    {
+      name: "UB Final",
+      matches: [m("ub3-1", 2, 0, "UB Team 1", 2, "UB Team 7", 1, 3)], // Loser -> LB Final
+    },
+  ],
+  lower: [
+    {
+      name: "LB Round 1",
+      matches: [
+        m("lb1-1", 0, 0, "LB Team 1", 2, "LB Team 2", 0, 3), // Winner -> LB R2
+        m("lb1-2", 0, 1, "LB Team 3", 2, "LB Team 4", 0, 3),
+        m("lb1-3", 0, 2, "LB Team 5", 2, "LB Team 6", 0, 3),
+        m("lb1-4", 0, 3, "LB Team 7", 2, "LB Team 8", 0, 3),
+      ],
+    },
+    {
+      name: "LB Round 2",
+      matches: [
+        // Winners from LB R1 vs Losers from UB R1
+        m("lb2-1", 1, 0, "LB Team 1", 2, "UB Team 2", 1, 3),
+        m("lb2-2", 1, 1, "LB Team 3", 2, "UB Team 4", 1, 3),
+        m("lb2-3", 1, 2, "LB Team 5", 2, "UB Team 6", 1, 3),
+        m("lb2-4", 1, 3, "LB Team 7", 2, "UB Team 8", 1, 3),
+      ],
+    },
+    {
+      name: "LB Round 3",
+      matches: [
+        m("lb3-1", 2, 0, "LB Team 1", 2, "LB Team 3", 1, 3),
+        m("lb3-2", 2, 1, "LB Team 5", 2, "LB Team 7", 0, 3),
+      ],
+    },
+    {
+      name: "LB Round 4",
+      matches: [
+        // Winners from LB R3 vs Losers from UB R2
+        m("lb4-1", 3, 0, "LB Team 1", 2, "UB Team 3", 1, 3),
+        m("lb4-2", 3, 1, "LB Team 5", 2, "UB Team 5", 1, 3),
+      ],
+    },
+    {
+      name: "LB Semi-final",
+      matches: [m("lb5-1", 4, 0, "LB Team 1", 2, "LB Team 5", 1, 3)],
+    },
+    {
+      name: "LB Final",
+      matches: [m("lb6-1", 5, 0, "LB Team 1", 3, "UB Team 7", 2, 5)],
+    },
+  ],
+  grandFinal: m("gf", 0, 0, "UB Team 1", 3, "LB Team 1", 1, 5),
+};
+
 export function DoubleElimination1Preview() {
   return (
     <div className="not-prose overflow-x-auto rounded-xl border border-border">
@@ -170,6 +241,15 @@ export function DoubleElimination1Ratio2() {
   return (
     <div className="not-prose overflow-x-auto rounded-xl border border-border">
       <DoubleElimination1 bracket={bracketRatio2} />
+    </div>
+  );
+}
+
+export function DoubleElimination1LBStartsEarlier() {
+  return (
+    <div className="not-prose overflow-x-auto rounded-xl border border-border">
+      {/* Align UB Round 1 to LB Round 2 (index 1) */}
+      <DoubleElimination1 bracket={bracketLBStartsEarlier} ubAlignToLBRound={1} />
     </div>
   );
 }
