@@ -90,7 +90,6 @@ export function DoubleElimination({
   // Col 1: LB R0->R1 Connector
   // Col 2: LB R1 Match
   // Col 3: LB R1->R2 Connector
-  // ...
   // Grid Col for LB Round i = i * 2 + 1 (1-based grid)
 
   const getLBCol = (rIdx: number) => 1 + rIdx * 2;
@@ -105,9 +104,7 @@ export function DoubleElimination({
 
 
   // Function to map UB round index to Grid Column
-  // We identify which LB rounds receive drops (Drop Rounds) and align UB rounds to them.
   // A Drop Round is LB Round 0, plus any subsequent round where match count >= previous round match count
-  // (implying new teams entered to sustain the count).
   const lbDropRoundIndices = [0];
   for (let i = 0; i < lbCount - 1; i++) {
     const currCount = lower[i]!.matches.length;
@@ -118,7 +115,7 @@ export function DoubleElimination({
   }
 
   const getUBCol = (rIdx: number) => {
-    // If we have a mapped drop round, use it.
+    // If have a mapped drop round.
     if (rIdx < lbDropRoundIndices.length) {
       const targetLBIdx = lbDropRoundIndices[rIdx]! + ubAlignToLBRound;
       return getLBCol(targetLBIdx);
@@ -169,10 +166,20 @@ export function DoubleElimination({
   const gfMatchCol = grandFinal ? lastBracketCol + 2 : 0;
   const totalCols = grandFinal ? gfMatchCol : lastBracketCol;
 
-  // --- Connector types ---
+  // --- Connector types and Drop Round detection ---
   // UB always matches
-
   const lbConnTypes = computeConnectorTypes(lower);
+
+  // A Drop Round is one that was preceded by a "straight" connection.
+  // Matches in Drop Rounds are shifted up by 0.25H (accumulating).
+  const lbShiftMultiplier: number[] = [0];
+  for (let i = 1; i < lower.length; i++) {
+    const prevConn = lbConnTypes[i - 1];
+    const prevShift = lbShiftMultiplier[i - 1]!;
+    // If Drop Round (straight), step up by -0.25.
+    // If Merge Round, maintain previous shift.
+    lbShiftMultiplier.push(prevConn === "straight" ? prevShift - 0.25 : prevShift);
+  }
 
   // --- Row computation ---
   const headerRow = 1;
@@ -299,8 +306,9 @@ export function DoubleElimination({
       ))}
 
       {/* === LB Matches === */}
-      {lower.map((round, ri) =>
-        round.matches.map((match, mi) => {
+      {lower.map((round, ri) => {
+        const shiftMult = lbShiftMultiplier[ri] ?? 0;
+        return round.matches.map((match, mi) => {
           const pos = lbRows[ri]![mi]!;
           return (
             <GridMatch
@@ -309,16 +317,21 @@ export function DoubleElimination({
               topRow={pos.topRow}
               col={lbMatchCols[ri]!}
               onMatchClick={onMatchClick}
+              shiftMultiplier={connectorStyle === "simple" ? shiftMult : 0}
             />
           );
-        }),
-      )}
+        });
+      })}
 
       {/* === LB Connectors === */}
       {lbConnCols.map((col, i) => {
         const prevRound = lbRows[i]!;
         const nextRound = lbRows[i + 1]!;
         const connType = lbConnTypes[i]!;
+
+        const sourceShift = lbShiftMultiplier[i] ?? 0;
+        const targetShift = lbShiftMultiplier[i + 1] ?? 0;
+
         if (connType === "merge") {
           return (
             <MergeConnectors
@@ -328,6 +341,8 @@ export function DoubleElimination({
               gridCol={col}
               gridColSpan={1}
               style={connectorStyle}
+              sourceShift={sourceShift}
+              targetShift={targetShift}
             />
           );
         }
@@ -337,6 +352,8 @@ export function DoubleElimination({
             positions={prevRound}
             gridCol={col}
             style={connectorStyle}
+            sourceShift={sourceShift}
+            targetShift={targetShift}
           />
         );
       })}
@@ -355,12 +372,14 @@ export function DoubleElimination({
             Grand Final
           </div>
 
+
           {/* GF connector */}
           <GrandFinalConnector
             ubFinalPos={ubFinalPos}
             lbFinalPos={lbFinalPos}
             gridCol={gfConnCol}
             style={connectorStyle}
+            lbShiftMultiplier={connectorStyle === "simple" ? (lbShiftMultiplier[lbCount - 1] ?? 0) : 0}
           />
 
           {/* GF match card */}
@@ -391,11 +410,13 @@ function GridMatch({
   topRow,
   col,
   onMatchClick,
+  shiftMultiplier = 0,
 }: {
   match: Match;
   topRow: number;
   col: number;
   onMatchClick?: (match: Match) => void;
+  shiftMultiplier?: number;
 }) {
   return (
     <div
@@ -403,6 +424,9 @@ function GridMatch({
       style={{
         gridRow: `${topRow} / ${topRow + 2}`,
         gridColumn: col,
+        transform: shiftMultiplier !== 0
+          ? `translateY(calc(var(--bracket-match-height, calc(3.25rem + 1px)) * ${shiftMultiplier}))`
+          : undefined,
       }}
     >
       <div
@@ -423,12 +447,16 @@ function MergeConnectors({
   gridCol,
   gridColSpan,
   style = "default",
+  sourceShift = 0,
+  targetShift = 0,
 }: {
   prevPositions: MatchPos[];
   nextPositions: MatchPos[];
   gridCol: number;
   gridColSpan: number;
   style?: "default" | "simple";
+  sourceShift?: number;
+  targetShift?: number;
 }) {
   const elements: React.ReactElement[] = [];
 
@@ -440,6 +468,13 @@ function MergeConnectors({
     const endRow = botFeeder.botRow + 1;
 
     if (style === "simple") {
+      const topOffset = ` + var(--bracket-match-height, calc(3.25rem + 1px)) * ${sourceShift}`;
+      const botOffset = ` - var(--bracket-match-height, calc(3.25rem + 1px)) * ${sourceShift}`;
+
+      // Height Adjustments for Target Shift:
+      const topHeightAdj = ` + var(--bracket-match-height, calc(3.25rem + 1px)) * ${targetShift - sourceShift}`;
+      const botHeightAdj = ` + var(--bracket-match-height, calc(3.25rem + 1px)) * ${sourceShift - targetShift}`;
+
       elements.push(
         <div
           key={`merge-${i}`}
@@ -451,19 +486,22 @@ function MergeConnectors({
         >
           {/* Top Path: Feeder Center */}
           <div
-            className="absolute border-t border-r border-border"
+            className="absolute border-border"
             style={{
-              top: "calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+              borderTopWidth: "1.5px",
+              borderRightWidth: "1.5px",
+              top: `calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2${topOffset})`,
               right: "50%",
               width: "50%",
-              height: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+              height: `calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2${topHeightAdj})`,
             }}
           />
           {/* Top Inbound Stub */}
           <div
-            className="absolute border-b border-border"
+            className="absolute border-border"
             style={{
-              top: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+              borderBottomWidth: "1.5px",
+              top: `calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 + var(--bracket-match-height, calc(3.25rem + 1px)) * ${targetShift})`,
               left: "50%",
               width: "50%",
             }}
@@ -471,20 +509,23 @@ function MergeConnectors({
 
           {/* Bot Path: Feeder Center */}
           <div
-            className="absolute border-b border-r border-border"
+            className="absolute border-border"
             style={{
+              borderBottomWidth: "1.5px",
+              borderRightWidth: "1.5px",
               bottom:
-                "calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+                `calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2${botOffset})`,
               right: "50%",
               width: "50%",
-              height: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+              height: `calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2${botHeightAdj})`,
             }}
           />
           {/* Bot Inbound Stub */}
           <div
-            className="absolute border-b border-border"
+            className="absolute border-border"
             style={{
-              bottom: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+              borderBottomWidth: "1.5px",
+              bottom: `calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - var(--bracket-match-height, calc(3.25rem + 1px)) * ${targetShift})`,
               left: "50%",
               width: "50%",
             }}
@@ -528,10 +569,14 @@ function StraightConnectors({
   positions,
   gridCol,
   style = "default",
+  sourceShift = 0,
+  targetShift = 0,
 }: {
   positions: MatchPos[];
   gridCol: number;
   style?: "default" | "simple";
+  sourceShift?: number;
+  targetShift?: number;
 }) {
   return (
     <>
@@ -546,32 +591,36 @@ function StraightConnectors({
         >
           {style === "simple" ? (
             <>
-              {/* Half stub: UB drop entry at top team row */}
+              {/* UB drop entry at top team row.
+                  Target Top Slot = Center_Visual - 0.25H.
+                  Center_Visual = Struct_Center + targetShift.
+                  Target Top Slot = Struct_Center + targetShift - 0.25.
+                  Struct_Center = 50% of cell.
+                  top = 50% + targetShift - 0.25.
+              */}
               <div
-                className="absolute border-b border-border"
+                className="absolute border-border"
                 style={{
-                  top: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+                  borderBottomWidth: "1.5px",
+                  top: `calc(50% + var(--bracket-match-height, calc(3.25rem + 1px)) * ${(targetShift - 0.25)})`,
                   left: "50%",
                   width: "50%",
                 }}
               />
 
-              {/* Main Path: Source (Left, 50%) -> Down -> Target Bottom Team Row (LB carry) */}
+              {/* Main Path: Source (Left) -> Target (Right)
+                  Source Center = Struct + sourceShift.
+                  Target Bot Slot = Struct + targetShift + 0.25.
+                  Using sourceShift to draw the horizontal line.
+                  top = 50% + sourceShift.
+              */}
               <div
-                className="absolute border-t border-r border-border"
+                className="absolute border-border"
                 style={{
-                  top: "50%",
+                  borderBottomWidth: "1.5px",
+                  top: `calc(50% + var(--bracket-match-height, calc(3.25rem + 1px)) * ${sourceShift})`,
                   left: "0",
-                  width: "50%",
-                  height: "calc(var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
-                }}
-              />
-              <div
-                className="absolute border-t border-border"
-                style={{
-                  top: "calc(50% + var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
-                  left: "50%",
-                  width: "50%",
+                  width: "100%",
                 }}
               />
             </>
@@ -602,11 +651,13 @@ function GrandFinalConnector({
   lbFinalPos,
   gridCol,
   style = "default",
+  lbShiftMultiplier = 0,
 }: {
   ubFinalPos: MatchPos;
   lbFinalPos: MatchPos;
   gridCol: number;
   style?: "default" | "simple";
+  lbShiftMultiplier?: number;
 }) {
   const startRow = ubFinalPos.topRow;
   const endRow = lbFinalPos.botRow + 1;
@@ -614,7 +665,14 @@ function GrandFinalConnector({
   if (style === "simple") {
     // Height of match+gap
     // var(--bracket-match-height, calc(3.25rem + 1px))
-    // var(--bracket-match-gap, 1rem)
+    // Lower Arm Bottom:
+    // LB Final is shifted by lbShiftMultiplier.
+    // Structural Center is default.
+    // Visual Center = Struct + Shift.
+    // Visual Bottom is "Away from bottom" -> `bottom` increases if move UP.
+    // Shift is negative (UP). So `bottom: calc(Def - Shift)`.
+    const botOffset = ` - var(--bracket-match-height, calc(3.25rem + 1px)) * ${lbShiftMultiplier}`;
+
     return (
       <div
         className="relative"
@@ -625,8 +683,10 @@ function GrandFinalConnector({
       >
         {/* Upper arm: UB Center -> Down-Right -> GF Top Slot */}
         <div
-          className="absolute border-t border-r border-border"
+          className="absolute border-border"
           style={{
+            borderTopWidth: "1.5px",
+            borderRightWidth: "1.5px",
             top: "calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
             left: "0",
             width: "50%",
@@ -634,28 +694,41 @@ function GrandFinalConnector({
           }}
         />
         <div
-          className="absolute border-b border-border"
+          className="absolute border-border"
           style={{
+            borderBottomWidth: "1.5px",
             top: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
             left: "50%",
             width: "50%",
           }}
         />
 
-        {/* Lower arm: LB Center -> Up-Right -> GF Bottom Slot */}
+        {/* Lower arm: LB Center -> Up-Right -> GF Bottom Slot. */}
+
+        {/* Need to apply height adjustment separately or reuse botOffset?
+            Shift is negative. + Shift decreases result.
+            botOffset string is ` - ... * Shift`. So ` - ... * -0.25` is `+`.
+            So botOffset is Positive Value of Shift distance.
+            If we move start UP by X, we must reduce height by X to keep top same.
+            So `height: calc(Default - botOffset)`.
+        */}
         <div
-          className="absolute border-b border-r border-border"
+          className="absolute border-border"
           style={{
+            borderBottomWidth: "1.5px",
+            borderRightWidth: "1.5px",
             bottom:
-              "calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+              `calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2${botOffset})`,
             left: "0",
             width: "50%",
-            height: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+            height: `calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2${" + var(--bracket-match-height, calc(3.25rem + 1px)) * " + lbShiftMultiplier})`,
           }}
         />
+
         <div
-          className="absolute border-b border-border"
+          className="absolute border-border"
           style={{
+            borderBottomWidth: "1.5px",
             bottom: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
             left: "50%",
             width: "50%",
