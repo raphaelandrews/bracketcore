@@ -1,4 +1,13 @@
 {
   "title": "Docs",
-  "pages": ["---Getting Started---", "index", "---Components---", "components"]
+  "pages": [
+    "---Introduction---",
+    "index",
+    "---Components---",
+    "match-card",
+    "single-elimination",
+    "double-elimination",
+    "swiss-stage",
+    "group-stage"
+  ]
 }

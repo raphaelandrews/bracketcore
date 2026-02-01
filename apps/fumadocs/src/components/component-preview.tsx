@@ -20,8 +20,8 @@ export function ComponentPreview({
     <div
       className={cn("group relative my-4 flex flex-col", className)}
     >
-      <div className="relative rounded-t-md border border-border">
-        <div className="preview not-prose flex min-h-[200px] w-full items-center justify-center overflow-x-auto p-4">
+      <div className="relative rounded-t-md">
+        <div className="preview not-prose flex min-h-[200px] w-full items-center justify-center bg-card/40 rounded-t-md overflow-x-auto p-6">
           {children}
         </div>
       </div>
@@ -29,7 +29,7 @@ export function ComponentPreview({
       <div className="relative">
         <div
           className={cn(
-            "relative overflow-hidden rounded-b-md border border-border border-t-0 [&_figure]:my-0 [&_figure]:rounded-none [&_figure]:border-none [&_figure>div]:no-scrollbar [&_pre]:!text-sm/[1.5]",
+            "relative overflow-hidden rounded-b-md border-t-0 [&_figure]:my-0 [&_figure]:rounded-none [&_figure]:border-none [&_figure>div]:no-scrollbar [&_pre]:!text-sm/[1.5]",
             !isExpanded && "max-h-32"
           )}
         >
