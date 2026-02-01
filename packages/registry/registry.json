@@ -55,7 +55,7 @@
       "type": "registry:component",
       "title": "Swiss Stage",
       "description": "Swiss system bracket with round-by-round matches and standings table.",
-      "dependencies": ["clsx", "tailwind-merge"],
+      "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
       "registryDependencies": ["match-card"],
       "files": [
         {
@@ -91,6 +91,10 @@
         {
           "path": "registry/bracketcore/match-card.tsx",
           "type": "registry:component"
+        },
+        {
+          "path": "registry/bracketcore/table.tsx",
+          "type": "registry:lib"
         },
         {
           "path": "registry/bracketcore/bracket-types.ts",

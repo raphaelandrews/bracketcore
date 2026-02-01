@@ -243,7 +243,7 @@ export function DoubleElimination({
 
   return (
     <div
-      className={cn("inline-grid overflow-x-auto", "rounded-lg p-6", "bg-background", className)}
+      className={cn("inline-grid overflow-x-auto rounded-lg p-6", className)}
       style={{
         gridTemplateColumns: colDefs.join(" "),
         gridTemplateRows: rowDefs.join(" "),

@@ -19,7 +19,7 @@ export function SingleElimination({
 
   return (
     <div
-      className={cn("inline-flex overflow-x-auto", "rounded-lg p-6", "bg-background", className)}
+      className={cn("inline-flex overflow-x-auto rounded-lg p-6", className)}
     >
       {rounds.map((round, roundIdx) => {
         const isLast = roundIdx === rounds.length - 1;
