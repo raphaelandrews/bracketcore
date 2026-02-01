@@ -27,21 +27,7 @@ const completed: Match = {
   ],
 };
 
-function PreviewWrapper({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="not-prose flex items-center justify-center h-72 w-full p-10 rounded-xl">
-      {children}
-    </div>
-  );
-}
-
-export function MatchCardPreview() {
-  return (
-    <PreviewWrapper>
-      <MatchCard match={completed} />
-    </PreviewWrapper>
-  );
-}
+<MatchCard match={completed} />
 `}>
 <MatchCardPreview />
 </ComponentPreview>
@@ -52,11 +38,11 @@ export function MatchCardPreview() {
 npx shadcn@latest add https://bracketcore.dev/r/match-card.json
 ```
 
-## Usage
+## Prerequisites
+
+Define your match data with teams, scores, and status.
 
 ```tsx
-import { MatchCard, type Match } from "@bracketcore/registry";
-
 const match: Match = {
   id: "demo",
   round: 0,
@@ -76,10 +62,16 @@ const match: Match = {
     },
   ],
 };
+```
 
-export default function Page() {
-  return <MatchCard match={match} />;
-}
+## Usage
+
+```tsx
+import { MatchCard, type Match } from "@bracketcore/registry";
+```
+
+```tsx
+<MatchCard match={match} />
 ```
 
 ## Examples
@@ -113,13 +105,7 @@ function todayAt(hours: number, minutes: number) {
   return d;
 }
 
-export function MatchCardLive() {
-  return (
-    <PreviewWrapper>
-      <MatchCard match={live} />
-    </PreviewWrapper>
-  );
-}
+<MatchCard match={live} />
 `}>
 <MatchCardLive />
 </ComponentPreview>
@@ -154,13 +140,7 @@ function daysFromNow(days: number, hours: number, minutes: number) {
   return d;
 }
 
-export function MatchCardUpcoming() {
-  return (
-    <PreviewWrapper>
-      <MatchCard match={upcoming} />
-    </PreviewWrapper>
-  );
-}
+<MatchCard match={upcoming} />
 `}>
 <MatchCardUpcoming />
 </ComponentPreview>
@@ -182,13 +162,7 @@ When teams are not yet determined but the match is already scheduled, the header
   ],
 };
 
-export function MatchCardScheduled() {
-  return (
-    <PreviewWrapper>
-      <MatchCard match={scheduled} />
-    </PreviewWrapper>
-  );
-}
+<MatchCard match={scheduled} />
 `}>
 <MatchCardScheduled />
 </ComponentPreview>
@@ -209,13 +183,7 @@ When `team` is `null` and no schedule is set, the card shows italic "TBD" text w
   ],
 };
 
-export function MatchCardTBD() {
-  return (
-    <PreviewWrapper>
-      <MatchCard match={tbd} />
-    </PreviewWrapper>
-  );
-}
+<MatchCard match={tbd} />
 `}>
 <MatchCardTBD />
 </ComponentPreview>

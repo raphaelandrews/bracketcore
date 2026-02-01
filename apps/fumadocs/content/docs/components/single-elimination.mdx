@@ -67,13 +67,7 @@ const sampleBracket: SingleEliminationBracket = {
   ],
 };
 
-export function SingleEliminationPreview() {
-  return (
-    <div className="not-prose overflow-x-auto rounded-xl">
-      <SingleElimination bracket={sampleBracket} />
-    </div>
-  );
-}
+<SingleElimination bracket={sampleBracket} />
 `}>
 <SingleEliminationPreview />
 </ComponentPreview>
@@ -84,32 +78,11 @@ export function SingleEliminationPreview() {
 npx shadcn@latest add https://bracketcore.dev/r/single-elimination.json
 ```
 
-## Connector Styles
+## Prerequisites
 
-You can customize the connector style using the `connectorStyle` prop. Available options are `default` (standard bracket lines) and `simple` (squared lines).
-
-### Simple Style
-
-<ComponentPreview code={`export function SingleEliminationSimplePreview() {
-  return (
-    <div className="not-prose overflow-x-auto rounded-xl">
-      <SingleElimination bracket={sampleBracket} connectorStyle="simple" />
-    </div>
-  );
-}
-`}>
-<SingleEliminationSimplePreview />
-</ComponentPreview>
+Define your bracket data with rounds and matches. Each round contains an array of matches that feed into the next round.
 
 ```tsx
-<SingleElimination bracket={bracket} connectorStyle="simple" />
-```
-
-## Usage
-
-```tsx
-import { SingleElimination, type SingleEliminationBracket } from "@bracketcore/registry";
-
 const bracket: SingleEliminationBracket = {
   type: "single-elimination",
   rounds: [
@@ -158,10 +131,31 @@ const bracket: SingleEliminationBracket = {
     },
   ],
 };
+```
 
-export default function Page() {
-  return <SingleElimination bracket={bracket} />;
-}
+## Usage
+
+```tsx
+import { SingleElimination, type SingleEliminationBracket } from "@bracketcore/registry";
+```
+
+```tsx
+<SingleElimination bracket={bracket} />
+```
+
+## Connector Styles
+
+You can customize the connector style using the `connectorStyle` prop. Available options are `default` (standard bracket lines) and `simple` (squared lines).
+
+### Simple Style
+
+<ComponentPreview code={`<SingleElimination bracket={sampleBracket} connectorStyle="simple" />
+`}>
+<SingleEliminationSimplePreview />
+</ComponentPreview>
+
+```tsx
+<SingleElimination bracket={bracket} connectorStyle="simple" />
 ```
 
 ## Props

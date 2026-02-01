@@ -130,6 +130,26 @@
 
   figure {
     @apply border-none;
+  }  
+  
+  figure div {
+    @apply no-scrollbar;
+  }
+
+  #nd-page {
+    @apply !max-w-[42rem] !px-4 !py-6 md:!px-0;
+  }
+
+  :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply !text-xl !mt-[2.4em];
+  } 
+  
+  :where(h3):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply !text-lg !mt-[1.4em];
+  }
+
+  :where(h4):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply !text-base !mt-[1.4em];
   }
 }
 

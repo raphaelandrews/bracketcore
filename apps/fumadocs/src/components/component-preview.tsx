@@ -21,7 +21,7 @@ export function ComponentPreview({
       className={cn("group relative my-4 flex flex-col", className)}
     >
       <div className="relative rounded-t-md border border-border">
-        <div className="preview flex min-h-[200px] w-full items-center justify-center p-4">
+        <div className="preview not-prose flex min-h-[200px] w-full items-center justify-center overflow-x-auto p-4">
           {children}
         </div>
       </div>
@@ -29,7 +29,7 @@ export function ComponentPreview({
       <div className="relative">
         <div
           className={cn(
-            "relative overflow-hidden rounded-b-md border border-border border-t-0 [&_figure]:my-0 [&_figure]:rounded-none [&_figure]:border-none [&_figure>div]:no-scrollbar [&_pre]:!text-sm",
+            "relative overflow-hidden rounded-b-md border border-border border-t-0 [&_figure]:my-0 [&_figure]:rounded-none [&_figure]:border-none [&_figure>div]:no-scrollbar [&_pre]:!text-sm/[1.5]",
             !isExpanded && "max-h-32"
           )}
         >
@@ -37,7 +37,7 @@ export function ComponentPreview({
         </div>
 
         {!isExpanded && (
-          <div className="absolute inset-x-0 bottom-6 flex h-full max-h-32 items-end justify-center rounded-b-md bg-gradient-to-b from-transparent to-fd-card">
+          <div className="absolute inset-x-0 bottom-0 pb-8 flex h-full max-h-32 items-end justify-center rounded-b-md bg-gradient-to-b from-transparent to-fd-card">
             <Button
               variant="outline"
               size="sm"

@@ -85,13 +85,7 @@ const bracket: GroupStageBracket = {
   ],
 };
 
-export function GroupStagePreview() {
-  return (
-    <div className="not-prose overflow-x-auto rounded-xl">
-      <GroupStage bracket={bracket} />
-    </div>
-  );
-}
+<GroupStage bracket={bracket} />
 `}>
 <GroupStagePreview />
 </ComponentPreview>
@@ -102,11 +96,11 @@ export function GroupStagePreview() {
 npx shadcn@latest add https://bracketcore.dev/r/group-stage.json
 ```
 
-## Usage
+## Prerequisites
+
+Define your group stage data with groups, each containing teams, round-robin matches, and standings.
 
 ```tsx
-import { GroupStage, type GroupStageBracket } from "@bracketcore/registry";
-
 const bracket: GroupStageBracket = {
   type: "group-stage",
   groups: [
@@ -181,10 +175,16 @@ const bracket: GroupStageBracket = {
     },
   ],
 };
+```
 
-export default function Page() {
-  return <GroupStage bracket={bracket} />;
-}
+## Usage
+
+```tsx
+import { GroupStage, type GroupStageBracket } from "@bracketcore/registry";
+```
+
+```tsx
+<GroupStage bracket={bracket} />
 ```
 
 ## Props

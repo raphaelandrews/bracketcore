@@ -91,13 +91,7 @@ const bracket: SwissBracket = {
   ],
 };
 
-export function SwissStagePreview() {
-  return (
-    <div className="not-prose overflow-x-auto rounded-xl">
-      <SwissStage bracket={bracket} />
-    </div>
-  );
-}
+<SwissStage bracket={bracket} />
 `}>
 <SwissStagePreview />
 </ComponentPreview>
@@ -108,11 +102,11 @@ export function SwissStagePreview() {
 npx shadcn@latest add https://bracketcore.dev/r/swiss-stage.json
 ```
 
-## Usage
+## Prerequisites
+
+Define your Swiss bracket with rounds, match data, and standings. Set `winsToAdvance` and `lossesToEliminate` to configure the format.
 
 ```tsx
-import { SwissStage, type SwissBracket } from "@bracketcore/registry";
-
 const bracket: SwissBracket = {
   type: "swiss",
   winsToAdvance: 3,
@@ -182,10 +176,16 @@ const bracket: SwissBracket = {
     { team: { id: "d", name: "Team D" }, wins: 0, losses: 2, status: "eliminated" },
   ],
 };
+```
 
-export default function Page() {
-  return <SwissStage bracket={bracket} />;
-}
+## Usage
+
+```tsx
+import { SwissStage, type SwissBracket } from "@bracketcore/registry";
+```
+
+```tsx
+<SwissStage bracket={bracket} />
 ```
 
 ## Props

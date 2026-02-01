@@ -90,189 +90,9 @@ const bracket: DoubleEliminationBracket = {
   grandFinal: m("gf", 0, 0, "Spirit", 3, "FaZe", 2, 5),
 };
 
-export function DoubleEliminationPreview() {
-  return (
-    <div className="not-prose overflow-x-auto rounded-xl">
-      <DoubleElimination bracket={bracket} />
-    </div>
-  );
-}
+<DoubleElimination bracket={bracket} />
 `}>
 <DoubleEliminationPreview />
-</ComponentPreview>
-
-### Ratio 2 (TI-style)
-
-Lower bracket has twice as many rounds as the upper bracket. Upper bracket columns automatically space out to stay aligned with the lower bracket.
-
-<ComponentPreview code={`const bracketRatio2: DoubleEliminationBracket = {
-  type: "double-elimination",
-  upper: [
-    {
-      name: "UB Round 1",
-      matches: [
-        m("r2-ub1-1", 0, 0, "Team Liquid", 2, "OG", 1, 3),
-        m("r2-ub1-2", 0, 1, "PSG.LGD", 2, "Evil Geniuses", 0, 3),
-        m("r2-ub1-3", 0, 2, "Tundra", 1, "Team Spirit", 2, 3),
-        m("r2-ub1-4", 0, 3, "Gaimin Gladiators", 0, "BetBoom", 2, 3),
-      ],
-    },
-    {
-      name: "UB Semi-final",
-      matches: [
-        m("r2-ub2-1", 1, 0, "Team Liquid", 2, "PSG.LGD", 0, 3),
-        m("r2-ub2-2", 1, 1, "Team Spirit", 1, "BetBoom", 2, 3),
-      ],
-    },
-    {
-      name: "UB Final",
-      matches: [m("r2-ub3-1", 2, 0, "Team Liquid", 2, "BetBoom", 1, 3)],
-    },
-  ],
-  lower: [
-    {
-      name: "LB Round 1",
-      matches: [
-        m("r2-lb1-1", 0, 0, "OG", 2, "Fnatic", 1, 3),
-        m("r2-lb1-2", 0, 1, "Evil Geniuses", 0, "Talon", 2, 3),
-        m("r2-lb1-3", 0, 2, "Tundra", 2, "Thunder Awaken", 1, 3),
-        m("r2-lb1-4", 0, 3, "Gaimin Gladiators", 2, "Alliance", 0, 3),
-      ],
-    },
-    {
-      name: "LB Round 2",
-      matches: [
-        m("r2-lb2-1", 1, 0, "OG", 2, "Talon", 1, 3),
-        m("r2-lb2-2", 1, 1, "Tundra", 0, "Gaimin Gladiators", 2, 3),
-      ],
-    },
-    {
-      name: "LB Round 3",
-      matches: [
-        m("r2-lb3-1", 2, 0, "OG", 2, "PSG.LGD", 1, 3),
-        m("r2-lb3-2", 2, 1, "Gaimin Gladiators", 1, "Team Spirit", 2, 3),
-      ],
-    },
-    {
-      name: "LB Round 4",
-      matches: [m("r2-lb4-1", 3, 0, "OG", 2, "Team Spirit", 1, 3)],
-    },
-    {
-      name: "LB Final",
-      matches: [m("r2-lb5-1", 4, 0, "OG", 2, "BetBoom", 1, 3)],
-    },
-  ],
-  grandFinal: m("r2-gf", 0, 0, "Team Liquid", 3, "OG", 1, 5),
-};
-
-export function DoubleEliminationRatio2() {
-  return (
-    <div className="">
-      <DoubleElimination bracket={bracketRatio2} />
-    </div>
-  );
-}
-`}>
-<DoubleEliminationRatio2 />
-</ComponentPreview>
-
-### Lower Bracket Starts First
-
-Use the `ubAlignToLBRound` prop to start the upper bracket at a specific lower bracket round index. This is useful when the lower bracket has preliminary rounds (e.g. losers from a previous stage) before the upper bracket losers drop down.
-
-<ComponentPreview code={`const bracketLBStartsEarlier: DoubleEliminationBracket = {
-  type: "double-elimination",
-  upper: [
-    {
-      name: "UB Round 1",
-      matches: [
-        m("ub1-1", 0, 0, "Team Liquid", 2, "OG", 1, 3),
-        m("ub1-2", 0, 1, "Evil Geniuses", 2, "Team Secret", 0, 3),
-        m("ub1-3", 0, 2, "NaVi", 2, "Virtus.pro", 0, 3),
-        m("ub1-4", 0, 3, "LGD", 2, "Invictus Gaming", 1, 3),
-      ],
-    },
-    {
-      name: "UB Round 2",
-      matches: [
-        m("ub2-1", 1, 0, "Team Liquid", 2, "Evil Geniuses", 1, 3),
-        m("ub2-2", 1, 1, "NaVi", 0, "LGD", 2, 3),
-      ],
-    },
-    {
-      name: "UB Final",
-      matches: [m("ub3-1", 2, 0, "Team Liquid", 2, "LGD", 1, 3)],
-    },
-  ],
-  lower: [
-    {
-      name: "LB Round 1",
-      matches: [
-        m("lb1-1", 0, 0, "Vici Gaming", 2, "Fnatic", 0, 3),
-        m("lb1-2", 0, 1, "Alliance", 1, "Team Spirit", 2, 3),
-        m("lb1-3", 0, 2, "Tundra Esports", 2, "Gaimin Gladiators", 0, 3),
-        m("lb1-4", 0, 3, "LGD Gaming", 2, "Cloud9", 0, 3),
-      ],
-    },
-    {
-      name: "LB Round 2",
-      matches: [
-        m("lb2-1", 1, 0, "Vici Gaming", 2, "OG", 1, 3),
-        m("lb2-2", 1, 1, "Team Spirit", 2, "Team Secret", 1, 3),
-        m("lb2-3", 1, 2, "Tundra Esports", 2, "Virtus.pro", 1, 3),
-        m("lb2-4", 1, 3, "LGD Gaming", 2, "Invictus Gaming", 1, 3),
-      ],
-    },
-    {
-      name: "LB Round 3",
-      matches: [
-        m("lb3-1", 2, 0, "Vici Gaming", 2, "Team Spirit", 1, 3),
-        m("lb3-2", 2, 1, "Tundra Esports", 2, "LGD Gaming", 0, 3),
-      ],
-    },
-    {
-      name: "LB Round 4",
-      matches: [
-        m("lb4-1", 3, 0, "Vici Gaming", 2, "Evil Geniuses", 1, 3),
-        m("lb4-2", 3, 1, "Tundra Esports", 2, "NaVi", 1, 3),
-      ],
-    },
-    {
-      name: "LB Semi-final",
-      matches: [m("lb5-1", 4, 0, "Vici Gaming", 2, "Tundra Esports", 1, 3)],
-    },
-    {
-      name: "LB Final",
-      matches: [m("lb6-1", 5, 0, "Vici Gaming", 3, "LGD", 2, 5)],
-    },
-  ],
-  grandFinal: m("gf", 0, 0, "Team Liquid", 3, "Vici Gaming", 1, 5),
-};
-
-export function DoubleEliminationLBStartsEarlier() {
-  return (
-    <div className="not-prose overflow-x-auto rounded-xl">
-      <DoubleElimination bracket={bracketLBStartsEarlier} ubAlignToLBRound={1} />
-    </div>
-  );
-}
-`}>
-<DoubleEliminationLBStartsEarlier />
-</ComponentPreview>
-
-### Simple Connectors
-
-Use the `connectorStyle="simple"` prop to switch from standard curved/merged lines to squared-off, direct lines. This style features distinct paths for each match feed and "stub" connectors for drops from the Upper Bracket.
-
-<ComponentPreview code={`export function DoubleEliminationSimplePreview() {
-  return (
-    <div className="not-prose overflow-x-auto rounded-xl">
-      <DoubleElimination bracket={bracket} connectorStyle="simple" />
-    </div>
-  );
-}
-`}>
-<DoubleEliminationSimplePreview />
 </ComponentPreview>
 
 ## Installation
@@ -281,11 +101,11 @@ Use the `connectorStyle="simple"` prop to switch from standard curved/merged lin
 npx shadcn@latest add https://bracketcore.dev/r/double-elimination.json
 ```
 
-## Usage
+## Prerequisites
+
+Define your bracket data with upper bracket rounds, lower bracket rounds, and an optional grand final match.
 
 ```tsx
-import { DoubleElimination, type DoubleEliminationBracket } from "@bracketcore/registry";
-
 const bracket: DoubleEliminationBracket = {
   type: "double-elimination",
   upper: [
@@ -379,11 +199,179 @@ const bracket: DoubleEliminationBracket = {
     ],
   },
 };
-
-export default function Page() {
-  return <DoubleElimination bracket={bracket} />;
-}
 ```
+
+## Usage
+
+```tsx
+import { DoubleElimination, type DoubleEliminationBracket } from "@bracketcore/registry";
+```
+
+```tsx
+<DoubleElimination bracket={bracket} />
+```
+
+## Examples
+
+### Ratio 2
+
+Lower bracket has twice as many rounds as the upper bracket. Upper bracket columns automatically space out to stay aligned with the lower bracket.
+
+<ComponentPreview code={`const bracketRatio2: DoubleEliminationBracket = {
+  type: "double-elimination",
+  upper: [
+    {
+      name: "UB Round 1",
+      matches: [
+        m("r2-ub1-1", 0, 0, "Team Liquid", 2, "OG", 1, 3),
+        m("r2-ub1-2", 0, 1, "PSG.LGD", 2, "Evil Geniuses", 0, 3),
+        m("r2-ub1-3", 0, 2, "Tundra", 1, "Team Spirit", 2, 3),
+        m("r2-ub1-4", 0, 3, "Gaimin Gladiators", 0, "BetBoom", 2, 3),
+      ],
+    },
+    {
+      name: "UB Semi-final",
+      matches: [
+        m("r2-ub2-1", 1, 0, "Team Liquid", 2, "PSG.LGD", 0, 3),
+        m("r2-ub2-2", 1, 1, "Team Spirit", 1, "BetBoom", 2, 3),
+      ],
+    },
+    {
+      name: "UB Final",
+      matches: [m("r2-ub3-1", 2, 0, "Team Liquid", 2, "BetBoom", 1, 3)],
+    },
+  ],
+  lower: [
+    {
+      name: "LB Round 1",
+      matches: [
+        m("r2-lb1-1", 0, 0, "OG", 2, "Fnatic", 1, 3),
+        m("r2-lb1-2", 0, 1, "Evil Geniuses", 0, "Talon", 2, 3),
+        m("r2-lb1-3", 0, 2, "Tundra", 2, "Thunder Awaken", 1, 3),
+        m("r2-lb1-4", 0, 3, "Gaimin Gladiators", 2, "Alliance", 0, 3),
+      ],
+    },
+    {
+      name: "LB Round 2",
+      matches: [
+        m("r2-lb2-1", 1, 0, "OG", 2, "Talon", 1, 3),
+        m("r2-lb2-2", 1, 1, "Tundra", 0, "Gaimin Gladiators", 2, 3),
+      ],
+    },
+    {
+      name: "LB Round 3",
+      matches: [
+        m("r2-lb3-1", 2, 0, "OG", 2, "PSG.LGD", 1, 3),
+        m("r2-lb3-2", 2, 1, "Gaimin Gladiators", 1, "Team Spirit", 2, 3),
+      ],
+    },
+    {
+      name: "LB Round 4",
+      matches: [m("r2-lb4-1", 3, 0, "OG", 2, "Team Spirit", 1, 3)],
+    },
+    {
+      name: "LB Final",
+      matches: [m("r2-lb5-1", 4, 0, "OG", 2, "BetBoom", 1, 3)],
+    },
+  ],
+  grandFinal: m("r2-gf", 0, 0, "Team Liquid", 3, "OG", 1, 5),
+};
+
+<DoubleElimination bracket={bracketRatio2} />
+`}>
+<DoubleEliminationRatio2 />
+</ComponentPreview>
+
+### Lower Bracket Starts First
+
+Use the `ubAlignToLBRound` prop to start the upper bracket at a specific lower bracket round index. This is useful when the lower bracket has preliminary rounds (e.g. losers from a previous stage) before the upper bracket losers drop down.
+
+<ComponentPreview code={`const bracketLBStartsEarlier: DoubleEliminationBracket = {
+  type: "double-elimination",
+  upper: [
+    {
+      name: "UB Round 1",
+      matches: [
+        m("ub1-1", 0, 0, "Team Liquid", 2, "OG", 1, 3),
+        m("ub1-2", 0, 1, "Evil Geniuses", 2, "Team Secret", 0, 3),
+        m("ub1-3", 0, 2, "NaVi", 2, "Virtus.pro", 0, 3),
+        m("ub1-4", 0, 3, "LGD", 2, "Invictus Gaming", 1, 3),
+      ],
+    },
+    {
+      name: "UB Round 2",
+      matches: [
+        m("ub2-1", 1, 0, "Team Liquid", 2, "Evil Geniuses", 1, 3),
+        m("ub2-2", 1, 1, "NaVi", 0, "LGD", 2, 3),
+      ],
+    },
+    {
+      name: "UB Final",
+      matches: [m("ub3-1", 2, 0, "Team Liquid", 2, "LGD", 1, 3)],
+    },
+  ],
+  lower: [
+    {
+      name: "LB Round 1",
+      matches: [
+        m("lb1-1", 0, 0, "Vici Gaming", 2, "Fnatic", 0, 3),
+        m("lb1-2", 0, 1, "Alliance", 1, "Team Spirit", 2, 3),
+        m("lb1-3", 0, 2, "Tundra Esports", 2, "Gaimin Gladiators", 0, 3),
+        m("lb1-4", 0, 3, "LGD Gaming", 2, "Cloud9", 0, 3),
+      ],
+    },
+    {
+      name: "LB Round 2",
+      matches: [
+        m("lb2-1", 1, 0, "Vici Gaming", 2, "OG", 1, 3),
+        m("lb2-2", 1, 1, "Team Spirit", 2, "Team Secret", 1, 3),
+        m("lb2-3", 1, 2, "Tundra Esports", 2, "Virtus.pro", 1, 3),
+        m("lb2-4", 1, 3, "LGD Gaming", 2, "Invictus Gaming", 1, 3),
+      ],
+    },
+    {
+      name: "LB Round 3",
+      matches: [
+        m("lb3-1", 2, 0, "Vici Gaming", 2, "Team Spirit", 1, 3),
+        m("lb3-2", 2, 1, "Tundra Esports", 2, "LGD Gaming", 0, 3),
+      ],
+    },
+    {
+      name: "LB Round 4",
+      matches: [
+        m("lb4-1", 3, 0, "Vici Gaming", 2, "Evil Geniuses", 1, 3),
+        m("lb4-2", 3, 1, "Tundra Esports", 2, "NaVi", 1, 3),
+      ],
+    },
+    {
+      name: "LB Semi-final",
+      matches: [m("lb5-1", 4, 0, "Vici Gaming", 2, "Tundra Esports", 1, 3)],
+    },
+    {
+      name: "LB Final",
+      matches: [m("lb6-1", 5, 0, "Vici Gaming", 3, "LGD", 2, 5)],
+    },
+  ],
+  grandFinal: m("gf", 0, 0, "Team Liquid", 3, "Vici Gaming", 1, 5),
+};
+
+<DoubleElimination bracket={bracketLBStartsEarlier} ubAlignToLBRound={1} />
+`}>
+<DoubleEliminationLBStartsEarlier />
+</ComponentPreview>
+
+## Connector Styles
+
+You can customize the connector style using the `connectorStyle` prop. Available options are `default` (standard bracket lines) and `simple` (squared lines).
+
+### Simple Style
+
+Use the `connectorStyle="simple"` prop to switch from standard curved/merged lines to squared-off, direct lines. This style features distinct paths for each match feed and "stub" connectors for drops from the Upper Bracket.
+
+<ComponentPreview code={`<DoubleElimination bracket={bracket} connectorStyle="simple" />
+`}>
+<DoubleEliminationSimplePreview />
+</ComponentPreview>
 
 ## Props
 
