@@ -385,6 +385,61 @@ Use the `connectorStyle="simple"` prop to switch from standard curved/merged lin
 | `ubAlignToLBRound` | `number`                   | Lower bracket round index where the upper bracket starts. Defaults to `0`.                      |
 | `connectorStyle`   | `"default" \| "simple"`    | Connector line style. `"default"` uses curved/merged lines, `"simple"` uses squared-off lines.  |
 
+### `DoubleEliminationBracket`
+
+```ts
+interface DoubleEliminationBracket {
+  type: "double-elimination";
+  upper: Round[];
+  lower: Round[];
+  grandFinal?: Match;
+}
+```
+
+### `Round`
+
+```ts
+interface Round {
+  name: string;
+  matches: Match[];
+}
+```
+
+### `Match`
+
+```ts
+interface Match {
+  id: string;
+  round: number;
+  position: number;
+  bestOf?: number;
+  scheduledAt?: Date | string;
+  status?: "upcoming" | "live" | "completed";
+  teams: [MatchTeam, MatchTeam];
+}
+```
+
+### `MatchTeam`
+
+```ts
+interface MatchTeam {
+  team: Team | null;
+  score: number;
+  isWinner?: boolean;
+}
+```
+
+### `Team`
+
+```ts
+interface Team {
+  id: string;
+  name: string;
+  logo?: string;
+  seed?: number;
+}
+```
+
 ## How It Works
 
 The component places **every match and connector on a single CSS Grid**. This means:
@@ -403,3 +458,7 @@ Uses the same CSS custom properties as other bracket components:
 | `--bracket-match-height` | `calc(3.25rem + 1px)` | Height of each match card.         |
 | `--bracket-round-gap`    | `3rem`                | Horizontal gap between rounds.     |
 | `--bracket-match-gap`    | `1rem`                | Base vertical gap between matches. |
+
+## Theming
+
+All colors use your shadcn theme variables directly (`--card`, `--border`, `--card-foreground`, `--muted-foreground`, `--primary`). No extra configuration needed.

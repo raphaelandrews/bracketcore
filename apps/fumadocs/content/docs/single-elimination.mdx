@@ -7,35 +7,33 @@ description: A bracket component for single elimination tournaments with automat
 
 <ComponentPreview code={`import { SingleElimination, type SingleEliminationBracket, type Match } from "@bracketcore/registry";
 
-function makeMatch(
+function m(
   id: string,
   round: number,
   position: number,
-  nameA: string,
-  scoreA: number,
-  nameB: string,
-  scoreB: number,
-  bestOf: number,
-  status: Match["status"] = "completed",
+  a: string,
+  sa: number,
+  b: string,
+  sb: number,
+  bo: number,
 ): Match {
-  const aWins = scoreA > scoreB;
-  const done = status === "completed";
+  const aWins = sa > sb;
   return {
     id,
     round,
     position,
-    bestOf,
-    status,
+    bestOf: bo,
+    status: "completed",
     teams: [
       {
-        team: { id: nameA.toLowerCase().replace(/\\s+/g, "-"), name: nameA },
-        score: scoreA,
-        isWinner: done ? aWins : undefined,
+        team: { id: a.toLowerCase().replace(/\\s+/g, "-"), name: a },
+        score: sa,
+        isWinner: aWins,
       },
       {
-        team: { id: nameB.toLowerCase().replace(/\\s+/g, "-"), name: nameB },
-        score: scoreB,
-        isWinner: done ? !aWins : undefined,
+        team: { id: b.toLowerCase().replace(/\\s+/g, "-"), name: b },
+        score: sb,
+        isWinner: !aWins,
       },
     ],
   };
@@ -47,22 +45,22 @@ const sampleBracket: SingleEliminationBracket = {
     {
       name: "Quarter-finals",
       matches: [
-        makeMatch("qf-1", 0, 0, "Team Liquid", 2, "OG", 0, 3), // Liquid
-        makeMatch("qf-2", 0, 1, "Evil Geniuses", 2, "Team Secret", 0, 3), // EG
-        makeMatch("qf-3", 0, 2, "NaVi", 1, "Virtus.pro", 2, 3), // VP
-        makeMatch("qf-4", 0, 3, "LGD", 0, "Invictus Gaming", 2, 3), // IG
+        m("qf-1", 0, 0, "Team Liquid", 2, "OG", 0, 3),
+        m("qf-2", 0, 1, "Evil Geniuses", 2, "Team Secret", 0, 3),
+        m("qf-3", 0, 2, "NaVi", 1, "Virtus.pro", 2, 3),
+        m("qf-4", 0, 3, "LGD", 0, "Invictus Gaming", 2, 3),
       ],
     },
     {
       name: "Semi-finals",
       matches: [
-        makeMatch("sf-1", 1, 0, "Team Liquid", 0, "Evil Geniuses", 2, 3), // EG
-        makeMatch("sf-2", 1, 1, "Virtus.pro", 1, "Invictus Gaming", 2, 3), // IG
+        m("sf-1", 1, 0, "Team Liquid", 0, "Evil Geniuses", 2, 3),
+        m("sf-2", 1, 1, "Virtus.pro", 1, "Invictus Gaming", 2, 3),
       ],
     },
     {
       name: "Grand Final",
-      matches: [makeMatch("gf", 2, 0, "Evil Geniuses", 3, "Invictus Gaming", 1, 5)], // EG
+      matches: [m("gf", 2, 0, "Evil Geniuses", 3, "Invictus Gaming", 1, 5)],
     },
   ],
 };
@@ -195,7 +193,7 @@ interface Match {
   round: number;
   position: number;
   bestOf?: number;
-  scheduledAt?: string;
+  scheduledAt?: Date | string;
   status?: "upcoming" | "live" | "completed";
   teams: [MatchTeam, MatchTeam];
 }
@@ -248,4 +246,4 @@ Control dimensions via CSS custom properties on a parent element:
 
 ## Theming
 
-All colors use your shadcn theme variables directly (`--background`, `--card`, `--border`, `--card-foreground`, `--muted-foreground`, `--primary`). No extra configuration needed.
+All colors use your shadcn theme variables directly (`--card`, `--border`, `--card-foreground`, `--muted-foreground`, `--primary`). No extra configuration needed.
