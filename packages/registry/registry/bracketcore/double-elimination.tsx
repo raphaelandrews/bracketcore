@@ -115,20 +115,27 @@ export function DoubleElimination({
   }
 
   const getUBCol = (rIdx: number) => {
-    // If have a mapped drop round.
-    if (rIdx < lbDropRoundIndices.length) {
-      const targetLBIdx = lbDropRoundIndices[rIdx]! + ubAlignToLBRound;
-      return getLBCol(targetLBIdx);
+    // Determine the sequence of LB drop rounds we map to.
+    // We look for the first drop round index that is >= ubAlignToLBRound.
+    // UB Round 0 maps to that drop round, UB Round 1 to the next, etc.
+    const startDropIdx = lbDropRoundIndices.findIndex((idx) => idx >= ubAlignToLBRound);
+
+    if (startDropIdx !== -1) {
+      const mappedIdx = startDropIdx + rIdx;
+      if (mappedIdx < lbDropRoundIndices.length) {
+        return getLBCol(lbDropRoundIndices[mappedIdx]!);
+      }
+
+      // Fallback: extrapolate from the last known drop round.
+      // We assume a standard cadence of 2 LB rounds per UB round thereafter.
+      const lastDrop = lbDropRoundIndices[lbDropRoundIndices.length - 1]!;
+      const extra = mappedIdx - (lbDropRoundIndices.length - 1);
+      return getLBCol(lastDrop + extra * 2);
     }
 
-    // Fallback if UB has more rounds than detected drops (unlikely in standard DE):
-    // Just place it after the last known drop, spacing by 2 columns (standard round gap)
-    const lastMappedLBIdx = lbDropRoundIndices[lbDropRoundIndices.length - 1]! + ubAlignToLBRound;
-    const extra = rIdx - lbDropRoundIndices.length + 1;
-    return getLBCol(lastMappedLBIdx) + extra * 4; // Arbitrary wide spacing or project?
-    // Better: maintain the visual gap of "Drop -> Play -> Drop" (step of 2 rounds = 4 cols)
-    // But safely:
-    return getLBCol(lastMappedLBIdx + extra * 2);
+    // Fallback: If no drop round satisfies the alignment (unlikely unless align is huge),
+    // simple linear mapping.
+    return getLBCol(ubAlignToLBRound + rIdx * 2);
   };
 
   const ubMatchCols: number[] = [];

@@ -117,45 +117,36 @@ const bracketRatio2: DoubleEliminationBracket = {
     {
       name: "LB Round 1",
       matches: [
-        m("r2-lb1-1", 0, 0, "OG", 2, "Evil Geniuses", 1, 3),
-        m("r2-lb1-2", 0, 1, "Tundra", 0, "Gaimin Gladiators", 2, 3),
-        m("r2-lb1-3", 0, 2, "Alliance", 2, "Fnatic", 1, 3),
-        m("r2-lb1-4", 0, 3, "Beastcoast", 0, "Thunder Awaken", 2, 3),
+        m("r2-lb1-1", 0, 0, "OG", 2, "Fnatic", 1, 3),
+        m("r2-lb1-2", 0, 1, "Evil Geniuses", 0, "Talon", 2, 3),
+        m("r2-lb1-3", 0, 2, "Tundra", 2, "Thunder Awaken", 1, 3),
+        m("r2-lb1-4", 0, 3, "Gaimin Gladiators", 2, "Alliance", 0, 3),
       ],
     },
     {
       name: "LB Round 2",
       matches: [
-        m("r2-lb2-1", 1, 0, "OG", 0, "PSG.LGD", 2, 3),
-        m("r2-lb2-2", 1, 1, "Gaimin Gladiators", 2, "Team Spirit", 0, 3),
-        m("r2-lb2-3", 1, 2, "Alliance", 1, "Xtreme Gaming", 2, 3),
-        m("r2-lb2-4", 1, 3, "Thunder Awaken", 2, "Talon", 0, 3),
+        m("r2-lb2-1", 1, 0, "OG", 2, "Talon", 1, 3),
+        m("r2-lb2-2", 1, 1, "Tundra", 0, "Gaimin Gladiators", 2, 3),
       ],
     },
     {
       name: "LB Round 3",
       matches: [
-        m("r2-lb3-1", 2, 0, "PSG.LGD", 2, "Gaimin Gladiators", 1, 3),
-        m("r2-lb3-2", 2, 1, "Xtreme Gaming", 0, "Thunder Awaken", 2, 3),
+        m("r2-lb3-1", 2, 0, "OG", 2, "PSG.LGD", 1, 3),
+        m("r2-lb3-2", 2, 1, "Gaimin Gladiators", 1, "Team Spirit", 2, 3),
       ],
     },
     {
       name: "LB Round 4",
-      matches: [
-        m("r2-lb4-1", 3, 0, "PSG.LGD", 2, "BetBoom", 1, 3),
-        m("r2-lb4-2", 3, 1, "Thunder Awaken", 0, "Team Liquid", 2, 3),
-      ],
-    },
-    {
-      name: "LB Semi-final",
-      matches: [m("r2-lb5-1", 4, 0, "PSG.LGD", 2, "Team Liquid", 1, 3)],
+      matches: [m("r2-lb4-1", 3, 0, "OG", 2, "Team Spirit", 1, 3)],
     },
     {
       name: "LB Final",
-      matches: [m("r2-lb6-1", 5, 0, "PSG.LGD", 3, "BetBoom", 2, 5)],
+      matches: [m("r2-lb5-1", 4, 0, "OG", 2, "BetBoom", 1, 3)],
     },
   ],
-  grandFinal: m("r2-gf", 0, 0, "Team Liquid", 3, "PSG.LGD", 1, 5),
+  grandFinal: m("r2-gf", 0, 0, "Team Liquid", 3, "OG", 1, 5),
 };
 
 const bracketLBStartsEarlier: DoubleEliminationBracket = {
