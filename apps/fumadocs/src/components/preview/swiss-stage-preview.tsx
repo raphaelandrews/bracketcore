@@ -88,7 +88,7 @@ const bracket: SwissBracket = {
 
 export function SwissStagePreview() {
   return (
-    <div className="not-prose overflow-x-auto rounded-xl border border-border">
+    <div className="not-prose overflow-x-auto rounded-xl">
       <SwissStage bracket={bracket} />
     </div>
   );

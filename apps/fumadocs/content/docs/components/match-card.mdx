@@ -5,7 +5,46 @@ description: The atomic building block for all bracket types — displays a sing
 
 ## Preview
 
+<ComponentPreview code={`import { MatchCard, type Match } from "@bracketcore/registry";
+
+const completed: Match = {
+  id: "demo-completed",
+  round: 0,
+  position: 0,
+  bestOf: 3,
+  status: "completed",
+  teams: [
+    {
+      team: { id: "team-liquid", name: "Team Liquid" },
+      score: 2,
+      isWinner: true,
+    },
+    {
+      team: { id: "og", name: "OG" },
+      score: 0,
+      isWinner: false,
+    },
+  ],
+};
+
+function PreviewWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="not-prose flex items-center justify-center h-72 w-full p-10 rounded-xl">
+      {children}
+    </div>
+  );
+}
+
+export function MatchCardPreview() {
+  return (
+    <PreviewWrapper>
+      <MatchCard match={completed} />
+    </PreviewWrapper>
+  );
+}
+`}>
 <MatchCardPreview />
+</ComponentPreview>
 
 ## Installation
 
@@ -49,25 +88,137 @@ export default function Page() {
 
 A live match shows a destructive border, a pulsing live indicator in the header, and colored scores — green for the leading team, red for the trailing team.
 
+<ComponentPreview code={`const live: Match = {
+  id: "demo-live",
+  round: 0,
+  position: 0,
+  bestOf: 5,
+  status: "live",
+  scheduledAt: todayAt(14, 0),
+  teams: [
+    {
+      team: { id: "evil-geniuses", name: "Evil Geniuses" },
+      score: 2,
+    },
+    {
+      team: { id: "team-secret", name: "Team Secret" },
+      score: 1,
+    },
+  ],
+};
+
+function todayAt(hours: number, minutes: number) {
+  const d = new Date();
+  d.setHours(hours, minutes, 0, 0);
+  return d;
+}
+
+export function MatchCardLive() {
+  return (
+    <PreviewWrapper>
+      <MatchCard match={live} />
+    </PreviewWrapper>
+  );
+}
+`}>
 <MatchCardLive />
+</ComponentPreview>
 
 ### Upcoming
 
 An upcoming match displays the scheduled time and relative day in the header. The format adapts automatically: "Today", "Tomorrow", weekday name (within 7 days), or "Month Day".
 
+<ComponentPreview code={`const upcoming: Match = {
+  id: "demo-upcoming",
+  round: 0,
+  position: 0,
+  bestOf: 3,
+  status: "upcoming",
+  scheduledAt: daysFromNow(1, 18, 0),
+  teams: [
+    {
+      team: { id: "navi", name: "NaVi" },
+      score: 0,
+    },
+    {
+      team: { id: "virtus-pro", name: "Virtus.pro" },
+      score: 0,
+    },
+  ],
+};
+
+function daysFromNow(days: number, hours: number, minutes: number) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  d.setHours(hours, minutes, 0, 0);
+  return d;
+}
+
+export function MatchCardUpcoming() {
+  return (
+    <PreviewWrapper>
+      <MatchCard match={upcoming} />
+    </PreviewWrapper>
+  );
+}
+`}>
 <MatchCardUpcoming />
+</ComponentPreview>
 
 ### Scheduled (TBD teams)
 
 When teams are not yet determined but the match is already scheduled, the header shows the date while both team slots display "TBD".
 
+<ComponentPreview code={`const scheduled: Match = {
+  id: "demo-scheduled",
+  round: 0,
+  position: 0,
+  bestOf: 3,
+  status: "upcoming",
+  scheduledAt: daysFromNow(3, 16, 30),
+  teams: [
+    { team: null, score: 0 },
+    { team: null, score: 0 },
+  ],
+};
+
+export function MatchCardScheduled() {
+  return (
+    <PreviewWrapper>
+      <MatchCard match={scheduled} />
+    </PreviewWrapper>
+  );
+}
+`}>
 <MatchCardScheduled />
+</ComponentPreview>
 
 ### TBD
 
 When `team` is `null` and no schedule is set, the card shows italic "TBD" text with no header.
 
+<ComponentPreview code={`const tbd: Match = {
+  id: "demo-tbd",
+  round: 0,
+  position: 0,
+  bestOf: 5,
+  status: "upcoming",
+  teams: [
+    { team: null, score: 0 },
+    { team: null, score: 0 },
+  ],
+};
+
+export function MatchCardTBD() {
+  return (
+    <PreviewWrapper>
+      <MatchCard match={tbd} />
+    </PreviewWrapper>
+  );
+}
+`}>
 <MatchCardTBD />
+</ComponentPreview>
 
 ## Props
 

@@ -4,6 +4,7 @@ import type { ComponentProps } from "react";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import { CodeBlockTabsList } from "fumadocs-ui/components/codeblock";
 import { SquareTerminal } from "lucide-react";
+import { ComponentPreview } from "@/components/component-preview";
 import { SingleEliminationPreview, SingleEliminationSimplePreview } from "@/components/preview/single-elimination-preview";
 import { SwissStagePreview } from "@/components/preview/swiss-stage-preview";
 import { GroupStagePreview } from "@/components/preview/group-stage-preview";
@@ -34,6 +35,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
     ...defaultMdxComponents,
     CodeBlockTabsList: CustomCodeBlockTabsList,
+    ComponentPreview,
     SingleEliminationPreview,
     SingleEliminationSimplePreview,
     SwissStagePreview,

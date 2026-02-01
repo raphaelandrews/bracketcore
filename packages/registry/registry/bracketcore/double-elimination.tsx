@@ -102,7 +102,6 @@ export function DoubleElimination({
   const ubCount = upper.length;
   const lbCount = lower.length;
 
-
   // Function to map UB round index to Grid Column
   // A Drop Round is LB Round 0, plus any subsequent round where match count >= previous round match count
   const lbDropRoundIndices = [0];
@@ -115,8 +114,8 @@ export function DoubleElimination({
   }
 
   const getUBCol = (rIdx: number) => {
-    // Determine the sequence of LB drop rounds we map to.
-    // We look for the first drop round index that is >= ubAlignToLBRound.
+    // Determine the sequence of LB drop rounds map to.
+    // Look for the first drop round index that is >= ubAlignToLBRound.
     // UB Round 0 maps to that drop round, UB Round 1 to the next, etc.
     const startDropIdx = lbDropRoundIndices.findIndex((idx) => idx >= ubAlignToLBRound);
 
@@ -127,7 +126,7 @@ export function DoubleElimination({
       }
 
       // Fallback: extrapolate from the last known drop round.
-      // We assume a standard cadence of 2 LB rounds per UB round thereafter.
+      // Assume a standard cadence of 2 LB rounds per UB round thereafter.
       const lastDrop = lbDropRoundIndices[lbDropRoundIndices.length - 1]!;
       const extra = mappedIdx - (lbDropRoundIndices.length - 1);
       return getLBCol(lastDrop + extra * 2);
@@ -712,13 +711,6 @@ function GrandFinalConnector({
 
         {/* Lower arm: LB Center -> Up-Right -> GF Bottom Slot. */}
 
-        {/* Need to apply height adjustment separately or reuse botOffset?
-            Shift is negative. + Shift decreases result.
-            botOffset string is ` - ... * Shift`. So ` - ... * -0.25` is `+`.
-            So botOffset is Positive Value of Shift distance.
-            If we move start UP by X, we must reduce height by X to keep top same.
-            So `height: calc(Default - botOffset)`.
-        */}
         <div
           className="absolute border-border"
           style={{

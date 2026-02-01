@@ -100,7 +100,7 @@ const tbd: Match = {
 
 function PreviewWrapper({ children }: { children: React.ReactNode }) {
   return (
-    <div className="not-prose flex items-center justify-center h-72 w-full p-10 rounded-xl border border-border">
+    <div className="not-prose flex items-center justify-center h-72 w-full p-10 rounded-xl">
       {children}
     </div>
   );

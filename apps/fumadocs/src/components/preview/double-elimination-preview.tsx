@@ -220,7 +220,7 @@ const bracketLBStartsEarlier: DoubleEliminationBracket = {
 
 export function DoubleEliminationPreview() {
   return (
-    <div className="not-prose overflow-x-auto rounded-xl border border-border">
+    <div className="not-prose overflow-x-auto rounded-xl">
       <DoubleElimination bracket={bracket} />
     </div>
   );
@@ -228,7 +228,7 @@ export function DoubleEliminationPreview() {
 
 export function DoubleEliminationRatio2() {
   return (
-    <div className="not-prose overflow-x-auto rounded-xl border border-border">
+    <div className="not-prose overflow-x-auto rounded-xl">
       <DoubleElimination bracket={bracketRatio2} />
     </div>
   );
@@ -236,7 +236,7 @@ export function DoubleEliminationRatio2() {
 
 export function DoubleEliminationLBStartsEarlier() {
   return (
-    <div className="not-prose overflow-x-auto rounded-xl border border-border">
+    <div className="not-prose overflow-x-auto rounded-xl">
       <DoubleElimination bracket={bracketLBStartsEarlier} ubAlignToLBRound={1} />
     </div>
   );
@@ -244,7 +244,7 @@ export function DoubleEliminationLBStartsEarlier() {
 
 export function DoubleEliminationSimplePreview() {
   return (
-    <div className="not-prose overflow-x-auto rounded-xl border border-border">
+    <div className="not-prose overflow-x-auto rounded-xl">
       <DoubleElimination bracket={bracket} connectorStyle="simple" />
     </div>
   );
