@@ -32,7 +32,7 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
           githubUrl={`https://github.com/${gitConfig.user}/${gitConfig.repo}/blob/${gitConfig.branch}/docs/content/docs/${page.path}`}
         />
       </div>
-      <DocsBody>
+      <DocsBody className="docs-typography">
         <MDX
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths

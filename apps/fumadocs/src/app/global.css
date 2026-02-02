@@ -131,7 +131,11 @@
   }
 
   nav {
-    @apply border-none;
+    @apply border-none !container;
+  }
+
+  nav>ul {
+    @apply !p-0;
   }
 
   figure {
@@ -146,15 +150,28 @@
     @apply !max-w-[42rem] !px-4 !py-6 md:!px-0;
   }
 
-  :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  .dotted-border-y {
+    background-image: repeating-linear-gradient(to bottom, var(--border) 0px, var(--border) 6px, transparent 6px, transparent 14px), repeating-linear-gradient(to bottom, var(--border) 0px, var(--border) 6px, transparent 6px, transparent 14px);
+    background-size: 1px 100%, 1px 100%;
+    background-position: left top, right top;
+    background-repeat: no-repeat;
+  }
+
+  .dotted-border-x {
+    background-image: repeating-linear-gradient(to right, var(--border) 0px, var(--border) 6px, transparent 6px, transparent 14px);
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+  }
+
+  .docs-typography :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     @apply !text-xl !mt-[2.4em];
   }
 
-  :where(h3):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  .docs-typography :where(h3):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     @apply !text-lg !mt-[1.4em];
   }
 
-  :where(h4):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  .docs-typography :where(h4):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     @apply !text-base !mt-[1.4em];
   }
 }
@@ -163,10 +180,6 @@
   @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
 }
 
-@utility container-wrapper {
-  @apply 3xl:fixed:max-w-[calc(var(--breakpoint-2xl)+2rem)] mx-auto w-full px-2;
-}
-
 @utility container {
-  @apply 3xl:max-w-screen-2xl mx-auto max-w-[1400px] px-4 lg:px-8;
+  @apply max-w-[710px] mx-auto w-full px-4;
 }

@@ -31,3 +31,31 @@ export function Footer() {
     </footer>
   )
 }
+
+export function HomeFooter() {
+  return (
+    <footer>
+      <div className="container relative p-4 dotted-border-y flex justify-center text-muted-foreground w-full text-center text-xs leading-loose sm:text-sm">
+        Built by{" "}
+        <a
+          href={siteConfig.links.twitter}
+          target="_blank"
+          rel="noreferrer"
+          className="font-medium underline underline-offset-4 text-[#8aadf4] hover:text-[#eed49f] transition"
+        >
+          Andrews
+        </a>{" "}
+        . The source code is available on{" "}
+        <a
+          href={siteConfig.links.github}
+          target="_blank"
+          rel="noreferrer"
+          className="font-medium underline underline-offset-4"
+        >
+          GitHub
+        </a>
+        .
+      </div>
+    </footer>
+  )
+}

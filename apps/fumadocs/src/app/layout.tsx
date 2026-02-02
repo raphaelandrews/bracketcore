@@ -3,7 +3,6 @@ import { Geist } from "next/font/google";
 import { RootProvider } from "fumadocs-ui/provider/next";
 
 import "./global.css";
-import { Footer } from "@/components/footer";
 import { siteConfig } from "@/lib/config";
 
 const geist = Geist({
@@ -71,10 +70,9 @@ export const metadata: Metadata = {
 export default function Layout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={geist.className} suppressHydrationWarning>
-      <body className="flex flex-col min-h-screen group/body">
-        <RootProvider>
+      <body className="flex flex-col min-h-screen">
+        <RootProvider >
           {children}
-          <Footer />
         </RootProvider>
       </body>
     </html>

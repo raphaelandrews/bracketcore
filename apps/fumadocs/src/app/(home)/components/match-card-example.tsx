@@ -1,38 +1,31 @@
 "use client";
 
-import { MatchCard } from "@bracketcore/registry";
+import { MatchCard, type Match } from "@bracketcore/registry";
+
+const completed: Match = {
+  id: "demo-completed",
+  round: 0,
+  position: 0,
+  bestOf: 3,
+  status: "completed",
+  teams: [
+    {
+      team: { id: "team-liquid", name: "Team Liquid" },
+      score: 2,
+      isWinner: true,
+    },
+    {
+      team: { id: "og", name: "OG" },
+      score: 0,
+      isWinner: false,
+    },
+  ],
+};
 
 export function MatchCardExample() {
   return (
-    <div className="flex justify-center p-4">
-      <MatchCard
-        match={{
-          id: "1",
-          round: 1,
-          position: 1,
-          scheduledAt: "2024-02-23",
-          status: "completed",
-          teams: [
-            {
-              score: 3,
-              isWinner: true,
-              team: {
-                id: "1",
-                name: "Team A"
-              }
-            },
-            {
-              score: 1,
-              isWinner: false,
-              team: {
-                id: "2",
-                name: "Team B"
-              }
-            },
-          ],
-        }}
-        onMatchClick={() => { }}
-      />
+    <div className="flex w-full overflow-auto p-4 justify-center">
+      <MatchCard match={completed} />
     </div>
   );
 }
