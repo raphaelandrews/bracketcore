@@ -22,6 +22,7 @@
       "dependencies": {
         "@base-ui/react": "^1.0.0",
         "@bracketcore/registry": "workspace:*",
+        "@fumadocs/base-ui": "^16.5.0",
         "@tanstack/react-table": "^8.21.3",
         "class-variance-authority": "^0.7.1",
         "fumadocs-core": "latest",
@@ -29,8 +30,10 @@
         "fumadocs-ui": "npm:@fumadocs/base-ui@latest",
         "lucide-react": "^0.563.0",
         "next": "16.1.4",
+        "next-themes": "^0.4.6",
         "react": "^19.2.3",
         "react-dom": "^19.2.3",
+        "scroll-into-view-if-needed": "^3.1.0",
         "tailwind-merge": "^3.4.0",
       },
       "devDependencies": {
@@ -207,6 +210,8 @@
     "@formatjs/fast-memoize": ["@formatjs/fast-memoize@3.1.0", "", { "dependencies": { "tslib": "^2.8.1" } }, "sha512-b5mvSWCI+XVKiz5WhnBCY3RJ4ZwfjAidU0yVlKa3d3MSgKmH1hC3tBGEAtYyN5mqL7N0G5x0BOUYyO8CEupWgg=="],
 
     "@formatjs/intl-localematcher": ["@formatjs/intl-localematcher@0.8.0", "", { "dependencies": { "@formatjs/fast-memoize": "3.1.0", "tslib": "^2.8.1" } }, "sha512-zgMYWdUlmEZpX2Io+v3LHrfq9xZ6khpQVf9UAw2xYWhGerGgI9XgH1HvL/A34jWiruUJpYlP5pk4g8nIcaDrXQ=="],
+
+    "@fumadocs/base-ui": ["@fumadocs/base-ui@16.5.0", "", { "dependencies": { "@base-ui/react": "^1.1.0", "@fumadocs/ui": "16.5.0", "class-variance-authority": "^0.7.1", "lucide-react": "^0.563.0", "next-themes": "^0.4.6", "react-medium-image-zoom": "^5.4.0", "scroll-into-view-if-needed": "^3.1.0" }, "peerDependencies": { "@types/react": "*", "fumadocs-core": "16.5.0", "next": "16.x.x", "react": "^19.2.0", "react-dom": "^19.2.0", "tailwindcss": "^4.0.0" }, "optionalPeers": ["@types/react", "next", "tailwindcss"] }, "sha512-QIOt+PDndMSQ3k/515mNIU4Z+tQI4SjRZXx4BuoJjrse313KHJpU+DNo+KS8JjLXZ5+6MlYQ2mMTZ2A788H2DQ=="],
 
     "@fumadocs/ui": ["@fumadocs/ui@16.5.0", "", { "dependencies": { "next-themes": "^0.4.6", "postcss-selector-parser": "^7.1.1", "tailwind-merge": "^3.4.0" }, "peerDependencies": { "@types/react": "*", "fumadocs-core": "16.5.0", "next": "16.x.x", "react": "^19.2.0", "react-dom": "^19.2.0", "tailwindcss": "^4.0.0" }, "optionalPeers": ["@types/react", "next", "tailwindcss"] }, "sha512-64P3QqnN5SjjqsKLIoA/6Tgzrs05JthZSa4RxuTCmXMXkjKOV6m6x6hanQrDzX1M27xVIlwuDrxLBzA21t0CgQ=="],
 

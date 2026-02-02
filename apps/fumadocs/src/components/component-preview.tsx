@@ -37,7 +37,7 @@ export function ComponentPreview({
         </div>
 
         {!isExpanded && (
-          <div className="absolute inset-x-0 bottom-0 pb-8 flex h-full max-h-32 items-end justify-center rounded-b-md bg-gradient-to-b from-transparent to-fd-card">
+          <div className="absolute inset-x-0 bottom-0 pb-8 flex h-full max-h-32 items-end justify-center rounded-b-md bg-gradient-to-b from-transparent to-card">
             <Button
               variant="outline"
               size="sm"
