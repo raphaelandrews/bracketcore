@@ -9,6 +9,8 @@ import { cva } from 'class-variance-authority';
 import { usePathname } from 'fumadocs-core/framework';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header/header';
+import { Button } from '@/components/ui/button';
+import { LargeSearchToggle } from '../search-toggle';
 
 interface SidebarContext {
   open: boolean;
@@ -60,13 +62,28 @@ export function SearchToggle(props: ComponentProps<'button'>) {
   if (!enabled) return;
 
   return (
-    <button
+    <Button
+    value="default"
       {...props}
       className={cn('text-sm', props.className)}
       onClick={() => setOpenSearch(true)}
     >
       Search
-    </button>
+    </Button>
+  );
+}
+
+export function SearchToggleLarge(props: ComponentProps<'button'>) {
+  const { enabled, setOpenSearch } = useSearchContext();
+  if (!enabled) return;
+
+  return (
+    <LargeSearchToggle
+    value="default"
+      {...props}
+      className={cn('text-sm', props.className)}
+      onClick={() => setOpenSearch(true)}
+    />
   );
 }
 

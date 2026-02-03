@@ -6,6 +6,8 @@ import { cn } from '@/lib/cn';
 import { useTreeContext } from 'fumadocs-ui/contexts/tree';
 import { Link, usePathname } from 'fumadocs-core/framework';
 import type * as PageTree from 'fumadocs-core/page-tree';
+import { Button } from '@/components/ui/button';
+import { MoveLeftIcon, MoveRightIcon } from 'lucide-react';
 
 export interface DocsPageProps {
   toc?: TOCItemType[];
@@ -111,8 +113,18 @@ function Footer() {
 
   return (
     <div className="flex flex-row justify-between gap-2 items-center font-medium">
-      {previous ? <Link href={previous.url}>{previous.name}</Link> : null}
-      {next ? <Link href={next.url}>{next.name}</Link> : null}
+      {previous ? (
+        <Button variant="secondary">
+          <MoveLeftIcon data-icon="inline-start" />
+          <Link href={previous.url}>{previous.name}</Link>
+        </Button>
+      ) : null}
+      {next ? (
+        <Button variant="secondary">
+          <Link href={next.url}>{next.name}</Link>
+          <MoveRightIcon data-icon="inline-start" />
+        </Button>
+      ) : null}
     </div>
   );
 }

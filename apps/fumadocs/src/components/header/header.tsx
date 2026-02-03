@@ -4,7 +4,8 @@ import { InstagramIcon, MailIcon, MenuIcon } from "lucide-react"
 import { MainNav } from "./main-nav"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { NavbarSidebarTrigger, SearchToggle } from "../layout/docs"
+import { NavbarSidebarTrigger, SearchToggleLarge } from "../layout/docs"
+import { ThemeToggle } from "../layout/theme-toggle"
 
 export function Header() {
   return (
@@ -15,7 +16,7 @@ export function Header() {
         </Suspense>
         <div className="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
           <div className="flex w-full flex-1 md:w-auto md:flex-none">
-            <SearchToggle />
+            <SearchToggleLarge />
           </div>
           <NavbarSidebarTrigger className="md:hidden" />
           <Separator className="!w-0.5 !h-4 ml-2" orientation="vertical" />
@@ -44,7 +45,7 @@ export function Header() {
             </a>
           </Button>
           <Separator className="!w-0.5 !h-4" orientation="vertical" />
-          {/*<ModeSwitcher />*/}
+          <ThemeToggle />
         </div>
       </div>
     </header>
