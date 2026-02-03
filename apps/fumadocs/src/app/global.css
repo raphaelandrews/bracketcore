@@ -181,5 +181,5 @@
 }
 
 @utility container {
-  @apply max-w-[710px] mx-auto w-full px-4;
+  @apply max-w-full mx-auto w-full px-6;
 }

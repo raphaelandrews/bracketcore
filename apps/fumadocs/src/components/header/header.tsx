@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import { InstagramIcon, MailIcon, MenuIcon } from "lucide-react"
+import { GithubIcon, InstagramIcon, MailIcon, MenuIcon, TwitterIcon } from "lucide-react"
 
 import { MainNav } from "./main-nav"
 import { Button } from "@/components/ui/button"
@@ -10,7 +10,7 @@ import { ThemeToggle } from "../layout/theme-toggle"
 export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="!max-w-[1280px] container flex h-14 items-center">
+      <div className="container flex h-14 items-center">
         <Suspense fallback={<MainNavSkeleton />}>
           <MainNav />
         </Suspense>
@@ -19,32 +19,32 @@ export function Header() {
             <SearchToggleLarge />
           </div>
           <NavbarSidebarTrigger className="md:hidden" />
-          <Separator className="!w-0.5 !h-4 ml-2" orientation="vertical" />
-          <Button size="sm" variant="ghost" className="hidden sm:block p-2">
+          <Separator className="!w-0.5 !h-4 ml-2 !self-auto" orientation="vertical" />
+          <Button size="sm" variant="ghost" className="hidden sm:block p-2 hover:cursor-pointer">
             <a
-              href="#"
+              href="https://github.com/raphaelandrews/bracketcore"
               target="_blank"
               rel="noopener"
             >
-              <InstagramIcon size={16} />
-              <span className="sr-only">Instagram</span>
+              <GithubIcon size={16} />
+              <span className="sr-only">Github</span>
             </a>
           </Button>
           <Separator
-            className="!w-0.5 !h-4 hidden sm:block"
+            className="!w-0.5 !h-4 hidden sm:block !self-auto"
             orientation="vertical"
           />
-          <Button size="sm" variant="ghost" className="hidden sm:block p-2">
+          <Button size="sm" variant="ghost" className="hidden sm:block p-2 hover:cursor-pointer">
             <a
-              href="mailto"
+              href="https://x.com/_andrewssh"
               target="_blank"
               rel="noopener"
             >
-              <MailIcon size={16} />
-              <span className="sr-only">Email</span>
+              <TwitterIcon size={16} />
+              <span className="sr-only">Twitter</span>
             </a>
           </Button>
-          <Separator className="!w-0.5 !h-4" orientation="vertical" />
+          <Separator className="!w-0.5 !h-4 !self-auto" orientation="vertical" />
           <ThemeToggle />
         </div>
       </div>

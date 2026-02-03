@@ -9,7 +9,8 @@ import { cva } from 'class-variance-authority';
 import { usePathname } from 'fumadocs-core/framework';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header/header';
-import { Button } from '@/components/ui/button';
+
+import { Button, buttonVariants } from '@/components/ui/button';
 import { LargeSearchToggle } from '../search-toggle';
 
 interface SidebarContext {
@@ -63,7 +64,7 @@ export function SearchToggle(props: ComponentProps<'button'>) {
 
   return (
     <Button
-    value="default"
+      value="default"
       {...props}
       className={cn('text-sm', props.className)}
       onClick={() => setOpenSearch(true)}
@@ -79,7 +80,7 @@ export function SearchToggleLarge(props: ComponentProps<'button'>) {
 
   return (
     <LargeSearchToggle
-    value="default"
+      value="default"
       {...props}
       className={cn('text-sm', props.className)}
       onClick={() => setOpenSearch(true)}
@@ -121,22 +122,12 @@ function Sidebar() {
         !open && 'max-md:invisible',
       )}
     >
-      {children}
+      <div className='w-full max-w-[200px] mx-auto mt-9'>
+        {children}
+      </div>
     </aside>
   );
 }
-
-const linkVariants = cva(
-  'flex items-center gap-2 w-full py-1.5 rounded-lg text-[.8rem] font-medium text-foreground/80 [&_svg]:size-4',
-  {
-    variants: {
-      active: {
-        true: 'text-primary font-medium',
-        false: 'hover:text-accent-foreground',
-      },
-    },
-  },
-);
 
 function SidebarItem({ item, children }: { item: PageTree.Node; children: ReactNode }) {
   const pathname = usePathname();
@@ -145,19 +136,30 @@ function SidebarItem({ item, children }: { item: PageTree.Node; children: ReactN
     return (
       <Link
         href={item.url}
-        className={linkVariants({
-          active: pathname === item.url,
-        })}
+        className="group flex w-full items-center justify-start"
       >
-        {item.icon}
-        {item.name}
+        <span
+          className={cn(
+            buttonVariants({
+              variant: pathname === item.url ? 'secondary' : 'ghost',
+              size: 'xs',
+            }),
+            'text-[.8rem] h-7.5 ',
+            pathname === item.url
+              ? 'group-hover:bg-secondary/80'
+              : 'group-hover:bg-muted group-hover:text-foreground dark:group-hover:bg-muted/50',
+          )}
+        >
+          {item.icon}
+          {item.name}
+        </span>
       </Link>
     );
   }
 
   if (item.type === 'separator') {
     return (
-      <p className="text-muted-foreground mt-6 mb-2 first:mt-0">
+      <p className="font-medium text-xs text-muted-foreground mt-6 mb-2 px-2.5 first:mt-0">
         {item.icon}
         {item.name}
       </p>
@@ -168,16 +170,32 @@ function SidebarItem({ item, children }: { item: PageTree.Node; children: ReactN
     <div>
       {item.index ? (
         <Link
-          className={linkVariants({
-            active: pathname === item.index.url,
-          })}
+          className="group flex w-full items-center justify-start"
           href={item.index.url}
         >
-          {item.index.icon}
-          {item.index.name}
+          <span
+            className={cn(
+              buttonVariants({
+                variant: pathname === item.index.url ? 'secondary' : 'ghost',
+                size: 'xs',
+              }),
+              'text-[.8rem] h-7.5 ',
+              pathname === item.index.url
+                ? 'group-hover:bg-secondary/80'
+                : 'group-hover:bg-muted group-hover:text-foreground dark:group-hover:bg-muted/50',
+            )}
+          >
+            {item.index.icon}
+            {item.index.name}
+          </span>
         </Link>
       ) : (
-        <p className={cn(linkVariants(), 'text-start')}>
+        <p
+          className={cn(
+            buttonVariants({ variant: 'ghost', size: 'xs' }),
+            'justify-start w-full text-start text-[.8rem] h-7.5 ',
+          )}
+        >
           {item.icon}
           {item.name}
         </p>

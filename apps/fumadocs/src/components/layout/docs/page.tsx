@@ -6,7 +6,7 @@ import { cn } from '@/lib/cn';
 import { useTreeContext } from 'fumadocs-ui/contexts/tree';
 import { Link, usePathname } from 'fumadocs-core/framework';
 import type * as PageTree from 'fumadocs-core/page-tree';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { MoveLeftIcon, MoveRightIcon } from 'lucide-react';
 
 export interface DocsPageProps {
@@ -66,12 +66,12 @@ export function DocsTitle(props: ComponentProps<'h1'>) {
 }
 
 function TocItem({ item }: { item: TOCItemType }) {
-  const isActive = useActiveAnchors().includes(item.url.slice(1));
+  const isActive = useActiveAnchors()[0] === item.url.slice(1);
 
   return (
     <a
       href={item.url}
-      className={cn('text-[.8rem] font-medium text-foreground/80 py-1', isActive && 'text-primary')}
+      className={cn('text-[.8rem] font-medium text-muted-foreground py-1', isActive && 'text-primary')}
       style={{
         paddingLeft: Math.max(0, item.depth - 2) * 16,
       }}
@@ -111,19 +111,26 @@ function Footer() {
     };
   }, [flatten, pathname]);
 
+
   return (
     <div className="flex flex-row justify-between gap-2 items-center font-medium">
       {previous ? (
-        <Button variant="secondary">
+        <Link
+          href={previous.url}
+          className={cn(buttonVariants({ variant: 'secondary' }))}
+        >
           <MoveLeftIcon data-icon="inline-start" />
-          <Link href={previous.url}>{previous.name}</Link>
-        </Button>
+          {previous.name}
+        </Link>
       ) : null}
       {next ? (
-        <Button variant="secondary">
-          <Link href={next.url}>{next.name}</Link>
+        <Link
+          href={next.url}
+          className={cn(buttonVariants({ variant: 'secondary' }))}
+        >
+          {next.name}
           <MoveRightIcon data-icon="inline-start" />
-        </Button>
+        </Link>
       ) : null}
     </div>
   );
