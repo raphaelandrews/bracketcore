@@ -15,7 +15,7 @@ import { cn } from '@/lib/cn';
 import { type LinkItemType, type NavOptions, renderTitleNav, useLinkItems } from '../shared';
 import { LinkItem } from '../link-item';
 import {
-  NavigationMenuRoot,
+  NavigationMenu as NavigationMenuRoot,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,

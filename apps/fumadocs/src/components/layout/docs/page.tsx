@@ -6,7 +6,6 @@ import { cn } from '@/lib/cn';
 import { useTreeContext } from 'fumadocs-ui/contexts/tree';
 import { Link, usePathname } from 'fumadocs-core/framework';
 import type * as PageTree from 'fumadocs-core/page-tree';
-import { siteConfig } from '@/lib/config';
 
 export interface DocsPageProps {
   toc?: TOCItemType[];

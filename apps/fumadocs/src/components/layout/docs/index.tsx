@@ -8,6 +8,7 @@ import { useSearchContext } from 'fumadocs-ui/contexts/search';
 import { cva } from 'class-variance-authority';
 import { usePathname } from 'fumadocs-core/framework';
 import { Footer } from '@/components/footer';
+import { Header } from '@/components/header/header';
 
 interface SidebarContext {
   open: boolean;
@@ -25,16 +26,7 @@ export function DocsLayout({ tree, children }: DocsLayoutProps) {
   return (
     <TreeContextProvider tree={tree}>
       <SidebarProvider>
-        <header className="sticky top-0 bg-background h-14 z-20">
-          <nav className="flex flex-row items-center gap-2 size-full px-4">
-            <Link href="/" className="font-medium mr-auto">
-              Bracketcore
-            </Link>
-
-            <SearchToggle />
-            <NavbarSidebarTrigger className="md:hidden" />
-          </nav>
-        </header>
+        <Header />
         <main id="nd-docs-layout" className="flex flex-1 flex-row [--fd-nav-height:56px]">
           <Sidebar />
           {children}
@@ -63,7 +55,7 @@ function SidebarProvider({ children }: { children: ReactNode }) {
   );
 }
 
-function SearchToggle(props: ComponentProps<'button'>) {
+export function SearchToggle(props: ComponentProps<'button'>) {
   const { enabled, setOpenSearch } = useSearchContext();
   if (!enabled) return;
 
@@ -78,7 +70,7 @@ function SearchToggle(props: ComponentProps<'button'>) {
   );
 }
 
-function NavbarSidebarTrigger(props: ComponentProps<'button'>) {
+export function NavbarSidebarTrigger(props: ComponentProps<'button'>) {
   const { open, setOpen } = use(SidebarContext)!;
 
   return (
