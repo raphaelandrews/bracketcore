@@ -40,49 +40,28 @@ const bracket: DoubleEliminationBracket = {
     {
       name: "UB Round 1",
       matches: [
-        m("ub1-1", 0, 0, "Spirit", 2, "Falcons", 0, 3),
-        m("ub1-2", 0, 1, "Vitality", 2, "The MongolZ", 1, 3),
-        m("ub1-3", 0, 2, "FURIA", 0, "Natus Vincere", 2, 3),
-        m("ub1-4", 0, 3, "MOUZ", 1, "FaZe", 2, 3),
-      ],
-    },
-    {
-      name: "UB Semi-final",
-      matches: [
-        m("ub2-1", 1, 0, "Spirit", 2, "Vitality", 1, 3),
-        m("ub2-2", 1, 1, "Natus Vincere", 0, "FaZe", 2, 3),
+        m("ub1-1", 0, 0, "Team A", 2, "Team B", 0, 3),
+        m("ub1-2", 0, 1, "Team C", 2, "Team D", 1, 3),
       ],
     },
     {
       name: "UB Final",
-      matches: [m("ub3-1", 2, 0, "Spirit", 2, "FaZe", 1, 3)],
+      matches: [m("ub2-1", 1, 0, "Team A", 2, "Team C", 1, 3)],
     },
   ],
   lower: [
     {
       name: "LB Round 1",
       matches: [
-        m("lb1-1", 0, 0, "Falcons", 2, "The MongolZ", 0, 3),
-        m("lb1-2", 0, 1, "FURIA", 1, "MOUZ", 2, 3),
+        m("lb1-1", 0, 0, "Team B", 2, "Team D", 0, 3),
       ],
-    },
-    {
-      name: "LB Round 2",
-      matches: [
-        m("lb2-1", 1, 0, "Vitality", 2, "Falcons", 1, 3),
-        m("lb2-2", 1, 1, "Natus Vincere", 2, "MOUZ", 0, 3),
-      ],
-    },
-    {
-      name: "LB Semi-final",
-      matches: [m("lb3-1", 2, 0, "Vitality", 2, "Natus Vincere", 1, 3)],
     },
     {
       name: "LB Final",
-      matches: [m("lb4-1", 3, 0, "FaZe", 2, "Vitality", 1, 3)],
+      matches: [m("lb2-1", 1, 0, "Team C", 2, "Team B", 0, 3)],
     },
   ],
-  grandFinal: m("gf", 0, 0, "Spirit", 3, "FaZe", 2, 5),
+  grandFinal: m("gf", 0, 0, "Team A", 3, "Team C", 1, 5),
 };
 
 export function DoubleEliminationExample() {

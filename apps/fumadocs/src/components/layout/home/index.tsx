@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react';
-import { cn } from '../../../lib/cn';
+import { cn } from '@/lib/cn';
 import { type BaseLayoutProps, type NavOptions } from '../shared';
 import { Header } from './client';
 
@@ -16,7 +16,7 @@ export function HomeLayout(props: HomeLayoutProps & ComponentProps<'main'>) {
       {...rest}
       className={cn('flex flex-1 flex-col [--fd-layout-width:1400px]', rest.className)}
     >
-      {nav.enabled !== false &&
+      {/* {nav.enabled !== false &&
         (nav.component ?? (
           <Header
             links={links}
@@ -26,7 +26,7 @@ export function HomeLayout(props: HomeLayoutProps & ComponentProps<'main'>) {
             i18n={i18n}
             githubUrl={githubUrl}
           />
-        ))}
+        ))} */}
       {props.children}
     </main>
   );

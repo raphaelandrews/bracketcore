@@ -38,24 +38,15 @@ const sampleBracket: SingleEliminationBracket = {
   type: "single-elimination",
   rounds: [
     {
-      name: "Quarter-finals",
-      matches: [
-        m("qf-1", 0, 0, "Team Liquid", 2, "OG", 0, 3),
-        m("qf-2", 0, 1, "Evil Geniuses", 2, "Team Secret", 0, 3),
-        m("qf-3", 0, 2, "NaVi", 1, "Virtus.pro", 2, 3),
-        m("qf-4", 0, 3, "LGD", 0, "Invictus Gaming", 2, 3),
-      ],
-    },
-    {
       name: "Semi-finals",
       matches: [
-        m("sf-1", 1, 0, "Team Liquid", 0, "Evil Geniuses", 2, 3),
-        m("sf-2", 1, 1, "Virtus.pro", 1, "Invictus Gaming", 2, 3),
+        m("sf-1", 0, 0, "Team Liquid", 2, "Evil Geniuses", 0, 3),
+        m("sf-2", 0, 1, "Virtus.pro", 1, "Invictus Gaming", 2, 3),
       ],
     },
     {
       name: "Grand Final",
-      matches: [m("gf", 2, 0, "Evil Geniuses", 3, "Invictus Gaming", 1, 5)],
+      matches: [m("gf", 1, 0, "Team Liquid", 3, "Invictus Gaming", 1, 5)],
     },
   ],
 };

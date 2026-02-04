@@ -1,18 +1,16 @@
 import { Metadata } from "next";
 import Link from "next/link";
-
-import { siteConfig } from "@/lib/config";
-import { Button } from "@/components/ui/button";
-
+import { FileTextIcon, GithubIcon, TwitterIcon } from "lucide-react";
 import { SingleEliminationExample } from "@/app/(home)/components/single-elimination-example";
 import { DoubleEliminationExample } from "@/app/(home)/components/double-elimination-example";
 import { SwissStageExample } from "@/app/(home)/components/swiss-stage-example";
 import { GroupStageExample } from "@/app/(home)/components/group-stage-example";
-import { MatchCardExample } from "@/app/(home)/components/match-card-example";
-import { FileTextIcon } from "lucide-react";
 
-const title = "Build tournaments with ease"
-const description = siteConfig.description
+import { Button } from "@/components/ui/button";
+import { MatchCardExample } from "./components/match-card-example";
+
+const title = "BracketCore"
+const description = "Components for tournaments"
 
 export const metadata: Metadata = {
   title,
@@ -40,95 +38,42 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <div className="flex flex-1 flex-col">
-      <div className="w-full h-px dotted-border-x" />
+    <div className="flex flex-col justify-center items-center w-full min-h-dvh overflow-y-auto md:overflow-hidden">
+      <div className="flex flex-col justify-center items-center gap-2">
+        <h1 className="text-2xl font-bold text-center">{title}</h1>
+        <p className="text-center text-balance text-muted-foreground">{description}</p>
 
-      <div className="container relative p-4 dotted-border-y">
-        <h1 className="text-2xl font-bold text-center mt-2">{title}</h1>
-        <p className="text-center text-balance mt-2 text-muted-foreground">{description}</p>
-      </div>
-      <div className="w-full h-px dotted-border-x" />
+        <div className="flex gap-2 mt-4">
+          <Button nativeButton={false} variant="default" size="sm" render={
+            <Link href="/docs" className="flex items-center gap-2">
+              Docs
+              <FileTextIcon data-icon="inline-end" />
+            </Link>
+          } />
 
-      <div className="container relative p-4 dotted-border-y flex justify-center">
-        <Button nativeButton={false} render={<Link href="/docs">Get Started</Link>} size="sm" className="h-[31px] rounded-lg" />
-      </div>
+          <Button nativeButton={false} variant="outline" size="sm" render={
+            <Link href="https://github.com/raphaelandrews/bracketcore" target="_blank" className="flex items-center gap-2">
+              Github
+              <GithubIcon data-icon="inline-end" />
+            </Link>
+          } />
 
-      <div className="w-full h-px dotted-border-x" />
+          <Button nativeButton={false} variant="outline" size="sm" render={
+            <Link href="https://x.com/_andrewssh" target="_blank" className="flex items-center gap-2">
+              Twitter
+              <TwitterIcon data-icon="inline-end" />
+            </Link>
+          } />
+        </div>
 
-      <div className="container relative p-4 dotted-border-y flex justify-between items-center">
-        <h2 className="text-lg font-semibold leading-tight">Match Card</h2>
-        <Button nativeButton={false} variant="outline" size="sm" render={
-          <Link href="/docs/match-card" className="flex items-center gap-2">
-            Docs
-            <FileTextIcon data-icon="inline-end" />
+        <div className="flex flex-col justify-center gap-4 mt-4">
+          <Link href="/docs/double-elimination" className="group">
+            <div className="flex flex-col gap-2 justify-center items-center rounded-lg">
+              <DoubleEliminationExample />
+            </div>
           </Link>
-        } />
+        </div>
       </div>
-      <div className="w-full h-px dotted-border-x" />
-      <div className="container relative p-4 dotted-border-y">
-        <MatchCardExample />
-      </div>
-      <div className="w-full h-px dotted-border-x" />
-
-      <div className="container relative p-4 dotted-border-y flex justify-between items-center">
-        <h2 className="text-lg font-semibold leading-tight">Single Elimination</h2>
-        <Button nativeButton={false} variant="outline" size="sm" render={
-          <Link href="/docs/single-elimination" className="flex items-center gap-2">
-            Docs
-            <FileTextIcon data-icon="inline-end" />
-          </Link>
-        } />
-      </div>
-      <div className="w-full h-px dotted-border-x" />
-      <div className="container relative p-4 dotted-border-y">
-        <SingleEliminationExample />
-      </div>
-      <div className="w-full h-px dotted-border-x" />
-
-      <div className="container relative p-4 dotted-border-y flex justify-between items-center">
-        <h2 className="text-lg font-semibold leading-tight">Double Elimination</h2>
-        <Button nativeButton={false} variant="outline" size="sm" render={
-          <Link href="/docs/double-elimination" className="flex items-center gap-2">
-            Docs
-            <FileTextIcon data-icon="inline-end" />
-          </Link>
-        } />
-      </div>
-      <div className="w-full h-px dotted-border-x" />
-      <div className="container relative p-4 dotted-border-y">
-        <DoubleEliminationExample />
-      </div>
-      <div className="w-full h-px dotted-border-x" />
-
-      <div className="container relative p-4 dotted-border-y flex justify-between items-center">
-        <h2 className="text-lg font-semibold leading-tight">Swiss Stage</h2>
-        <Button nativeButton={false} variant="outline" size="sm" render={
-          <Link href="/docs/swiss-stage" className="flex items-center gap-2">
-            Docs
-            <FileTextIcon data-icon="inline-end" />
-          </Link>
-        } />
-      </div>
-      <div className="w-full h-px dotted-border-x" />
-      <div className="container relative p-4 dotted-border-y">
-        <SwissStageExample />
-      </div>
-      <div className="w-full h-px dotted-border-x" />
-
-      <div className="container relative p-4 dotted-border-y flex justify-between items-center">
-        <h2 className="text-lg font-semibold leading-tight">Group Stage</h2>
-        <Button nativeButton={false} variant="outline" size="sm" render={
-          <Link href="/docs/group-stage" className="flex items-center gap-2">
-            Docs
-            <FileTextIcon data-icon="inline-end" />
-          </Link>
-        } />
-      </div>
-      <div className="w-full h-px dotted-border-x" />
-      <div className="container relative p-4 dotted-border-y">
-        <GroupStageExample />
-      </div>
-      <div className="w-full h-px dotted-border-x" />
     </div>
   );
 }
