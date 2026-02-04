@@ -14,6 +14,7 @@ import {
   MatchCardUpcoming,
   MatchCardScheduled,
   MatchCardTBD,
+  MatchCardBordered,
 } from "@/components/preview/match-card-preview";
 import {
   DoubleEliminationPreview,
@@ -45,6 +46,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     MatchCardUpcoming,
     MatchCardScheduled,
     MatchCardTBD,
+    MatchCardBordered,
     DoubleEliminationPreview,
     DoubleEliminationRatio2,
     DoubleEliminationLBStartsEarlier,

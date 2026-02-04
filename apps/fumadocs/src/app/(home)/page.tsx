@@ -8,6 +8,7 @@ import { GroupStageExample } from "@/app/(home)/components/group-stage-example";
 
 import { Button } from "@/components/ui/button";
 import { MatchCardExample } from "./components/match-card-example";
+import { MatchCardMinimalExample } from "./components/match-card-minimal-example";
 
 const title = "BracketCore"
 const description = "Components for tournaments"
@@ -66,13 +67,11 @@ export default function HomePage() {
           } />
         </div>
 
-        <div className="flex flex-col justify-center gap-4 mt-4">
-          <Link href="/docs/double-elimination" className="group">
-            <div className="flex flex-col gap-2 justify-center items-center rounded-lg">
-              <DoubleEliminationExample />
-            </div>
-          </Link>
-        </div>
+        <Link href="/docs" className="mt-6">
+          <div className="flex flex-col gap-2 justify-center items-center rounded-lg bg-card/40 border">
+            <DoubleEliminationExample />
+          </div>
+        </Link>
       </div>
     </div>
   );

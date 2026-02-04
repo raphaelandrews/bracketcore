@@ -167,6 +167,35 @@ When teams are not yet determined but the match is already scheduled, the header
 <MatchCardScheduled />
 </ComponentPreview>
 
+### Bordered
+
+Use `variant="bordered"` to show a colored left border on each team row when a match is completed.
+
+<ComponentPreview code={`const completed: Match = {
+  id: "demo-bordered",
+  round: 0,
+  position: 0,
+  bestOf: 3,
+  status: "completed",
+  teams: [
+    {
+      team: { id: "team-liquid", name: "Team Liquid" },
+      score: 2,
+      isWinner: true,
+    },
+    {
+      team: { id: "og", name: "OG" },
+      score: 0,
+      isWinner: false,
+    },
+  ],
+};
+
+<MatchCard match={completed} variant="bordered" />
+`}>
+<MatchCardBordered />
+</ComponentPreview>
+
 ### TBD
 
 When `team` is `null` and no schedule is set, the card shows italic "TBD" text with no header.
@@ -196,6 +225,7 @@ When `team` is `null` and no schedule is set, the card shows italic "TBD" text w
 | -------------- | ------------------------ | -------------------------------------------------------------------- |
 | `match`        | `Match`                  | The match data to display.                                           |
 | `className`    | `string`                 | Additional CSS classes for the root element.                         |
+| `variant`      | `"default" \| "bordered"` | Card style variant. `"bordered"` adds colored left borders per team row. |
 | `onMatchClick` | `(match: Match) => void` | Callback fired when a match card is clicked. Adds hover styles when set. |
 
 ### `Match`

@@ -25,28 +25,32 @@ export interface MatchCardProps {
   match: Match;
   className?: string;
   onMatchClick?: (match: Match) => void;
+  variant?: "default" | "bordered";
 }
 
 function TeamRow({
   entry,
   isLive,
   isLeading,
+  variant = "default",
 }: {
   entry: MatchTeam;
   isLive?: boolean;
   isLeading?: boolean;
+  variant?: "default" | "bordered";
 }) {
   const isWinner = entry.isWinner === true;
   const isLoser = entry.isWinner === false;
+  const showBorders = variant === "bordered";
 
   return (
     <div
       className={cn(
         "flex items-center gap-2 px-2.5 py-1.5",
-        "border-l-3",
-        isWinner && "border-l-emerald-500",
-        isLoser && "border-l-destructive",
-        !isWinner && !isLoser && "border-l-transparent",
+        showBorders && "border-l-3",
+        showBorders && isWinner && "border-l-emerald-500",
+        showBorders && isLoser && "border-l-destructive",
+        showBorders && !isWinner && !isLoser && "border-l-transparent",
       )}
     >
       <div className="flex items-center gap-2 min-w-0 flex-1">
@@ -84,7 +88,7 @@ function TeamRow({
   );
 }
 
-export function MatchCard({ match, className, onMatchClick }: MatchCardProps) {
+export function MatchCard({ match, className, onMatchClick, variant = "default" }: MatchCardProps) {
   const bestOfLabel = match.bestOf ? `BO${match.bestOf}` : undefined;
   const isLive = match.status === "live";
   const isCompleted = match.status === "completed";
@@ -139,6 +143,7 @@ export function MatchCard({ match, className, onMatchClick }: MatchCardProps) {
       <TeamRow
         entry={match.teams[0]}
         isLive={isLive}
+        variant={isCompleted ? variant : "default"}
         isLeading={
           isLive
             ? match.teams[0].score > match.teams[1].score
@@ -153,6 +158,7 @@ export function MatchCard({ match, className, onMatchClick }: MatchCardProps) {
       <TeamRow
         entry={match.teams[1]}
         isLive={isLive}
+        variant={isCompleted ? variant : "default"}
         isLeading={
           isLive
             ? match.teams[1].score > match.teams[0].score

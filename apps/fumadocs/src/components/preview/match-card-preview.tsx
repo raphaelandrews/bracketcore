@@ -145,3 +145,11 @@ export function MatchCardTBD() {
     </PreviewWrapper>
   );
 }
+
+export function MatchCardBordered() {
+  return (
+    <PreviewWrapper>
+      <MatchCard match={completed} variant="bordered" />
+    </PreviewWrapper>
+  );
+}
