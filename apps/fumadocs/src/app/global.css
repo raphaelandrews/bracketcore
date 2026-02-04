@@ -134,7 +134,7 @@
     @apply border-none !container;
   }
 
-  nav>ul {
+  nav > ul {
     @apply !p-0;
   }
 
@@ -151,14 +151,38 @@
   }
 
   .dotted-border-y {
-    background-image: repeating-linear-gradient(to bottom, var(--border) 0px, var(--border) 6px, transparent 6px, transparent 14px), repeating-linear-gradient(to bottom, var(--border) 0px, var(--border) 6px, transparent 6px, transparent 14px);
-    background-size: 1px 100%, 1px 100%;
-    background-position: left top, right top;
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        var(--border) 0px,
+        var(--border) 6px,
+        transparent 6px,
+        transparent 14px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        var(--border) 0px,
+        var(--border) 6px,
+        transparent 6px,
+        transparent 14px
+      );
+    background-size:
+      1px 100%,
+      1px 100%;
+    background-position:
+      left top,
+      right top;
     background-repeat: no-repeat;
   }
 
   .dotted-border-x {
-    background-image: repeating-linear-gradient(to right, var(--border) 0px, var(--border) 6px, transparent 6px, transparent 14px);
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--border) 0px,
+      var(--border) 6px,
+      transparent 6px,
+      transparent 14px
+    );
     background-size: 100% 1px;
     background-repeat: no-repeat;
   }

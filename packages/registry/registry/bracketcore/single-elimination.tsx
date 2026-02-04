@@ -18,9 +18,7 @@ export function SingleElimination({
   const rounds = bracket.rounds;
 
   return (
-    <div
-      className={cn("inline-flex overflow-x-auto rounded-lg p-6", className)}
-    >
+    <div className={cn("inline-flex overflow-x-auto rounded-lg p-6", className)}>
       {rounds.map((round, roundIdx) => {
         const isLast = roundIdx === rounds.length - 1;
         return (
@@ -142,8 +140,7 @@ function ConnectorColumn({
                     top: "25%",
                     right: "50%",
                     width: "50%",
-                    height:
-                      "calc(25% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+                    height: "calc(25% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
                   }}
                 />
                 {/* Connector to target top row */}
@@ -163,8 +160,7 @@ function ConnectorColumn({
                     bottom: "25%",
                     right: "50%",
                     width: "50%",
-                    height:
-                      "calc(25% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
+                    height: "calc(25% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25)",
                   }}
                 />
                 {/* Connector to target bot row */}

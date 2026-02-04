@@ -12,11 +12,11 @@ export function MainNav() {
     <div className="mr-4 flex">
       {pathname === "/" ? (
         <div className="mr-4 flex items-center space-x-2 lg:mr-6">
-          <span className="mt-0.5 font-bold">BracketCore</span>
+          <span className="mt-0.5 font-bold">Bracketcore</span>
         </div>
       ) : (
         <Link href="/" className="mr-4 flex items-center space-x-2 lg:mr-6">
-          <span className="mt-0.5 font-bold">BracketCore</span>
+          <span className="mt-0.5 font-bold">Bracketcore</span>
         </Link>
       )}
     </div>

@@ -10,7 +10,7 @@ function m(
   sa: number,
   b: string,
   sb: number,
-  bo: number = 1
+  bo: number = 1,
 ): Match {
   const aWins = sa > sb;
   return {

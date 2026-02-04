@@ -1,17 +1,17 @@
-'use client';
-import type * as PageTree from 'fumadocs-core/page-tree';
-import { type ComponentProps, createContext, type ReactNode, use, useMemo, useState } from 'react';
-import { cn } from '@/lib/cn';
-import { TreeContextProvider, useTreeContext } from 'fumadocs-ui/contexts/tree';
-import Link from 'fumadocs-core/link';
-import { useSearchContext } from 'fumadocs-ui/contexts/search';
-import { cva } from 'class-variance-authority';
-import { usePathname } from 'fumadocs-core/framework';
-import { Footer } from '@/components/footer';
-import { Header } from '@/components/header/header';
+"use client";
+import type * as PageTree from "fumadocs-core/page-tree";
+import { type ComponentProps, createContext, type ReactNode, use, useMemo, useState } from "react";
+import { cn } from "@/lib/cn";
+import { TreeContextProvider, useTreeContext } from "fumadocs-ui/contexts/tree";
+import Link from "fumadocs-core/link";
+import { useSearchContext } from "fumadocs-ui/contexts/search";
+import { cva } from "class-variance-authority";
+import { usePathname } from "fumadocs-core/framework";
+import { Footer } from "@/components/footer";
+import { Header } from "@/components/header/header";
 
-import { Button, buttonVariants } from '@/components/ui/button';
-import { LargeSearchToggle } from '../search-toggle';
+import { Button, buttonVariants } from "@/components/ui/button";
+import { LargeSearchToggle } from "../search-toggle";
 
 interface SidebarContext {
   open: boolean;
@@ -58,7 +58,7 @@ function SidebarProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function SearchToggle(props: ComponentProps<'button'>) {
+export function SearchToggle(props: ComponentProps<"button">) {
   const { enabled, setOpenSearch } = useSearchContext();
   if (!enabled) return;
 
@@ -66,7 +66,7 @@ export function SearchToggle(props: ComponentProps<'button'>) {
     <Button
       value="default"
       {...props}
-      className={cn('text-sm', props.className)}
+      className={cn("text-sm", props.className)}
       onClick={() => setOpenSearch(true)}
     >
       Search
@@ -74,7 +74,7 @@ export function SearchToggle(props: ComponentProps<'button'>) {
   );
 }
 
-export function SearchToggleLarge(props: ComponentProps<'button'>) {
+export function SearchToggleLarge(props: ComponentProps<"button">) {
   const { enabled, setOpenSearch } = useSearchContext();
   if (!enabled) return;
 
@@ -82,17 +82,17 @@ export function SearchToggleLarge(props: ComponentProps<'button'>) {
     <LargeSearchToggle
       value="default"
       {...props}
-      className={cn('text-sm', props.className)}
+      className={cn("text-sm", props.className)}
       onClick={() => setOpenSearch(true)}
     />
   );
 }
 
-export function NavbarSidebarTrigger(props: ComponentProps<'button'>) {
+export function NavbarSidebarTrigger(props: ComponentProps<"button">) {
   const { open, setOpen } = use(SidebarContext)!;
 
   return (
-    <button {...props} className={cn('text-sm', props.className)} onClick={() => setOpen(!open)}>
+    <button {...props} className={cn("text-sm", props.className)} onClick={() => setOpen(!open)}>
       Sidebar
     </button>
   );
@@ -106,7 +106,7 @@ function Sidebar() {
     function renderItems(items: PageTree.Node[]) {
       return items.map((item) => (
         <SidebarItem key={item.$id} item={item}>
-          {item.type === 'folder' ? renderItems(item.children) : null}
+          {item.type === "folder" ? renderItems(item.children) : null}
         </SidebarItem>
       ));
     }
@@ -117,14 +117,12 @@ function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed flex flex-col shrink-0 p-4 top-14 z-20 text-sm overflow-auto md:sticky md:h-[calc(100dvh-56px)] md:w-[300px]',
-        'max-md:inset-x-0 max-md:bottom-0 max-md:bg-background',
-        !open && 'max-md:invisible',
+        "fixed flex flex-col shrink-0 p-4 top-14 z-20 text-sm overflow-auto md:sticky md:h-[calc(100dvh-56px)] md:w-[300px]",
+        "max-md:inset-x-0 max-md:bottom-0 max-md:bg-background",
+        !open && "max-md:invisible",
       )}
     >
-      <div className='w-full max-w-[200px] mx-auto mt-9'>
-        {children}
-      </div>
+      <div className="w-full max-w-[200px] mx-auto mt-9">{children}</div>
     </aside>
   );
 }
@@ -132,22 +130,19 @@ function Sidebar() {
 function SidebarItem({ item, children }: { item: PageTree.Node; children: ReactNode }) {
   const pathname = usePathname();
 
-  if (item.type === 'page') {
+  if (item.type === "page") {
     return (
-      <Link
-        href={item.url}
-        className="group flex w-full items-center justify-start"
-      >
+      <Link href={item.url} className="group flex w-full items-center justify-start">
         <span
           className={cn(
             buttonVariants({
-              variant: pathname === item.url ? 'secondary' : 'ghost',
-              size: 'xs',
+              variant: pathname === item.url ? "secondary" : "ghost",
+              size: "xs",
             }),
-            'text-[.8rem] h-7.5 ',
+            "text-[.8rem] h-7.5 ",
             pathname === item.url
-              ? 'group-hover:bg-secondary/80'
-              : 'group-hover:bg-muted group-hover:text-foreground dark:group-hover:bg-muted/50',
+              ? "group-hover:bg-secondary/80"
+              : "group-hover:bg-muted group-hover:text-foreground dark:group-hover:bg-muted/50",
           )}
         >
           {item.icon}
@@ -157,7 +152,7 @@ function SidebarItem({ item, children }: { item: PageTree.Node; children: ReactN
     );
   }
 
-  if (item.type === 'separator') {
+  if (item.type === "separator") {
     return (
       <p className="font-medium text-xs text-muted-foreground mt-6 mb-2 px-2.5 first:mt-0">
         {item.icon}
@@ -169,20 +164,17 @@ function SidebarItem({ item, children }: { item: PageTree.Node; children: ReactN
   return (
     <div>
       {item.index ? (
-        <Link
-          className="group flex w-full items-center justify-start"
-          href={item.index.url}
-        >
+        <Link className="group flex w-full items-center justify-start" href={item.index.url}>
           <span
             className={cn(
               buttonVariants({
-                variant: pathname === item.index.url ? 'secondary' : 'ghost',
-                size: 'xs',
+                variant: pathname === item.index.url ? "secondary" : "ghost",
+                size: "xs",
               }),
-              'text-[.8rem] h-7.5 ',
+              "text-[.8rem] h-7.5 ",
               pathname === item.index.url
-                ? 'group-hover:bg-secondary/80'
-                : 'group-hover:bg-muted group-hover:text-foreground dark:group-hover:bg-muted/50',
+                ? "group-hover:bg-secondary/80"
+                : "group-hover:bg-muted group-hover:text-foreground dark:group-hover:bg-muted/50",
             )}
           >
             {item.index.icon}
@@ -192,8 +184,8 @@ function SidebarItem({ item, children }: { item: PageTree.Node; children: ReactN
       ) : (
         <p
           className={cn(
-            buttonVariants({ variant: 'ghost', size: 'xs' }),
-            'justify-start w-full text-start text-[.8rem] h-7.5 ',
+            buttonVariants({ variant: "ghost", size: "xs" }),
+            "justify-start w-full text-start text-[.8rem] h-7.5 ",
           )}
         >
           {item.icon}

@@ -8,23 +8,23 @@ description: The atomic building block for all bracket types — displays a sing
 <ComponentPreview code={`import { MatchCard, type Match } from "@bracketcore/registry";
 
 const completed: Match = {
-  id: "demo-completed",
-  round: 0,
-  position: 0,
-  bestOf: 3,
-  status: "completed",
-  teams: [
-    {
-      team: { id: "team-liquid", name: "Team Liquid" },
-      score: 2,
-      isWinner: true,
-    },
-    {
-      team: { id: "og", name: "OG" },
-      score: 0,
-      isWinner: false,
-    },
-  ],
+id: "demo-completed",
+round: 0,
+position: 0,
+bestOf: 3,
+status: "completed",
+teams: [
+{
+team: { id: "team-liquid", name: "Team Liquid" },
+score: 2,
+isWinner: true,
+},
+{
+team: { id: "og", name: "OG" },
+score: 0,
+isWinner: false,
+},
+],
 };
 
 <MatchCard match={completed} />
@@ -100,9 +100,9 @@ A live match shows a destructive border, a pulsing live indicator in the header,
 };
 
 function todayAt(hours: number, minutes: number) {
-  const d = new Date();
-  d.setHours(hours, minutes, 0, 0);
-  return d;
+const d = new Date();
+d.setHours(hours, minutes, 0, 0);
+return d;
 }
 
 <MatchCard match={live} />
@@ -134,10 +134,10 @@ An upcoming match displays the scheduled time and relative day in the header. Th
 };
 
 function daysFromNow(days: number, hours: number, minutes: number) {
-  const d = new Date();
-  d.setDate(d.getDate() + days);
-  d.setHours(hours, minutes, 0, 0);
-  return d;
+const d = new Date();
+d.setDate(d.getDate() + days);
+d.setHours(hours, minutes, 0, 0);
+return d;
 }
 
 <MatchCard match={upcoming} />
@@ -221,12 +221,12 @@ When `team` is `null` and no schedule is set, the card shows italic "TBD" text w
 
 ### `MatchCard`
 
-| Prop           | Type                     | Description                                                          |
-| -------------- | ------------------------ | -------------------------------------------------------------------- |
-| `match`        | `Match`                  | The match data to display.                                           |
-| `className`    | `string`                 | Additional CSS classes for the root element.                         |
+| Prop           | Type                      | Description                                                              |
+| -------------- | ------------------------- | ------------------------------------------------------------------------ |
+| `match`        | `Match`                   | The match data to display.                                               |
+| `className`    | `string`                  | Additional CSS classes for the root element.                             |
 | `variant`      | `"default" \| "bordered"` | Card style variant. `"bordered"` adds colored left borders per team row. |
-| `onMatchClick` | `(match: Match) => void` | Callback fired when a match card is clicked. Adds hover styles when set. |
+| `onMatchClick` | `(match: Match) => void`  | Callback fired when a match card is clicked. Adds hover styles when set. |
 
 ### `Match`
 
@@ -267,9 +267,9 @@ interface Team {
 
 Control dimensions via CSS custom properties on a parent element:
 
-| Property                | Default | Description                |
-| ----------------------- | ------- | -------------------------- |
-| `--bracket-match-width` | `11rem` | Width of each match card.  |
+| Property                | Default | Description               |
+| ----------------------- | ------- | ------------------------- |
+| `--bracket-match-width` | `11rem` | Width of each match card. |
 
 ```tsx
 <div style={{ "--bracket-match-width": "16rem" }}>

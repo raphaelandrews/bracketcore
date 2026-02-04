@@ -1,6 +1,10 @@
 "use client";
 
-import { DoubleElimination, type DoubleEliminationBracket, type Match } from "@bracketcore/registry";
+import {
+  DoubleElimination,
+  type DoubleEliminationBracket,
+  type Match,
+} from "@bracketcore/registry";
 
 function m(
   id: string,
@@ -52,9 +56,7 @@ const bracket: DoubleEliminationBracket = {
   lower: [
     {
       name: "LB Round 1",
-      matches: [
-        m("lb1-1", 0, 0, "Team B", 2, "Team D", 0, 3),
-      ],
+      matches: [m("lb1-1", 0, 0, "Team B", 2, "Team D", 0, 3)],
     },
     {
       name: "LB Final",

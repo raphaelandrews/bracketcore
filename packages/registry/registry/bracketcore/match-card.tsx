@@ -97,11 +97,12 @@ export function MatchCard({ match, className, onMatchClick, variant = "default" 
   return (
     <div
       className={cn(
-        "w-(--bracket-match-width,11rem) rounded-sm shadow-sm",
+        "relative w-(--bracket-match-width,11rem) shadow-sm",
+        hasHeader ? "rounded-b-sm" : "rounded-sm",
         "border-border",
         "bg-card",
         "text-card-foreground",
-        "shadow-sm overflow-hidden",
+        "shadow-sm overflow-visible",
         isLive && "border-destructive border",
         onMatchClick && "cursor-pointer hover:border-primary/50 transition-colors",
         className,
@@ -110,7 +111,12 @@ export function MatchCard({ match, className, onMatchClick, variant = "default" 
     >
       {hasHeader && (
         <div
-          className={`flex items-center justify-between px-2.5 py-1 text-xs text-muted-foreground bg-muted ${isLive && "text-primary bg-destructive!"}`}
+          className={cn(
+            "absolute bottom-full inset-x-0 flex items-center justify-between px-2.5 py-1 text-xs rounded-t-sm",
+            isLive
+              ? "text-primary bg-destructive"
+              : "text-muted-foreground bg-muted",
+          )}
         >
           <span className="flex items-center gap-1.5">
             {isLive && (
@@ -136,7 +142,7 @@ export function MatchCard({ match, className, onMatchClick, variant = "default" 
             {!isLive && !match.scheduledAt && <span>Unscheduled</span>}
           </span>
           {bestOfLabel && (
-            <span className={`ml-auto ${isLive && "font-semibold"}`}>{bestOfLabel}</span>
+            <span className={cn("ml-auto", isLive && "font-semibold")}>{bestOfLabel}</span>
           )}
         </div>
       )}

@@ -1,4 +1,4 @@
-import { siteConfig } from "@/lib/config"
+import { siteConfig } from "@/lib/config";
 
 export function Footer() {
   return (
@@ -29,7 +29,7 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
 
 export function HomeFooter() {
@@ -57,5 +57,5 @@ export function HomeFooter() {
         .
       </div>
     </footer>
-  )
+  );
 }

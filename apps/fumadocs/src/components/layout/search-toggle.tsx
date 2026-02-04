@@ -1,21 +1,21 @@
-'use client';
-import type { ComponentProps } from 'react';
-import { Search } from 'lucide-react';
-import { useSearchContext } from '@fumadocs/base-ui/contexts/search';
-import { useI18n } from '@fumadocs/base-ui/contexts/i18n';
-import { cn } from '@/lib/cn';
-import { type ButtonProps, buttonVariants } from '@/components/ui/button';
+"use client";
+import type { ComponentProps } from "react";
+import { Search } from "lucide-react";
+import { useSearchContext } from "@fumadocs/base-ui/contexts/search";
+import { useI18n } from "@fumadocs/base-ui/contexts/i18n";
+import { cn } from "@/lib/cn";
+import { type ButtonProps, buttonVariants } from "@/components/ui/button";
 
-interface SearchToggleProps extends Omit<ButtonProps, 'variant' | 'className'> {
+interface SearchToggleProps extends Omit<ButtonProps, "variant" | "className"> {
   hideIfDisabled?: boolean;
-  color?: ButtonProps['variant'];
+  color?: ButtonProps["variant"];
   className?: string;
 }
 
 export function SearchToggle({
   hideIfDisabled,
-  size = 'icon-sm',
-  color = 'ghost',
+  size = "icon-sm",
+  color = "ghost",
   ...props
 }: SearchToggleProps) {
   const { setOpenSearch, enabled } = useSearchContext();
@@ -45,7 +45,7 @@ export function SearchToggle({
 export function LargeSearchToggle({
   hideIfDisabled,
   ...props
-}: ComponentProps<'button'> & {
+}: ComponentProps<"button"> & {
   hideIfDisabled?: boolean;
 }) {
   const { enabled, hotKey, setOpenSearch } = useSearchContext();
@@ -58,7 +58,7 @@ export function LargeSearchToggle({
       data-search-full=""
       {...props}
       className={cn(
-        'inline-flex items-center gap-2 rounded-lg border bg-secondary/50 p-1.5 ps-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground',
+        "inline-flex items-center gap-2 rounded-lg border bg-secondary/50 p-1.5 ps-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
         props.className,
       )}
       onClick={() => {

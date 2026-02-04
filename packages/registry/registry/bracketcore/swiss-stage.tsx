@@ -17,7 +17,7 @@ function getTeamRecord(teamId: string, history: Match[]): TeamRecord {
 
   for (const match of history) {
     if (match.status !== "completed") continue;
-    const teamEntry = match.teams.find(t => t.team?.id === teamId);
+    const teamEntry = match.teams.find((t) => t.team?.id === teamId);
     if (!teamEntry) continue;
 
     if (teamEntry.isWinner) wins++;
@@ -27,19 +27,24 @@ function getTeamRecord(teamId: string, history: Match[]): TeamRecord {
 }
 
 function getTeamsWithRecord(bracket: SwissBracket, wins: number, losses: number): Team[] {
-  return bracket.standings
-    .filter(s => s.wins === wins && s.losses === losses)
-    .map(s => s.team);
+  return bracket.standings.filter((s) => s.wins === wins && s.losses === losses).map((s) => s.team);
 }
 
-function getMatchesForPool(roundMatches: Match[], completedMatchesInBracket: Match[], targetWins: number, targetLosses: number): Match[] {
+function getMatchesForPool(
+  roundMatches: Match[],
+  completedMatchesInBracket: Match[],
+  targetWins: number,
+  targetLosses: number,
+): Match[] {
   if (!roundMatches) return [];
-  return roundMatches.filter(match => {
+  return roundMatches.filter((match) => {
     const team1 = match.teams[0]?.team;
 
     if (!team1) return false;
 
-    const history = completedMatchesInBracket.filter(m => m.id !== match.id && m.round < (match.round ?? 999));
+    const history = completedMatchesInBracket.filter(
+      (m) => m.id !== match.id && m.round < (match.round ?? 999),
+    );
     const rec = getTeamRecord(team1.id, history);
 
     return rec.wins === targetWins && rec.losses === targetLosses;
@@ -50,7 +55,7 @@ function TeamListBlock({
   teams,
   record,
   title,
-  type
+  type,
 }: {
   teams: Team[];
   record: string;
@@ -62,21 +67,34 @@ function TeamListBlock({
   if (teams.length === 0) return null;
 
   return (
-    <div className={cn(
-      "w-48 rounded-md border flex flex-col overflow-hidden shrink-0",
-      isGood ? "bg-emerald-500/10 border-emerald-500/20" : "bg-red-500/10 border-red-500/20"
-    )}>
-      <div className={cn(
-        "px-3 py-1.5 text-xs font-bold flex justify-between items-center border-b",
-        isGood ? "text-emerald-500 border-emerald-500/20 bg-emerald-500/10" : "text-red-500 border-red-500/20 bg-red-500/10"
-      )}>
-        <span>{record.replace('-', ':')}</span>
+    <div
+      className={cn(
+        "w-48 rounded-md border flex flex-col overflow-hidden shrink-0",
+        isGood ? "bg-emerald-500/10 border-emerald-500/20" : "bg-red-500/10 border-red-500/20",
+      )}
+    >
+      <div
+        className={cn(
+          "px-3 py-1.5 text-xs font-bold flex justify-between items-center border-b",
+          isGood
+            ? "text-emerald-500 border-emerald-500/20 bg-emerald-500/10"
+            : "text-red-500 border-red-500/20 bg-red-500/10",
+        )}
+      >
+        <span>{record.replace("-", ":")}</span>
         {title && <span className="opacity-70 font-normal">{title}</span>}
       </div>
       <div className="flex flex-col p-1 gap-1">
-        {teams.map(team => (
-          <div key={team.id} className="flex items-center gap-2 px-2 py-1 rounded hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
-            {team.logo ? <img src={team.logo} className="w-4 h-4 object-contain" alt={team.name} /> : <div className="w-4 h-4 bg-foreground/10 rounded-full" />}
+        {teams.map((team) => (
+          <div
+            key={team.id}
+            className="flex items-center gap-2 px-2 py-1 rounded hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          >
+            {team.logo ? (
+              <img src={team.logo} className="w-4 h-4 object-contain" alt={team.name} />
+            ) : (
+              <div className="w-4 h-4 bg-foreground/10 rounded-full" />
+            )}
             <span className="text-xs font-medium truncate">{team.name}</span>
           </div>
         ))}
@@ -92,7 +110,7 @@ function MatchPoolBlock({
   nextUp,
   nextDown,
   isLast,
-  isFinal
+  isFinal,
 }: {
   matches: Match[];
   record: string;
@@ -109,13 +127,12 @@ function MatchPoolBlock({
 
   return (
     <div className="relative group/pool">
-
       <div className="text-xs font-medium text-muted-foreground mb-1.5 pl-1 opacity-70">
-        {record.replace('-', ':')}
+        {record.replace("-", ":")}
       </div>
 
       <div className="flex flex-col gap-3 relative">
-        {matches.map(match => (
+        {matches.map((match) => (
           <MatchCard
             key={match.id}
             match={match}
@@ -125,20 +142,24 @@ function MatchPoolBlock({
         ))}
 
         {nextUp && (
-          <div className={cn(
-            "absolute text-emerald-500/50 group-hover/pool:text-emerald-500 transition-colors",
-            isFinal ? "right-1/2 -top-8 translate-x-1/2" : "-right-10 -top-4"
-          )}>
+          <div
+            className={cn(
+              "absolute text-emerald-500/50 group-hover/pool:text-emerald-500 transition-colors",
+              isFinal ? "right-1/2 -top-8 translate-x-1/2" : "-right-10 -top-4",
+            )}
+          >
             <div className="relative">
               <ChevronsRight className={cn("w-6 h-6", isFinal ? "-rotate-90" : "-rotate-30")} />
             </div>
           </div>
         )}
         {nextDown && (
-          <div className={cn(
-            "absolute text-red-500/50 group-hover/pool:text-red-500 transition-colors",
-            isFinal ? "right-1/2 -bottom-8 translate-x-1/2" : "-right-10 -bottom-4"
-          )}>
+          <div
+            className={cn(
+              "absolute text-red-500/50 group-hover/pool:text-red-500 transition-colors",
+              isFinal ? "right-1/2 -bottom-8 translate-x-1/2" : "-right-10 -bottom-4",
+            )}
+          >
             <ChevronsRight className={cn("w-6 h-6", isFinal ? "rotate-90" : "rotate-30")} />
           </div>
         )}
@@ -147,9 +168,8 @@ function MatchPoolBlock({
   );
 }
 
-
 export function SwissStage({ bracket, className, onMatchClick }: SwissStageProps) {
-  const allMatches = bracket.rounds.flatMap(r => r.matches);
+  const allMatches = bracket.rounds.flatMap((r) => r.matches);
 
   const r1 = bracket.rounds[0]?.matches || [];
   const r2 = bracket.rounds[1]?.matches || [];
@@ -185,21 +205,52 @@ export function SwissStage({ bracket, className, onMatchClick }: SwissStageProps
             matches={pool0_0}
             record="0-0"
             onMatchClick={onMatchClick}
-            nextUp nextDown
+            nextUp
+            nextDown
           />
         </div>
 
         <div className="flex flex-col justify-center gap-24">
-          <MatchPoolBlock matches={pool1_0} record="1-0" onMatchClick={onMatchClick} nextUp nextDown />
-          <MatchPoolBlock matches={pool0_1} record="0-1" onMatchClick={onMatchClick} nextUp nextDown />
+          <MatchPoolBlock
+            matches={pool1_0}
+            record="1-0"
+            onMatchClick={onMatchClick}
+            nextUp
+            nextDown
+          />
+          <MatchPoolBlock
+            matches={pool0_1}
+            record="0-1"
+            onMatchClick={onMatchClick}
+            nextUp
+            nextDown
+          />
         </div>
 
         <div className="flex flex-col justify-center gap-16">
-          <MatchPoolBlock matches={pool2_0} record="2-0" onMatchClick={onMatchClick} nextUp nextDown />
+          <MatchPoolBlock
+            matches={pool2_0}
+            record="2-0"
+            onMatchClick={onMatchClick}
+            nextUp
+            nextDown
+          />
           <div className="py-2">
-            <MatchPoolBlock matches={pool1_1} record="1-1" onMatchClick={onMatchClick} nextUp nextDown />
+            <MatchPoolBlock
+              matches={pool1_1}
+              record="1-1"
+              onMatchClick={onMatchClick}
+              nextUp
+              nextDown
+            />
           </div>
-          <MatchPoolBlock matches={pool0_2} record="0-2" onMatchClick={onMatchClick} nextUp nextDown />
+          <MatchPoolBlock
+            matches={pool0_2}
+            record="0-2"
+            onMatchClick={onMatchClick}
+            nextUp
+            nextDown
+          />
         </div>
 
         <div className="flex flex-col relative py-2">
@@ -208,8 +259,20 @@ export function SwissStage({ bracket, className, onMatchClick }: SwissStageProps
           </div>
 
           <div className="flex flex-col gap-12 my-12 justify-center">
-            <MatchPoolBlock matches={pool2_1} record="2-1" onMatchClick={onMatchClick} nextUp nextDown />
-            <MatchPoolBlock matches={pool1_2} record="1-2" onMatchClick={onMatchClick} nextUp nextDown />
+            <MatchPoolBlock
+              matches={pool2_1}
+              record="2-1"
+              onMatchClick={onMatchClick}
+              nextUp
+              nextDown
+            />
+            <MatchPoolBlock
+              matches={pool1_2}
+              record="1-2"
+              onMatchClick={onMatchClick}
+              nextUp
+              nextDown
+            />
           </div>
 
           <div className="mt-auto">
@@ -228,7 +291,8 @@ export function SwissStage({ bracket, className, onMatchClick }: SwissStageProps
               matches={pool2_2}
               record="2-2"
               onMatchClick={onMatchClick}
-              nextUp nextDown
+              nextUp
+              nextDown
               isFinal
             />
           </div>

@@ -1,11 +1,11 @@
-import { Suspense } from "react"
-import { GithubIcon, InstagramIcon, MailIcon, MenuIcon, TwitterIcon } from "lucide-react"
+import { Suspense } from "react";
+import { GithubIcon, InstagramIcon, MailIcon, MenuIcon, TwitterIcon } from "lucide-react";
 
-import { MainNav } from "./main-nav"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { NavbarSidebarTrigger, SearchToggleLarge } from "../layout/docs"
-import { ThemeToggle } from "../layout/theme-toggle"
+import { MainNav } from "./main-nav";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { NavbarSidebarTrigger, SearchToggleLarge } from "../layout/docs";
+import { ThemeToggle } from "../layout/theme-toggle";
 
 export function Header() {
   return (
@@ -21,25 +21,14 @@ export function Header() {
           <NavbarSidebarTrigger className="md:hidden" />
           <Separator className="!w-0.5 !h-4 ml-2 !self-auto" orientation="vertical" />
           <Button size="sm" variant="ghost" className="hidden sm:block p-2 hover:cursor-pointer">
-            <a
-              href="https://github.com/raphaelandrews/bracketcore"
-              target="_blank"
-              rel="noopener"
-            >
+            <a href="https://github.com/raphaelandrews/bracketcore" target="_blank" rel="noopener">
               <GithubIcon size={16} />
               <span className="sr-only">Github</span>
             </a>
           </Button>
-          <Separator
-            className="!w-0.5 !h-4 hidden sm:block !self-auto"
-            orientation="vertical"
-          />
+          <Separator className="!w-0.5 !h-4 hidden sm:block !self-auto" orientation="vertical" />
           <Button size="sm" variant="ghost" className="hidden sm:block p-2 hover:cursor-pointer">
-            <a
-              href="https://x.com/_andrewssh"
-              target="_blank"
-              rel="noopener"
-            >
+            <a href="https://x.com/_andrewssh" target="_blank" rel="noopener">
               <TwitterIcon size={16} />
               <span className="sr-only">Twitter</span>
             </a>
@@ -49,28 +38,23 @@ export function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }
 
 function MainNavSkeleton() {
   return (
     <div className="mr-4 flex">
       <div className="mr-4 flex items-center space-x-2 lg:mr-6">
-        <span className="mt-0.5 font-bold">BracketCore</span>
+        <span className="mt-0.5 font-bold">Bracketcore</span>
       </div>
     </div>
-  )
+  );
 }
 
 function DrawerSkeleton() {
   return (
-    <Button
-      className="shrink-0 p-2 hover:bg-muted/50 lg:hidden"
-      size="sm"
-      variant="ghost"
-      disabled
-    >
+    <Button className="shrink-0 p-2 hover:bg-muted/50 lg:hidden" size="sm" variant="ghost" disabled>
       <MenuIcon className="size-4" />
     </Button>
-  )
+  );
 }

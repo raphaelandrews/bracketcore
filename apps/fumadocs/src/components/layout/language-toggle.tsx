@@ -1,15 +1,15 @@
-'use client';
-import type { ComponentProps } from 'react';
-import { useI18n } from '@fumadocs/base-ui/contexts/i18n';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { cn } from '../../lib/cn';
-import { buttonVariants } from '../ui/button';
+"use client";
+import type { ComponentProps } from "react";
+import { useI18n } from "@fumadocs/base-ui/contexts/i18n";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { cn } from "../../lib/cn";
+import { buttonVariants } from "../ui/button";
 
-export type LanguageSelectProps = ComponentProps<'button'>;
+export type LanguageSelectProps = ComponentProps<"button">;
 
 export function LanguageToggle(props: LanguageSelectProps): React.ReactElement {
   const context = useI18n();
-  if (!context.locales) throw new Error('Missing `<I18nProvider />`');
+  if (!context.locales) throw new Error("Missing `<I18nProvider />`");
 
   return (
     <Popover>
@@ -18,8 +18,8 @@ export function LanguageToggle(props: LanguageSelectProps): React.ReactElement {
         {...props}
         className={cn(
           buttonVariants({
-            variant: 'ghost',
-            className: 'gap-1.5 p-1.5',
+            variant: "ghost",
+            className: "gap-1.5 p-1.5",
           }),
           props.className,
         )}
@@ -35,10 +35,10 @@ export function LanguageToggle(props: LanguageSelectProps): React.ReactElement {
             key={item.locale}
             type="button"
             className={cn(
-              'p-2 text-start text-sm',
+              "p-2 text-start text-sm",
               item.locale === context.locale
-                ? 'bg-primary/10 font-medium text-primary'
-                : 'hover:bg-accent hover:text-accent-foreground',
+                ? "bg-primary/10 font-medium text-primary"
+                : "hover:bg-accent hover:text-accent-foreground",
             )}
             onClick={() => {
               context.onChange?.(item.locale);
@@ -52,7 +52,7 @@ export function LanguageToggle(props: LanguageSelectProps): React.ReactElement {
   );
 }
 
-export function LanguageToggleText(props: ComponentProps<'span'>) {
+export function LanguageToggleText(props: ComponentProps<"span">) {
   const context = useI18n();
   const text = context.locales?.find((item) => item.locale === context.locale)?.name;
 

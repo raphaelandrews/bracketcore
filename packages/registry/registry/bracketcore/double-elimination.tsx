@@ -146,7 +146,7 @@ export function DoubleElimination({
     if (i < ubCount - 1) {
       // Connector exists between current Round and Next Round
       const startCol = getUBCol(i) + 1; // Start right after current match
-      const endCol = getUBCol(i + 1);   // End right before next match
+      const endCol = getUBCol(i + 1); // End right before next match
       ubConnCols.push(startCol);
       ubConnSpans.push(endCol - startCol);
     }
@@ -378,14 +378,15 @@ export function DoubleElimination({
             Grand Final
           </div>
 
-
           {/* GF connector */}
           <GrandFinalConnector
             ubFinalPos={ubFinalPos}
             lbFinalPos={lbFinalPos}
             gridCol={gfConnCol}
             style={connectorStyle}
-            lbShiftMultiplier={connectorStyle === "simple" ? (lbShiftMultiplier[lbCount - 1] ?? 0) : 0}
+            lbShiftMultiplier={
+              connectorStyle === "simple" ? (lbShiftMultiplier[lbCount - 1] ?? 0) : 0
+            }
           />
 
           {/* GF match card */}
@@ -430,9 +431,10 @@ function GridMatch({
       style={{
         gridRow: `${topRow} / ${topRow + 2}`,
         gridColumn: col,
-        transform: shiftMultiplier !== 0
-          ? `translateY(calc(var(--bracket-match-height, calc(3.25rem + 1px)) * ${shiftMultiplier}))`
-          : undefined,
+        transform:
+          shiftMultiplier !== 0
+            ? `translateY(calc(var(--bracket-match-height, calc(3.25rem + 1px)) * ${shiftMultiplier}))`
+            : undefined,
       }}
     >
       <div
@@ -519,8 +521,7 @@ function MergeConnectors({
             style={{
               borderBottomWidth: "1.5px",
               borderRightWidth: "1.5px",
-              bottom:
-                `calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2${botOffset})`,
+              bottom: `calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2${botOffset})`,
               right: "50%",
               width: "50%",
               height: `calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2${botHeightAdj})`,
@@ -608,7 +609,7 @@ function StraightConnectors({
                 className="absolute border-border"
                 style={{
                   borderBottomWidth: "1.5px",
-                  top: `calc(50% + var(--bracket-match-height, calc(3.25rem + 1px)) * ${(targetShift - 0.25)})`,
+                  top: `calc(50% + var(--bracket-match-height, calc(3.25rem + 1px)) * ${targetShift - 0.25})`,
                   left: "50%",
                   width: "50%",
                 }}
@@ -696,7 +697,8 @@ function GrandFinalConnector({
             top: "calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
             left: "0",
             width: "50%",
-            height: "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
+            height:
+              "calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2)",
           }}
         />
         <div
@@ -716,8 +718,7 @@ function GrandFinalConnector({
           style={{
             borderBottomWidth: "1.5px",
             borderRightWidth: "1.5px",
-            bottom:
-              `calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2${botOffset})`,
+            bottom: `calc((var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2${botOffset})`,
             left: "0",
             width: "50%",
             height: `calc(50% - var(--bracket-match-height, calc(3.25rem + 1px)) * 0.25 - (var(--bracket-match-height, calc(3.25rem + 1px)) + var(--bracket-match-gap, 1rem)) / 2${" + var(--bracket-match-height, calc(3.25rem + 1px)) * " + lbShiftMultiplier})`,

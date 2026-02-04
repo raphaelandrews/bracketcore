@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { type ComponentProps, type ReactNode, useMemo } from 'react';
-import { AnchorProvider, type TOCItemType, useActiveAnchors } from 'fumadocs-core/toc';
-import { cn } from '@/lib/cn';
-import { useTreeContext } from 'fumadocs-ui/contexts/tree';
-import { Link, usePathname } from 'fumadocs-core/framework';
-import type * as PageTree from 'fumadocs-core/page-tree';
-import { buttonVariants } from '@/components/ui/button';
-import { MoveLeftIcon, MoveRightIcon } from 'lucide-react';
+import { type ComponentProps, type ReactNode, useMemo } from "react";
+import { AnchorProvider, type TOCItemType, useActiveAnchors } from "fumadocs-core/toc";
+import { cn } from "@/lib/cn";
+import { useTreeContext } from "fumadocs-ui/contexts/tree";
+import { Link, usePathname } from "fumadocs-core/framework";
+import type * as PageTree from "fumadocs-core/page-tree";
+import { buttonVariants } from "@/components/ui/button";
+import { MoveLeftIcon, MoveRightIcon } from "lucide-react";
 
 export interface DocsPageProps {
   toc?: TOCItemType[];
@@ -38,28 +38,28 @@ export function DocsPage({ toc = [], full = false, ...props }: DocsPageProps) {
   );
 }
 
-export function DocsBody(props: ComponentProps<'div'>) {
+export function DocsBody(props: ComponentProps<"div">) {
   return (
-    <div {...props} className={cn('prose', props.className)}>
+    <div {...props} className={cn("prose", props.className)}>
       {props.children}
     </div>
   );
 }
 
-export function DocsDescription(props: ComponentProps<'p'>) {
+export function DocsDescription(props: ComponentProps<"p">) {
   // don't render if no description provided
   if (props.children === undefined) return null;
 
   return (
-    <p {...props} className={cn('mb-8 text-lg text-muted-foreground', props.className)}>
+    <p {...props} className={cn("mb-8 text-lg text-muted-foreground", props.className)}>
       {props.children}
     </p>
   );
 }
 
-export function DocsTitle(props: ComponentProps<'h1'>) {
+export function DocsTitle(props: ComponentProps<"h1">) {
   return (
-    <h1 {...props} className={cn('text-3xl font-semibold', props.className)}>
+    <h1 {...props} className={cn("text-3xl font-semibold", props.className)}>
       {props.children}
     </h1>
   );
@@ -71,7 +71,10 @@ function TocItem({ item }: { item: TOCItemType }) {
   return (
     <a
       href={item.url}
-      className={cn('text-[.8rem] font-medium text-muted-foreground py-1', isActive && 'text-primary')}
+      className={cn(
+        "text-[.8rem] font-medium text-muted-foreground py-1",
+        isActive && "text-primary",
+      )}
       style={{
         paddingLeft: Math.max(0, item.depth - 2) * 16,
       }}
@@ -89,8 +92,8 @@ function Footer() {
 
     function scan(items: PageTree.Node[]) {
       for (const item of items) {
-        if (item.type === 'page') result.push(item);
-        else if (item.type === 'folder') {
+        if (item.type === "page") result.push(item);
+        else if (item.type === "folder") {
           if (item.index) result.push(item.index);
           scan(item.children);
         }
@@ -111,23 +114,16 @@ function Footer() {
     };
   }, [flatten, pathname]);
 
-
   return (
     <div className="flex flex-row justify-between gap-2 items-center font-medium">
       {previous ? (
-        <Link
-          href={previous.url}
-          className={cn(buttonVariants({ variant: 'secondary' }))}
-        >
+        <Link href={previous.url} className={cn(buttonVariants({ variant: "secondary" }))}>
           <MoveLeftIcon data-icon="inline-start" />
           {previous.name}
         </Link>
       ) : null}
       {next ? (
-        <Link
-          href={next.url}
-          className={cn(buttonVariants({ variant: 'secondary' }))}
-        >
+        <Link href={next.url} className={cn(buttonVariants({ variant: "secondary" }))}>
           {next.name}
           <MoveRightIcon data-icon="inline-start" />
         </Link>

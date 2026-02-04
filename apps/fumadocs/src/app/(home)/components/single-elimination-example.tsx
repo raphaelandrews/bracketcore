@@ -1,6 +1,10 @@
 "use client";
 
-import { SingleElimination, type SingleEliminationBracket, type Match } from "@bracketcore/registry";
+import {
+  SingleElimination,
+  type SingleEliminationBracket,
+  type Match,
+} from "@bracketcore/registry";
 
 function m(
   id: string,

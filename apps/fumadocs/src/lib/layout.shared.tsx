@@ -5,7 +5,7 @@ import { siteConfig } from "./config";
 export function baseOptions(): BaseLayoutProps {
   return {
     nav: {
-      title: "BracketCore",
+      title: "Bracketcore",
     },
     githubUrl: siteConfig.links.github,
   };
