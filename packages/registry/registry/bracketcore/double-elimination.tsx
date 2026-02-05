@@ -253,7 +253,7 @@ export function DoubleElimination({
       {upper.map((round, i) => (
         <div
           key={`ub-header-${round.name}`}
-          className="text-xs font-medium text-muted-foreground mb-1 whitespace-nowrap flex items-end justify-center"
+          className="text-xs font-medium text-muted-foreground mb-2 whitespace-nowrap flex items-end justify-center"
           style={{
             gridRow: headerRow,
             gridColumn: ubMatchCols[i]!,
@@ -301,7 +301,7 @@ export function DoubleElimination({
       {lower.map((round, i) => (
         <div
           key={`lb-header-${round.name}`}
-          className="text-xs font-medium text-muted-foreground mb-1 whitespace-nowrap flex items-end justify-center"
+          className="text-xs font-medium text-muted-foreground mb-2 whitespace-nowrap flex items-end justify-center"
           style={{
             gridRow: lbHeaderRow,
             gridColumn: lbMatchCols[i]!,
@@ -369,7 +369,7 @@ export function DoubleElimination({
         <>
           {/* GF header */}
           <div
-            className="text-xs font-medium text-muted-foreground mb-1 whitespace-nowrap flex items-end justify-center"
+            className="text-xs font-medium text-muted-foreground mb-2 whitespace-nowrap flex items-end justify-center"
             style={{
               gridRow: headerRow,
               gridColumn: gfMatchCol,

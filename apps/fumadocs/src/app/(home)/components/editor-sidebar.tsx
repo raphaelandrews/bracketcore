@@ -1,9 +1,17 @@
 "use client";
 
 import * as React from "react";
-import { MinusIcon, PlusIcon, XIcon } from "lucide-react";
+import { CalendarIcon, MinusIcon, PlusIcon, XIcon } from "lucide-react";
 import type { Match, MatchStatus, Team } from "@bracketcore/registry";
-import { Button } from "@/components/ui/button";
+import { parse, format } from "date-fns";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Sidebar,
   SidebarContent,
@@ -13,6 +21,7 @@ import {
   SidebarHeader,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
+import { cn } from "@/lib/cn";
 
 const statuses: { label: string; value: MatchStatus }[] = [
   { label: "Upcoming", value: "upcoming" },
@@ -23,6 +32,8 @@ const statuses: { label: string; value: MatchStatus }[] = [
 interface EditorSidebarProps extends React.ComponentProps<typeof Sidebar> {
   teams: Team[];
   onTeamNameChange: (index: number, name: string) => void;
+  bestOf: number;
+  onBestOfChange: (bestOf: number) => void;
   connectorStyle: "default" | "simple";
   onConnectorStyleChange: (style: "default" | "simple") => void;
   selectedMatch: Match | null;
@@ -32,6 +43,8 @@ interface EditorSidebarProps extends React.ComponentProps<typeof Sidebar> {
 export function EditorSidebar({
   teams,
   onTeamNameChange,
+  bestOf,
+  onBestOfChange,
   connectorStyle,
   onConnectorStyleChange,
   selectedMatch,
@@ -59,11 +72,11 @@ export function EditorSidebar({
                   <span className="text-xs text-muted-foreground w-4 shrink-0">
                     {i + 1}.
                   </span>
-                  <input
+                  <Input
                     type="text"
                     value={team.name}
                     onChange={(e) => onTeamNameChange(i, e.target.value)}
-                    className="h-7 w-full rounded-md border bg-transparent px-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                    className="h-7 text-sm"
                     aria-label={`Team ${i + 1} name`}
                   />
                 </div>
@@ -75,30 +88,54 @@ export function EditorSidebar({
         <SidebarSeparator />
 
         <SidebarGroup>
-          <SidebarGroupLabel>Connectors</SidebarGroupLabel>
+          <SidebarGroupLabel>Settings</SidebarGroupLabel>
           <SidebarGroupContent>
-            <div className="flex gap-1 px-2">
-              <Button
-                size="xs"
-                variant={connectorStyle === "default" ? "default" : "outline"}
-                onClick={() => onConnectorStyleChange("default")}
-              >
-                Curved
-              </Button>
-              <Button
-                size="xs"
-                variant={connectorStyle === "simple" ? "default" : "outline"}
-                onClick={() => onConnectorStyleChange("simple")}
-              >
-                Straight
-              </Button>
+            <div className="flex flex-col gap-2 px-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">Connector</span>
+                <div className="flex gap-1">
+                  <Button
+                    size="xs"
+                    variant={connectorStyle === "default" ? "default" : "outline"}
+                    onClick={() => onConnectorStyleChange("default")}
+                  >
+                    Curved
+                  </Button>
+                  <Button
+                    size="xs"
+                    variant={connectorStyle === "simple" ? "default" : "outline"}
+                    onClick={() => onConnectorStyleChange("simple")}
+                  >
+                    Straight
+                  </Button>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">Best of</span>
+                <div className="flex gap-1">
+                  {[1, 3, 5, 7].map((num) => (
+                    <Button
+                      key={num}
+                      size="xs"
+                      variant={bestOf === num ? "default" : "outline"}
+                      onClick={() => onBestOfChange(num)}
+                    >
+                      {num}
+                    </Button>
+                  ))}
+                </div>
+              </div>
             </div>
           </SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarSeparator />
 
-        <MatchEditorSection match={selectedMatch} onUpdate={onMatchUpdate} />
+        <MatchEditorSection
+          match={selectedMatch}
+          onUpdate={onMatchUpdate}
+          bestOf={bestOf}
+        />
       </SidebarContent>
     </Sidebar>
   );
@@ -107,9 +144,11 @@ export function EditorSidebar({
 function MatchEditorSection({
   match,
   onUpdate,
+  bestOf,
 }: {
   match: Match | null;
   onUpdate: (match: Match) => void;
+  bestOf: number;
 }) {
   if (!match) {
     return (
@@ -124,10 +163,12 @@ function MatchEditorSection({
     );
   }
 
+  const hasTeams = !!(match.teams[0].team && match.teams[1].team);
   const status = match.status ?? "upcoming";
+  const effectiveBestOf = match.bestOf ?? bestOf;
 
   function setStatus(next: MatchStatus) {
-    if (!match) return;
+    if (!match || !hasTeams) return;
     const updated = structuredClone(match);
     updated.status = next;
 
@@ -149,20 +190,46 @@ function MatchEditorSection({
   }
 
   function setScore(teamIndex: 0 | 1, delta: number) {
-    if (!match) return;
-    const updated = structuredClone(match);
-    const newScore = updated.teams[teamIndex].score + delta;
-    if (newScore < 0) return;
-    updated.teams[teamIndex].score = newScore;
+    if (!match || !hasTeams) return;
 
+    // Validate score limits
+    const currentScore = match.teams[teamIndex].score;
+    const nextScore = currentScore + delta;
+
+    if (nextScore < 0) return;
+
+    const maxScore = Math.ceil(effectiveBestOf / 2);
+    const otherScore = match.teams[teamIndex === 0 ? 1 : 0].score;
+
+    // Prevent going over match point
+    if (nextScore > maxScore) return;
+
+    // Prevent total games > effectiveBestOf
+    if (nextScore + otherScore > effectiveBestOf) return;
+
+    const updated = structuredClone(match);
+    updated.teams[teamIndex].score = nextScore;
+
+    // Auto-complete if someone reaches max score
+    if (nextScore === maxScore) {
+      updated.status = "completed";
+      const [a, b] = updated.teams;
+      a.isWinner = a.score > b.score;
+      b.isWinner = b.score > a.score;
+    }
+
+    // If game was completed and we reduce score below winning threshold, reopen it or adjust winner
     if (updated.status === "completed") {
       const [a, b] = updated.teams;
-      if (a.score !== b.score) {
-        a.isWinner = a.score > b.score;
-        b.isWinner = b.score > a.score;
-      } else {
-        a.isWinner = false;
-        b.isWinner = false;
+      if (a.score < maxScore && b.score < maxScore) {
+        // Reset winner if no one has reached max score anymore
+        if (a.score === b.score) {
+          a.isWinner = false;
+          b.isWinner = false;
+        } else {
+          a.isWinner = a.score > b.score;
+          b.isWinner = b.score > a.score;
+        }
       }
     }
 
@@ -170,7 +237,7 @@ function MatchEditorSection({
   }
 
   function toggleWinner(teamIndex: 0 | 1) {
-    if (!match || match.status !== "completed") return;
+    if (!match || match.status !== "completed" || !hasTeams) return;
     const updated = structuredClone(match);
     const otherIndex = teamIndex === 0 ? 1 : 0;
     const wasWinner = updated.teams[teamIndex].isWinner;
@@ -183,13 +250,55 @@ function MatchEditorSection({
     if (!match) return;
     const updated = structuredClone(match);
     updated.bestOf = value;
+
+    // Reset scores when bestOf changes to avoid invalid states
+    updated.teams[0].score = 0;
+    updated.teams[1].score = 0;
+    updated.teams[0].isWinner = false;
+    updated.teams[1].isWinner = false;
+    updated.status = "upcoming";
+
     onUpdate(updated);
   }
 
-  function setScheduledAt(value: string) {
+  // ScheduledAt helpers
+  const scheduledDate = match.scheduledAt
+    ? match.scheduledAt instanceof Date
+      ? match.scheduledAt
+      : new Date(match.scheduledAt)
+    : undefined;
+
+  function setScheduledDate(date: Date | undefined) {
     if (!match) return;
     const updated = structuredClone(match);
-    updated.scheduledAt = value ? new Date(value) : undefined;
+
+    if (date) {
+      // Preserve time if modifying existing date, otherwise default to 12:00
+      const nextTime = updated.scheduledAt
+        ? (updated.scheduledAt instanceof Date ? updated.scheduledAt : new Date(updated.scheduledAt))
+        : new Date();
+
+      // If no previous time, default to 12:00 to avoid timezone edge cases on day boundaries
+      if (!updated.scheduledAt) {
+        nextTime.setHours(12, 0, 0, 0);
+      }
+
+      const newDate = new Date(date);
+      newDate.setHours(nextTime.getHours(), nextTime.getMinutes(), 0, 0);
+      updated.scheduledAt = newDate;
+    } else {
+      updated.scheduledAt = undefined;
+    }
+    onUpdate(updated);
+  }
+
+  function setScheduledTime(timeStr: string) {
+    if (!match || !scheduledDate) return;
+    const [hours, minutes] = timeStr.split(":").map(Number);
+    const updated = structuredClone(match);
+    const d = new Date(scheduledDate);
+    d.setHours(hours, minutes);
+    updated.scheduledAt = d;
     onUpdate(updated);
   }
 
@@ -202,18 +311,6 @@ function MatchEditorSection({
 
   const bestOfOptions = [undefined, 1, 3, 5, 7] as const;
 
-  const scheduledValue = match.scheduledAt
-    ? (() => {
-        const d =
-          match.scheduledAt instanceof Date
-            ? match.scheduledAt
-            : new Date(match.scheduledAt);
-        if (Number.isNaN(d.getTime())) return "";
-        const pad = (n: number) => String(n).padStart(2, "0");
-        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-      })()
-    : "";
-
   return (
     <SidebarGroup>
       <SidebarGroupLabel>
@@ -222,6 +319,12 @@ function MatchEditorSection({
       </SidebarGroupLabel>
       <SidebarGroupContent>
         <div className="px-2 space-y-4">
+          {!hasTeams && (
+            <div className="rounded-md bg-muted p-2 text-xs text-muted-foreground text-center">
+              Waiting for teams to be determined...
+            </div>
+          )}
+
           <div className="space-y-1.5">
             <p className="text-xs font-medium text-muted-foreground">Status</p>
             <div className="flex gap-1">
@@ -231,6 +334,7 @@ function MatchEditorSection({
                   size="xs"
                   variant={status === s.value ? "default" : "outline"}
                   onClick={() => setStatus(s.value)}
+                  disabled={!hasTeams}
                 >
                   {s.label}
                 </Button>
@@ -250,7 +354,7 @@ function MatchEditorSection({
                   variant={match.bestOf === bo ? "default" : "outline"}
                   onClick={() => setBestOf(bo)}
                 >
-                  {bo ? `BO${bo}` : "None"}
+                  {bo ? `BO${bo}` : "Default"}
                 </Button>
               ))}
             </div>
@@ -261,12 +365,42 @@ function MatchEditorSection({
               Scheduled
             </p>
             <div className="flex items-center gap-1">
-              <input
-                type="datetime-local"
-                value={scheduledValue}
-                onChange={(e) => setScheduledAt(e.target.value)}
-                className="h-7 w-full rounded-md border bg-transparent px-2 text-xs focus:outline-none focus:ring-1 focus:ring-ring"
-              />
+              <Popover>
+                <PopoverTrigger
+                  className={cn(
+                    buttonVariants({ variant: "outline" }),
+                    "w-full h-7 justify-start text-left font-normal text-xs px-2",
+                    !match.scheduledAt && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-3 w-3" />
+                  {scheduledDate ? (
+                    scheduledDate.toLocaleString(undefined, {
+                      year: 'numeric', month: 'numeric', day: 'numeric',
+                      hour: 'numeric', minute: '2-digit'
+                    })
+                  ) : (
+                    <span>Pick a date</span>
+                  )}
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={scheduledDate}
+                    onSelect={setScheduledDate}
+                    initialFocus
+                  />
+                  <div className="p-3 border-t">
+                    <Input
+                      type="time"
+                      className="text-sm"
+                      value={scheduledDate ? `${String(scheduledDate.getHours()).padStart(2, '0')}:${String(scheduledDate.getMinutes()).padStart(2, '0')}` : ""}
+                      onChange={(e) => setScheduledTime(e.target.value)}
+                      disabled={!scheduledDate}
+                    />
+                  </div>
+                </PopoverContent>
+              </Popover>
               {match.scheduledAt && (
                 <Button
                   size="icon-xs"
@@ -288,6 +422,7 @@ function MatchEditorSection({
                     size="xs"
                     variant={mt.isWinner ? "default" : "outline"}
                     onClick={() => toggleWinner(i as 0 | 1)}
+                    disabled={!hasTeams}
                   >
                     {mt.isWinner ? "Winner" : "Loser"}
                   </Button>
@@ -298,7 +433,7 @@ function MatchEditorSection({
                   size="icon-xs"
                   variant="outline"
                   onClick={() => setScore(i as 0 | 1, -1)}
-                  disabled={mt.score <= 0}
+                  disabled={mt.score <= 0 || !hasTeams}
                 >
                   <MinusIcon className="size-3" />
                 </Button>
@@ -309,6 +444,7 @@ function MatchEditorSection({
                   size="icon-xs"
                   variant="outline"
                   onClick={() => setScore(i as 0 | 1, 1)}
+                  disabled={!hasTeams}
                 >
                   <PlusIcon className="size-3" />
                 </Button>

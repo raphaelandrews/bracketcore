@@ -154,6 +154,7 @@ export function BracketBuilder() {
   const [bracket, setBracket] = useState<DoubleEliminationBracket>(() =>
     buildInitialBracket(DEFAULT_TEAMS),
   );
+  const [bestOf, setBestOf] = useState<number>(3);
   const [connectorStyle, setConnectorStyle] = useState<"default" | "simple">("default");
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
 
@@ -298,6 +299,8 @@ export function BracketBuilder() {
       <EditorSidebar
         teams={teams}
         onTeamNameChange={handleTeamNameChange}
+        bestOf={bestOf}
+        onBestOfChange={setBestOf}
         connectorStyle={connectorStyle}
         onConnectorStyleChange={setConnectorStyle}
         selectedMatch={selectedMatch}
