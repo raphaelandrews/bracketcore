@@ -5,7 +5,8 @@ description: A group stage component with standings tables and match cards for r
 
 ## Preview
 
-<ComponentPreview code={`import { GroupStage, type GroupStageBracket, type Match } from "@bracketcore/registry";
+<ComponentPreview code={`import { GroupStage } from "@/components/bracketcore/group-stage";
+import type { GroupStageBracket, Match } from "@/types/bracketcore";
 
 function m(
 id: string,
@@ -180,7 +181,8 @@ const bracket: GroupStageBracket = {
 ## Usage
 
 ```tsx
-import { GroupStage, type GroupStageBracket } from "@bracketcore/registry";
+import { GroupStage } from "@/components/bracketcore/group-stage";
+import type { GroupStageBracket } from "@/types/bracketcore";
 ```
 
 ```tsx

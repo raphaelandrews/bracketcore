@@ -1,6 +1,6 @@
-import type { SingleEliminationBracket, Match } from "./bracket-types";
-import { MatchCard } from "./match-card";
-import { cn } from "./cn";
+import type { SingleEliminationBracket, Match } from "@/types/bracketcore";
+import { MatchCard } from "@/components/bracketcore/match-card";
+import { cn } from "@/lib/utils";
 
 export interface SingleEliminationProps {
   bracket: SingleEliminationBracket;

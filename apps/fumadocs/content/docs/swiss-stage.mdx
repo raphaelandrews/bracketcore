@@ -5,7 +5,8 @@ description: A Swiss system bracket with round-by-round matches and standings ta
 
 ## Preview
 
-<ComponentPreview code={`import { SwissStage, type SwissBracket, type Match } from "@bracketcore/registry";
+<ComponentPreview code={`import { SwissStage } from "@/components/bracketcore/swiss-stage";
+import type { SwissBracket, Match } from "@/types/bracketcore";
 
 function m(
 id: string,
@@ -183,7 +184,8 @@ const bracket: SwissBracket = {
 ## Usage
 
 ```tsx
-import { SwissStage, type SwissBracket } from "@bracketcore/registry";
+import { SwissStage } from "@/components/bracketcore/swiss-stage";
+import type { SwissBracket } from "@/types/bracketcore";
 ```
 
 ```tsx

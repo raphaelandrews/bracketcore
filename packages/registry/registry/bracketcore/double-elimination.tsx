@@ -1,6 +1,6 @@
-import type { DoubleEliminationBracket, Match, Round } from "./bracket-types";
-import { MatchCard } from "./match-card";
-import { cn } from "./cn";
+import type { DoubleEliminationBracket, Match, Round } from "@/types/bracketcore";
+import { MatchCard } from "@/components/bracketcore/match-card";
+import { cn } from "@/lib/utils";
 
 export interface DoubleEliminationProps {
   bracket: DoubleEliminationBracket;

@@ -1,5 +1,5 @@
-import type { Match, MatchTeam } from "./bracket-types";
-import { cn } from "./cn";
+import type { Match, MatchTeam } from "@/types/bracketcore";
+import { cn } from "@/lib/utils";
 
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

@@ -2,13 +2,31 @@
   "extends": "@bracketcore/config/tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "types": [],
     "outDir": "dist",
     "rootDir": ".",
     "paths": {
-      "@/*": ["./registry/*"]
+      "@/lib/utils": [
+        "./registry/bracketcore/cn.ts"
+      ],
+      "@/types/bracketcore": [
+        "./registry/bracketcore/bracket-types.ts"
+      ],
+      "@/components/bracketcore/*": [
+        "./registry/bracketcore/*"
+      ],
+      "@/*": [
+        "./registry/*"
+      ]
     }
   },
-  "include": ["index.ts", "registry"]
+  "include": [
+    "index.ts",
+    "registry"
+  ]
 }

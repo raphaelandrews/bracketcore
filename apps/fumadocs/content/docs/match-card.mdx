@@ -5,7 +5,8 @@ description: The atomic building block for all bracket types — displays a sing
 
 ## Preview
 
-<ComponentPreview code={`import { MatchCard, type Match } from "@bracketcore/registry";
+<ComponentPreview code={`import { MatchCard } from "@/components/bracketcore/match-card";
+import type { Match } from "@/types/bracketcore";
 
 const completed: Match = {
 id: "demo-completed",
@@ -67,7 +68,8 @@ const match: Match = {
 ## Usage
 
 ```tsx
-import { MatchCard, type Match } from "@bracketcore/registry";
+import { MatchCard } from "@/components/bracketcore/match-card";
+import type { Match } from "@/types/bracketcore";
 ```
 
 ```tsx

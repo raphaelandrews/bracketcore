@@ -1,6 +1,6 @@
-import type { SwissBracket, Match, Team } from "./bracket-types";
-import { MatchCard } from "./match-card";
-import { cn } from "./cn";
+import type { SwissBracket, Match, Team } from "@/types/bracketcore";
+import { MatchCard } from "@/components/bracketcore/match-card";
+import { cn } from "@/lib/utils";
 import { ChevronsRight } from "lucide-react";
 
 export interface SwissStageProps {

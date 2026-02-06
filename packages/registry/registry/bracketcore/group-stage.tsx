@@ -1,7 +1,7 @@
-import type { GroupStageBracket, Match, Group } from "./bracket-types";
-import { MatchCard } from "./match-card";
-import { cn } from "./cn";
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "./table";
+import type { GroupStageBracket, Match, Group } from "@/types/bracketcore";
+import { MatchCard } from "@/components/bracketcore/match-card";
+import { cn } from "@/lib/utils";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/bracketcore/table";
 
 export interface GroupStageProps {
   bracket: GroupStageBracket;

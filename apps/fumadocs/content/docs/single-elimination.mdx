@@ -5,7 +5,8 @@ description: A bracket component for single elimination tournaments with automat
 
 ## Preview
 
-<ComponentPreview code={`import { SingleElimination, type SingleEliminationBracket, type Match } from "@bracketcore/registry";
+<ComponentPreview code={`import { SingleElimination } from "@/components/bracketcore/single-elimination";
+import type { SingleEliminationBracket, Match } from "@/types/bracketcore";
 
 function m(
 id: string,
@@ -134,7 +135,8 @@ const bracket: SingleEliminationBracket = {
 ## Usage
 
 ```tsx
-import { SingleElimination, type SingleEliminationBracket } from "@bracketcore/registry";
+import { SingleElimination } from "@/components/bracketcore/single-elimination";
+import type { SingleEliminationBracket } from "@/types/bracketcore";
 ```
 
 ```tsx
