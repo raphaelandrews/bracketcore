@@ -14,7 +14,7 @@ import {
 import { SearchToggleLarge } from '@/components/layout/docs'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
 
-export function LandingNavbar() {
+export function Header() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (

@@ -5,10 +5,9 @@ import { cn } from "@/lib/cn";
 import { TreeContextProvider, useTreeContext } from "fumadocs-ui/contexts/tree";
 import Link from "fumadocs-core/link";
 import { useSearchContext } from "fumadocs-ui/contexts/search";
-import { cva } from "class-variance-authority";
 import { usePathname } from "fumadocs-core/framework";
 import { Footer } from "@/components/footer";
-import { Header } from "@/components/header/header";
+import { Header } from "@/components/header";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { LargeSearchToggle } from "../search-toggle";
@@ -89,7 +88,13 @@ export function SearchToggleLarge(props: ComponentProps<"button">) {
 }
 
 export function NavbarSidebarTrigger(props: ComponentProps<"button">) {
-  const { open, setOpen } = use(SidebarContext)!;
+  const context = use(SidebarContext);
+
+  if (!context) {
+    return null;
+  }
+
+  const { open, setOpen } = context;
 
   return (
     <button {...props} className={cn("text-sm", props.className)} onClick={() => setOpen(!open)}>
