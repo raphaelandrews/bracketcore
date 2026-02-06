@@ -1,6 +1,6 @@
 "use client"
 
-import { CalendarIcon, MinusIcon, PlusIcon, XIcon } from "lucide-react"
+import { CalendarIcon, MinusIcon, PlusIcon, XIcon, SwordsIcon, ClockIcon, PlayIcon, TrophyIcon } from "lucide-react"
 import type { Match, MatchStatus } from "@bracketcore/registry"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,10 +12,10 @@ import {
 } from "@/components/ui/popover"
 import { cn } from "@/lib/cn"
 
-const statuses: { label: string; value: MatchStatus }[] = [
-  { label: "Upcoming", value: "upcoming" },
-  { label: "Live", value: "live" },
-  { label: "Completed", value: "completed" },
+const statuses: { label: string; value: MatchStatus; icon: React.ReactNode; color: string }[] = [
+  { label: "Upcoming", value: "upcoming", icon: <ClockIcon className="size-3" />, color: "text-muted-foreground" },
+  { label: "Live", value: "live", icon: <PlayIcon className="size-3" />, color: "text-green-500" },
+  { label: "Completed", value: "completed", icon: <TrophyIcon className="size-3" />, color: "text-primary" },
 ]
 
 interface MatchEditorPanelProps {
@@ -27,11 +27,21 @@ interface MatchEditorPanelProps {
 export function MatchEditorPanel({ match, onUpdate, bestOf }: MatchEditorPanelProps) {
   if (!match) {
     return (
-      <div className="space-y-2">
-        <p className="text-xs font-medium text-muted-foreground">Match</p>
-        <p className="text-xs text-muted-foreground">
-          Click a match to edit
-        </p>
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center size-6 rounded-md bg-muted text-muted-foreground">
+            <SwordsIcon className="size-3.5" />
+          </div>
+          <h3 className="text-sm font-medium text-muted-foreground">Match Editor</h3>
+        </div>
+        <div className="flex flex-col items-center justify-center py-6 text-center">
+          <div className="size-10 rounded-full bg-muted/50 flex items-center justify-center mb-3">
+            <SwordsIcon className="size-5 text-muted-foreground/50" />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Click a match to edit
+          </p>
+        </div>
       </div>
     )
   }
@@ -172,140 +182,184 @@ export function MatchEditorPanel({ match, onUpdate, bestOf }: MatchEditorPanelPr
   const bestOfOptions = [undefined, 1, 3, 5, 7] as const
 
   return (
-    <div className="space-y-2">
-      <p className="text-xs font-medium text-muted-foreground">
-        {match.teams[0].team?.name ?? "TBD"} vs {match.teams[1].team?.name ?? "TBD"}
-      </p>
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center size-6 rounded-md bg-primary/10 text-primary">
+          <SwordsIcon className="size-3.5" />
+        </div>
+        <h3 className="text-sm font-medium truncate">
+          {match.teams[0].team?.name ?? "TBD"} vs {match.teams[1].team?.name ?? "TBD"}
+        </h3>
+      </div>
 
-      {!hasTeams && (
-        <div className="rounded-md bg-muted p-2 text-xs text-muted-foreground text-center">
-          Waiting for teams...
+      {!hasTeams ? (
+        <div className="rounded-md bg-muted/50 border border-dashed p-4 text-center">
+          <ClockIcon className="size-5 text-muted-foreground mx-auto mb-2" />
+          <p className="text-xs text-muted-foreground">
+            Waiting for teams to be determined
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {/* Status */}
+          <div className="space-y-1.5">
+            <span className="text-xs text-muted-foreground">Status</span>
+            <div className="flex rounded-lg border bg-muted/50 p-0.5">
+              {statuses.map((s) => (
+                <button
+                  key={s.value}
+                  onClick={() => setStatus(s.value)}
+                  disabled={!hasTeams}
+                  className={cn(
+                    "flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 text-xs font-medium rounded-md transition-all",
+                    status === s.value
+                      ? "bg-background shadow-sm"
+                      : "text-muted-foreground hover:text-foreground",
+                    status === s.value && s.color
+                  )}
+                >
+                  {s.icon}
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Scores */}
+          <div className="space-y-1.5">
+            <span className="text-xs text-muted-foreground">Score</span>
+            <div className="flex items-center gap-3">
+              {match.teams.map((mt, i) => (
+                <div
+                  key={i}
+                  className={cn(
+                    "flex-1 flex items-center gap-2 p-2 rounded-lg border transition-colors",
+                    mt.isWinner && status === "completed" && "bg-primary/5 border-primary/30"
+                  )}
+                >
+                  <div className="flex-1 min-w-0">
+                    <p className={cn(
+                      "text-xs font-medium truncate",
+                      mt.isWinner && status === "completed" && "text-primary"
+                    )}>
+                      {mt.team?.name ?? "TBD"}
+                    </p>
+                    {status === "completed" && (
+                      <p className="text-[10px] text-muted-foreground">
+                        {mt.isWinner ? "Winner" : ""}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      size="icon-xs"
+                      variant="ghost"
+                      onClick={() => setScore(i as 0 | 1, -1)}
+                      disabled={mt.score <= 0 || !hasTeams}
+                      className="size-6"
+                    >
+                      <MinusIcon className="size-3" />
+                    </Button>
+                    <span className={cn(
+                      "w-8 text-center tabular-nums text-lg font-semibold",
+                      mt.isWinner && status === "completed" && "text-primary"
+                    )}>
+                      {mt.score}
+                    </span>
+                    <Button
+                      size="icon-xs"
+                      variant="ghost"
+                      onClick={() => setScore(i as 0 | 1, 1)}
+                      disabled={!hasTeams}
+                      className="size-6"
+                    >
+                      <PlusIcon className="size-3" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Best Of Override & Schedule */}
+          <div className="flex items-start gap-3">
+            {/* Best Of Override */}
+            <div className="space-y-1.5 flex-1">
+              <span className="text-xs text-muted-foreground">Override BO</span>
+              <div className="flex rounded-md border bg-muted/50 p-0.5">
+                {bestOfOptions.map((bo) => (
+                  <button
+                    key={bo ?? "none"}
+                    onClick={() => setBestOfMatch(bo)}
+                    className={cn(
+                      "flex-1 px-2 py-1 text-xs font-medium rounded transition-all",
+                      match.bestOf === bo
+                        ? "bg-background shadow-sm text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {bo ? `${bo}` : "—"}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Schedule */}
+            <div className="space-y-1.5">
+              <span className="text-xs text-muted-foreground">Schedule</span>
+              <div className="flex items-center gap-1">
+                <Popover>
+                  <PopoverTrigger
+                    className={cn(
+                      buttonVariants({ variant: "outline", size: "sm" }),
+                      "h-8 justify-start text-left font-normal text-xs",
+                      !match.scheduledAt && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-1.5 size-3" />
+                    {scheduledDate ? (
+                      scheduledDate.toLocaleString(undefined, {
+                        month: 'short', day: 'numeric',
+                        hour: 'numeric', minute: '2-digit'
+                      })
+                    ) : (
+                      <span>Set time</span>
+                    )}
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="end">
+                    <Calendar
+                      mode="single"
+                      selected={scheduledDate}
+                      onSelect={setScheduledDate}
+                      initialFocus
+                    />
+                    <div className="p-3 border-t">
+                      <Input
+                        type="time"
+                        className="text-sm"
+                        value={scheduledDate ? `${String(scheduledDate.getHours()).padStart(2, '0')}:${String(scheduledDate.getMinutes()).padStart(2, '0')}` : ""}
+                        onChange={(e) => setScheduledTime(e.target.value)}
+                        disabled={!scheduledDate}
+                      />
+                    </div>
+                  </PopoverContent>
+                </Popover>
+                {match.scheduledAt && (
+                  <Button
+                    size="icon-xs"
+                    variant="ghost"
+                    onClick={clearScheduledAt}
+                    className="size-8"
+                  >
+                    <XIcon className="size-3" />
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       )}
-
-      <div className="space-y-2">
-        {/* Status */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground shrink-0">Status</span>
-          <div className="flex gap-1">
-            {statuses.map((s) => (
-              <Button
-                key={s.value}
-                size="xs"
-                variant={status === s.value ? "default" : "outline"}
-                onClick={() => setStatus(s.value)}
-                disabled={!hasTeams}
-              >
-                {s.label}
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        {/* Scores */}
-        <div className="flex items-center gap-4">
-          {match.teams.map((mt, i) => (
-            <div key={i} className="flex items-center gap-1">
-              <span className="text-xs truncate max-w-16">{mt.team?.name ?? "TBD"}</span>
-              <Button
-                size="icon-xs"
-                variant="outline"
-                onClick={() => setScore(i as 0 | 1, -1)}
-                disabled={mt.score <= 0 || !hasTeams}
-              >
-                <MinusIcon className="size-3" />
-              </Button>
-              <span className="w-6 text-center tabular-nums text-sm font-medium">
-                {mt.score}
-              </span>
-              <Button
-                size="icon-xs"
-                variant="outline"
-                onClick={() => setScore(i as 0 | 1, 1)}
-                disabled={!hasTeams}
-              >
-                <PlusIcon className="size-3" />
-              </Button>
-              {status === "completed" && (
-                <Button
-                  size="xs"
-                  variant={mt.isWinner ? "default" : "outline"}
-                  onClick={() => toggleWinner(i as 0 | 1)}
-                  disabled={!hasTeams}
-                  className="ml-1"
-                >
-                  {mt.isWinner ? "W" : "L"}
-                </Button>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Best of and Schedule */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <div className="flex items-center gap-1">
-            <span className="text-xs text-muted-foreground">BO</span>
-            {bestOfOptions.map((bo) => (
-              <Button
-                key={bo ?? "none"}
-                size="xs"
-                variant={match.bestOf === bo ? "default" : "outline"}
-                onClick={() => setBestOfMatch(bo)}
-              >
-                {bo ?? "—"}
-              </Button>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-1">
-            <Popover>
-              <PopoverTrigger
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "xs" }),
-                  "justify-start text-left font-normal",
-                  !match.scheduledAt && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-1 h-3 w-3" />
-                {scheduledDate ? (
-                  scheduledDate.toLocaleString(undefined, {
-                    month: 'numeric', day: 'numeric',
-                    hour: 'numeric', minute: '2-digit'
-                  })
-                ) : (
-                  <span>Schedule</span>
-                )}
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={scheduledDate}
-                  onSelect={setScheduledDate}
-                  initialFocus
-                />
-                <div className="p-3 border-t">
-                  <Input
-                    type="time"
-                    className="text-sm"
-                    value={scheduledDate ? `${String(scheduledDate.getHours()).padStart(2, '0')}:${String(scheduledDate.getMinutes()).padStart(2, '0')}` : ""}
-                    onChange={(e) => setScheduledTime(e.target.value)}
-                    disabled={!scheduledDate}
-                  />
-                </div>
-              </PopoverContent>
-            </Popover>
-            {match.scheduledAt && (
-              <Button
-                size="icon-xs"
-                variant="outline"
-                onClick={clearScheduledAt}
-              >
-                <XIcon className="size-3" />
-              </Button>
-            )}
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

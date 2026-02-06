@@ -1,5 +1,7 @@
 "use client"
 
+import { SettingsIcon, SplineIcon, HashIcon } from "lucide-react"
+import { cn } from "@/lib/cn"
 import { Button } from "@/components/ui/button"
 
 interface SettingsPanelProps {
@@ -7,6 +9,11 @@ interface SettingsPanelProps {
   onConnectorStyleChange: (style: "default" | "simple") => void
   bestOf: number
   onBestOfChange: (bestOf: number) => void
+  onReset: () => void
+  onShuffle: () => void
+  onAutoSchedule: () => void
+  onImport: (data: string) => void
+  onExport: () => void
 }
 
 export function SettingsPanel({
@@ -14,43 +21,114 @@ export function SettingsPanel({
   onConnectorStyleChange,
   bestOf,
   onBestOfChange,
+  onReset,
+  onShuffle,
+  onAutoSchedule,
+  onImport,
+  onExport,
 }: SettingsPanelProps) {
   return (
-    <div className="space-y-2">
-      <p className="text-xs font-medium text-muted-foreground">Settings</p>
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-muted-foreground">Connector</span>
-          <div className="flex gap-1">
-            <Button
-              size="xs"
-              variant={connectorStyle === "default" ? "default" : "outline"}
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center size-6 rounded-md bg-primary/10 text-primary">
+          <SettingsIcon className="size-3.5" />
+        </div>
+        <h3 className="text-sm font-medium">Settings</h3>
+      </div>
+
+      <div className="space-y-3">
+        {/* Connector Style */}
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <SplineIcon className="size-3" />
+            <span>Connector Style</span>
+          </div>
+          <div className="flex rounded-lg border bg-muted/50 p-0.5">
+            <button
               onClick={() => onConnectorStyleChange("default")}
+              className={cn(
+                "flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
+                connectorStyle === "default"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
             >
               Curved
-            </Button>
-            <Button
-              size="xs"
-              variant={connectorStyle === "simple" ? "default" : "outline"}
+            </button>
+            <button
               onClick={() => onConnectorStyleChange("simple")}
+              className={cn(
+                "flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
+                connectorStyle === "simple"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
             >
               Straight
-            </Button>
+            </button>
           </div>
         </div>
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-muted-foreground">Best of</span>
-          <div className="flex gap-1">
+
+        {/* Best Of */}
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <HashIcon className="size-3" />
+            <span>Best Of</span>
+          </div>
+          <div className="flex rounded-lg border bg-muted/50 p-0.5">
             {[1, 3, 5, 7].map((num) => (
-              <Button
+              <button
                 key={num}
-                size="xs"
-                variant={bestOf === num ? "default" : "outline"}
                 onClick={() => onBestOfChange(num)}
+                className={cn(
+                  "flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
+                  bestOf === num
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
               >
-                {num}
-              </Button>
+                BO{num}
+              </button>
             ))}
+          </div>
+        </div>
+
+        <div className="pt-4 border-t space-y-4">
+          <div className="grid grid-cols-2 gap-2">
+            <Button variant="outline" size="sm" onClick={onReset} className="w-full">
+              Reset Bracket
+            </Button>
+            <Button variant="outline" size="sm" onClick={onShuffle} className="w-full">
+              Shuffle Seeds
+            </Button>
+          </div>
+
+          <Button variant="outline" size="sm" onClick={onAutoSchedule} className="w-full">
+            Auto-Schedule (Start +1h)
+          </Button>
+
+          <div className="grid grid-cols-2 gap-2">
+            <Button variant="outline" size="sm" onClick={onExport} className="w-full">
+              Export JSON
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => {
+              const input = document.createElement('input');
+              input.type = 'file';
+              input.accept = 'application/json';
+              input.onchange = (e) => {
+                const file = (e.target as HTMLInputElement).files?.[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                  const content = e.target?.result as string;
+                  onImport(content);
+                };
+                reader.readAsText(file);
+              };
+              input.click();
+            }} className="w-full">
+              Import JSON
+            </Button>
           </div>
         </div>
       </div>

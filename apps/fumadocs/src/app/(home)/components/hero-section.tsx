@@ -24,6 +24,11 @@ export function HeroSection() {
     handleTeamNameChange,
     handleMatchClick,
     handleMatchUpdate,
+    handleReset,
+    handleShuffle,
+    handleAutoSchedule,
+    handleImport,
+    handleExport,
   } = useBracketEditor()
 
   return (
@@ -61,7 +66,20 @@ export function HeroSection() {
           <div className="relative group">
             <div className="absolute top-2 lg:-top-8 left-1/2 transform -translate-x-1/2 w-[90%] mx-auto h-24 lg:h-80 bg-primary/50 rounded-full blur-3xl"></div>
 
-            <div className="relative rounded-xl border bg-card shadow-2xl overflow-hidden">
+            <div className="relative overflow-hidden rounded-xl border bg-background shadow-2xl">
+              {/* Window Controls */}
+              <div className="flex items-center gap-2 px-4 py-3 border-b bg-muted/30">
+                <div className="flex gap-1.5">
+                  <div className="size-3 rounded-full bg-red-500/20 border border-red-500/50" />
+                  <div className="size-3 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
+                  <div className="size-3 rounded-full bg-green-500/20 border border-green-500/50" />
+                </div>
+                <div className="flex-1 text-center text-xs font-medium text-muted-foreground/50">
+                  bracketcore-editor.tsx
+                </div>
+                <div className="w-10" /> {/* Spacer for centering */}
+              </div>
+
               <BracketCanvas
                 bracket={bracket}
                 connectorStyle={connectorStyle}
@@ -77,6 +95,11 @@ export function HeroSection() {
                 onBestOfChange={setBestOf}
                 selectedMatch={selectedMatch}
                 onMatchUpdate={handleMatchUpdate}
+                onReset={handleReset}
+                onShuffle={handleShuffle}
+                onAutoSchedule={handleAutoSchedule}
+                onImport={handleImport}
+                onExport={handleExport}
                 isExpanded={isPanelExpanded}
                 onToggle={togglePanel}
               />

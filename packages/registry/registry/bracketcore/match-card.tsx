@@ -112,7 +112,8 @@ export function MatchCard({ match, className, onMatchClick, variant = "default" 
       {hasHeader && (
         <div
           className={cn(
-            "absolute bottom-full inset-x-0 flex items-center justify-between px-2.5 py-1 text-xs rounded-t-sm",
+            "absolute bottom-full flex items-center justify-between px-2.5 py-1 text-xs rounded-t-sm",
+            isLive ? "-inset-x-px" : "inset-x-0",
             isLive
               ? "text-primary bg-destructive"
               : "text-muted-foreground bg-muted",

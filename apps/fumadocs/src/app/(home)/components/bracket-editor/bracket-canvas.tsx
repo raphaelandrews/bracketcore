@@ -10,15 +10,29 @@ interface BracketCanvasProps {
 
 export function BracketCanvas({ bracket, connectorStyle, onMatchClick }: BracketCanvasProps) {
   return (
-    <div
-      className="flex items-center justify-center overflow-x-auto p-6 min-h-[400px]"
-      style={{ "--bracket-match-gap": "2.5rem" } as React.CSSProperties}
-    >
-      <DoubleElimination
-        bracket={bracket}
-        connectorStyle={connectorStyle}
-        onMatchClick={onMatchClick}
+    <div className="relative">
+      {/* Gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-muted/30 via-background to-muted/20" />
+
+      {/* Grid pattern overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.03] rounded-xl"
+        style={{
+          backgroundImage: `radial-gradient(circle, currentColor 1px, transparent 1px)`,
+          backgroundSize: '24px 24px',
+        }}
       />
+
+      <div
+        className="relative flex items-center justify-center overflow-x-auto p-8 min-h-[420px]"
+        style={{ "--bracket-match-gap": "2.5rem" } as React.CSSProperties}
+      >
+        <DoubleElimination
+          bracket={bracket}
+          connectorStyle={connectorStyle}
+          onMatchClick={onMatchClick}
+        />
+      </div>
     </div>
   )
 }

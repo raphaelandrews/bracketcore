@@ -180,6 +180,16 @@ export function useBracketEditor() {
   }, [])
 
   const handleMatchUpdate = useCallback((updated: Match) => {
+    // Validation: Prevent completing if scores are tied
+    if (updated.status === "completed") {
+      const [a, b] = updated.teams
+      if (a.score === b.score) {
+        // In a real app we might return an error or toast here
+        // For now, we just force it back to "live" to reject the completion
+        updated.status = "live"
+      }
+    }
+
     setBracket((prev) => {
       let b = updateMatchInBracket(prev, updated)
       const prevMatch = findMatch(prev, updated.id)
@@ -284,6 +294,71 @@ export function useBracketEditor() {
     setIsPanelExpanded((prev) => !prev)
   }, [])
 
+  const handleReset = useCallback(() => {
+    setBracket(buildInitialBracket(teams))
+    setBestOf(3)
+    setSelectedMatch(null)
+  }, [teams])
+
+  const handleShuffle = useCallback(() => {
+    const shuffled = [...teams].sort(() => Math.random() - 0.5)
+    setTeams(shuffled)
+    setBracket(buildInitialBracket(shuffled))
+    setSelectedMatch(null)
+  }, [teams])
+
+  const handleAutoSchedule = useCallback(() => {
+    const start = new Date()
+    start.setMinutes(0, 0, 0) // Round to nearest hour
+    start.setHours(start.getHours() + 1) // Start next hour
+
+    const DURATION_MINS = 45
+
+    setBracket((prev) => {
+      const b = structuredClone(prev)
+      let matchCount = 0
+
+      // Helper to schedule list of matches
+      function scheduleMatches(matches: Match[]) {
+        for (const m of matches) {
+          const time = new Date(start.getTime() + matchCount * DURATION_MINS * 60000)
+          m.scheduledAt = time
+          matchCount++
+        }
+      }
+
+      for (const round of b.upper) scheduleMatches(round.matches)
+      for (const round of b.lower) scheduleMatches(round.matches)
+      if (b.grandFinal) scheduleMatches([b.grandFinal])
+
+      return b
+    })
+  }, [])
+
+  const handleImport = useCallback((data: string) => {
+    try {
+      // Ideally add Zod validation here
+      const parsed = JSON.parse(data)
+      if (parsed.teams) setTeams(parsed.teams)
+      if (parsed.bracket) setBracket(parsed.bracket)
+      if (parsed.bestOf) setBestOf(parsed.bestOf)
+      if (parsed.connectorStyle) setConnectorStyle(parsed.connectorStyle)
+    } catch (e) {
+      console.error("Failed to import bracket", e)
+    }
+  }, [])
+
+  const handleExport = useCallback(() => {
+    const data = JSON.stringify({ teams, bracket, bestOf, connectorStyle }, null, 2)
+    const blob = new Blob([data], { type: "application/json" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "bracket.json"
+    a.click()
+    URL.revokeObjectURL(url)
+  }, [teams, bracket, bestOf, connectorStyle])
+
   return {
     teams,
     bracket,
@@ -297,5 +372,10 @@ export function useBracketEditor() {
     handleTeamNameChange,
     handleMatchClick,
     handleMatchUpdate,
+    handleReset,
+    handleShuffle,
+    handleAutoSchedule,
+    handleImport,
+    handleExport,
   }
 }

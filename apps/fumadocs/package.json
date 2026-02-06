@@ -17,6 +17,7 @@
     "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
     "date-fns": "^4.1.0",
+    "framer-motion": "^12.33.0",
     "fumadocs-core": "latest",
     "fumadocs-mdx": "14.2.6",
     "fumadocs-ui": "npm:@fumadocs/base-ui@latest",
