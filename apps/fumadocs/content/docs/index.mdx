@@ -3,24 +3,26 @@ title: Getting Started
 description: Reusable tournament bracket components for React, distributed via the shadcn registry.
 ---
 
-Bracketcore provides tournament bracket components you can drop into any React project. Install individual components via the shadcn CLI or use the `@bracketcore/registry` package directly.
+Bracketcore provides tournament bracket components you can drop into any React project. Install individual components via the shadcn CLI.
 
 ## Installation
 
-### shadcn registry
+### Via shadcn CLI
 
-Add components one at a time:
-
-```bash
-npx shadcn add https://bracketcore.dev/r/single-elimination.json
+```bash tab="npm"
+npx shadcn@latest add https://bracketcore.andrews.sh/r/match-card.json
 ```
 
-### Package
+```bash tab="pnpm"
+pnpm dlx shadcn@latest add https://bracketcore.andrews.sh/r/match-card.json
+```
 
-Or install everything at once:
+```bash tab="yarn"
+npx shadcn@latest add https://bracketcore.andrews.sh/r/match-card.json
+```
 
-```bash
-npm install @bracketcore/registry
+```bash tab="bun"
+bunx shadcn@latest add https://bracketcore.andrews.sh/r/match-card.json
 ```
 
 ## Components

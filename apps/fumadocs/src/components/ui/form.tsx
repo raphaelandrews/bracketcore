@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Field } from "@base-ui/react/field"
+import * as React from "react";
+import { Field } from "@base-ui/react/field";
 import {
   Controller,
   FormProvider,
@@ -10,23 +10,21 @@ import {
   type ControllerProps,
   type FieldPath,
   type FieldValues,
-} from "react-hook-form"
+} from "react-hook-form";
 
-import { cn } from "@/lib/cn"
-import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/cn";
+import { Label } from "@/components/ui/label";
 
-const Form = FormProvider
+const Form = FormProvider;
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
-  name: TName
-}
+  name: TName;
+};
 
-const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
-)
+const FormFieldContext = React.createContext<FormFieldContextValue>({} as FormFieldContextValue);
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
@@ -38,27 +36,30 @@ const FormField = <
     <FormFieldContext.Provider value={{ name: props.name }}>
       <Controller {...props} />
     </FormFieldContext.Provider>
-  )
-}
+  );
+};
 
 const useFormField = () => {
-  const fieldContext = React.useContext(FormFieldContext)
-  const { getFieldState } = useFormContext()
-  const formState = useFormState({ name: fieldContext.name })
-  const fieldState = getFieldState(fieldContext.name, formState)
+  const fieldContext = React.useContext(FormFieldContext);
+  const { getFieldState } = useFormContext();
+  const formState = useFormState({ name: fieldContext.name });
+  const fieldState = getFieldState(fieldContext.name, formState);
 
   if (!fieldContext) {
-    throw new Error("useFormField should be used within <FormField>")
+    throw new Error("useFormField should be used within <FormField>");
   }
 
   return {
     name: fieldContext.name,
     ...fieldState,
-  }
-}
+  };
+};
 
-function FormItem({ className, ...props }: Omit<React.ComponentProps<typeof Field.Root>, "className"> & { className?: string }) {
-  const { error } = useFormField()
+function FormItem({
+  className,
+  ...props
+}: Omit<React.ComponentProps<typeof Field.Root>, "className"> & { className?: string }) {
+  const { error } = useFormField();
 
   return (
     <Field.Root
@@ -67,7 +68,7 @@ function FormItem({ className, ...props }: Omit<React.ComponentProps<typeof Fiel
       className={cn("grid gap-2", className)}
       {...props}
     />
-  )
+  );
 }
 
 function FormLabel({
@@ -81,10 +82,14 @@ function FormLabel({
       className={cn("data-[invalid]:text-destructive", className)}
       {...props}
     />
-  )
+  );
 }
 
-function FormControl({ className, children, ...props }: Omit<React.ComponentProps<typeof Field.Control>, "className"> & { className?: string }) {
+function FormControl({
+  className,
+  children,
+  ...props
+}: Omit<React.ComponentProps<typeof Field.Control>, "className"> & { className?: string }) {
   return (
     <Field.Control
       render={children as React.ReactElement}
@@ -92,25 +97,32 @@ function FormControl({ className, children, ...props }: Omit<React.ComponentProp
       className={className}
       {...props}
     />
-  )
+  );
 }
 
-function FormDescription({ className, ...props }: Omit<React.ComponentProps<typeof Field.Description>, "className"> & { className?: string }) {
+function FormDescription({
+  className,
+  ...props
+}: Omit<React.ComponentProps<typeof Field.Description>, "className"> & { className?: string }) {
   return (
     <Field.Description
       data-slot="form-description"
       className={cn("text-muted-foreground text-sm", className)}
       {...props}
     />
-  )
+  );
 }
 
-function FormMessage({ className, children, ...props }: Omit<React.ComponentProps<typeof Field.Error>, "className"> & { className?: string }) {
-  const { error } = useFormField()
-  const body = error ? String(error?.message ?? "") : children
+function FormMessage({
+  className,
+  children,
+  ...props
+}: Omit<React.ComponentProps<typeof Field.Error>, "className"> & { className?: string }) {
+  const { error } = useFormField();
+  const body = error ? String(error?.message ?? "") : children;
 
   if (!body) {
-    return null
+    return null;
   }
 
   return (
@@ -121,7 +133,7 @@ function FormMessage({ className, children, ...props }: Omit<React.ComponentProp
     >
       {body}
     </Field.Error>
-  )
+  );
 }
 
 export {
@@ -133,4 +145,4 @@ export {
   FormDescription,
   FormMessage,
   FormField,
-}
+};

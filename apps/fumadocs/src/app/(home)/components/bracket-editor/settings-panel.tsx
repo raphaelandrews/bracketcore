@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   SettingsIcon,
@@ -8,27 +8,27 @@ import {
   AlertTriangleIcon,
   CopyIcon,
   ListOrderedIcon,
-} from "lucide-react"
-import { cn } from "@/lib/cn"
-import { Button } from "@/components/ui/button"
-import type { BracketSize, ScheduleConflict, ValidationError } from "./bracket-editor-types"
+} from "lucide-react";
+import { cn } from "@/lib/cn";
+import { Button } from "@/components/ui/button";
+import type { BracketSize, ScheduleConflict, ValidationError } from "./bracket-editor-types";
 
 interface SettingsPanelProps {
-  connectorStyle: "default" | "simple"
-  onConnectorStyleChange: (style: "default" | "simple") => void
-  bestOf: number
-  onBestOfChange: (bestOf: number) => void
-  bracketSize: BracketSize
-  onBracketSizeChange: (size: BracketSize) => void
-  onReset: () => void
-  onShuffle: () => void
-  onSeedByRank: () => void
-  onAutoSchedule: () => void
-  onImport: (data: string) => void
-  onExport: () => void
-  onDuplicate: () => void
-  validationErrors: ValidationError[]
-  scheduleConflicts: ScheduleConflict[]
+  connectorStyle: "default" | "simple";
+  onConnectorStyleChange: (style: "default" | "simple") => void;
+  bestOf: number;
+  onBestOfChange: (bestOf: number) => void;
+  bracketSize: BracketSize;
+  onBracketSizeChange: (size: BracketSize) => void;
+  onReset: () => void;
+  onShuffle: () => void;
+  onSeedByRank: () => void;
+  onAutoSchedule: () => void;
+  onImport: (data: string) => void;
+  onExport: () => void;
+  onDuplicate: () => void;
+  validationErrors: ValidationError[];
+  scheduleConflicts: ScheduleConflict[];
 }
 
 export function SettingsPanel({
@@ -48,7 +48,7 @@ export function SettingsPanel({
   validationErrors,
   scheduleConflicts,
 }: SettingsPanelProps) {
-  const hasIssues = validationErrors.length > 0 || scheduleConflicts.length > 0
+  const hasIssues = validationErrors.length > 0 || scheduleConflicts.length > 0;
 
   return (
     <div className="space-y-4">
@@ -75,7 +75,7 @@ export function SettingsPanel({
                   "flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
                   bracketSize === size
                     ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {size}
@@ -97,7 +97,7 @@ export function SettingsPanel({
                 "flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
                 connectorStyle === "default"
                   ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
               Curved
@@ -108,7 +108,7 @@ export function SettingsPanel({
                 "flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
                 connectorStyle === "simple"
                   ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
               Straight
@@ -131,7 +131,7 @@ export function SettingsPanel({
                   "flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all",
                   bestOf === num
                     ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 BO{num}
@@ -184,20 +184,20 @@ export function SettingsPanel({
               variant="outline"
               size="sm"
               onClick={() => {
-                const input = document.createElement("input")
-                input.type = "file"
-                input.accept = "application/json"
+                const input = document.createElement("input");
+                input.type = "file";
+                input.accept = "application/json";
                 input.onchange = (e) => {
-                  const file = (e.target as HTMLInputElement).files?.[0]
-                  if (!file) return
-                  const reader = new FileReader()
+                  const file = (e.target as HTMLInputElement).files?.[0];
+                  if (!file) return;
+                  const reader = new FileReader();
                   reader.onload = (e) => {
-                    const content = e.target?.result as string
-                    onImport(content)
-                  }
-                  reader.readAsText(file)
-                }
-                input.click()
+                    const content = e.target?.result as string;
+                    onImport(content);
+                  };
+                  reader.readAsText(file);
+                };
+                input.click();
               }}
               className="w-full"
             >
@@ -211,5 +211,5 @@ export function SettingsPanel({
         </div>
       </div>
     </div>
-  )
+  );
 }

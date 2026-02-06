@@ -1,14 +1,10 @@
-"use client"
+"use client";
 
-import Link from 'next/link'
-import { GithubIcon, FileText } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { DotPattern } from '@/components/dot-pattern'
-import {
-  useBracketEditor,
-  BracketCanvas,
-  ControlPanel,
-} from "./bracket-editor"
+import Link from "next/link";
+import { GithubIcon, FileText } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { DotPattern } from "@/components/dot-pattern";
+import { useBracketEditor, BracketCanvas, ControlPanel } from "./bracket-editor";
 
 export function HeroSection() {
   const {
@@ -60,10 +56,13 @@ export function HeroSection() {
     handleImport,
     handleExport,
     handleDuplicate,
-  } = useBracketEditor()
+  } = useBracketEditor();
 
   return (
-    <section id="hero" className="relative overflow-hidden bg-gradient-to-b from-background to-background/80 pt-16 sm:pt-20 pb-16">
+    <section
+      id="hero"
+      className="relative overflow-hidden bg-gradient-to-b from-background to-background/80 pt-16 sm:pt-20 pb-16"
+    >
       <div className="absolute inset-0">
         <DotPattern className="opacity-100" size="md" fadeStyle="ellipse" />
       </div>
@@ -73,20 +72,39 @@ export function HeroSection() {
           <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
             Build Better
             <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              {" "}Tournament Brackets{" "}
+              {" "}
+              Tournament Brackets{" "}
             </span>
             with Bracketcore
           </h1>
 
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-            A comprehensive collection of tournament bracket components, built with shadcn/ui. Open source, accessible, and ready to drop into your next project.
+          <p className="text-balance mx-auto mb-10 max-w-2xl text-lg text-muted-foreground sm:text-xl">
+            A comprehensive collection of tournament bracket components. Open source, accessible,
+            and ready to drop into your next project.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-            <Button size="lg" className="text-base cursor-pointer" nativeButton={false} render={<Link href="/docs" />}>
+            <Button
+              size="lg"
+              className="text-base cursor-pointer"
+              nativeButton={false}
+              render={<Link href="/docs" />}
+            >
               <FileText size={16} />
               Read the Docs
             </Button>
-            <Button variant="outline" size="lg" className="text-base cursor-pointer" nativeButton={false} render={<a href="https://github.com/raphaelandrews/bracketcore" target="_blank" rel="noopener noreferrer" />}>
+            <Button
+              variant="outline"
+              size="lg"
+              className="text-base cursor-pointer"
+              nativeButton={false}
+              render={
+                <a
+                  href="https://github.com/raphaelandrews/bracketcore"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                />
+              }
+            >
               <GithubIcon size={16} />
               Star on GitHub
             </Button>
@@ -159,5 +177,5 @@ export function HeroSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

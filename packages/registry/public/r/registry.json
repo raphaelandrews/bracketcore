@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "bracketcore",
-  "homepage": "https://bracketcore.dev",
+  "homepage": "https://bracketcore.andrews.sh",
   "items": [
     {
       "name": "match-card",

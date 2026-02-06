@@ -1,11 +1,15 @@
-"use client"
+"use client";
 
-import { DoubleElimination, type DoubleEliminationBracket, type Match } from "@bracketcore/registry"
+import {
+  DoubleElimination,
+  type DoubleEliminationBracket,
+  type Match,
+} from "@bracketcore/registry";
 
 interface BracketCanvasProps {
-  bracket: DoubleEliminationBracket
-  connectorStyle: "default" | "simple"
-  onMatchClick: (match: Match) => void
+  bracket: DoubleEliminationBracket;
+  connectorStyle: "default" | "simple";
+  onMatchClick: (match: Match) => void;
 }
 
 export function BracketCanvas({ bracket, connectorStyle, onMatchClick }: BracketCanvasProps) {
@@ -17,7 +21,7 @@ export function BracketCanvas({ bracket, connectorStyle, onMatchClick }: Bracket
         className="absolute inset-0 opacity-[0.03] rounded-xl"
         style={{
           backgroundImage: `radial-gradient(circle, currentColor 1px, transparent 1px)`,
-          backgroundSize: '24px 24px',
+          backgroundSize: "24px 24px",
         }}
       />
 
@@ -32,5 +36,5 @@ export function BracketCanvas({ bracket, connectorStyle, onMatchClick }: Bracket
         />
       </div>
     </div>
-  )
+  );
 }

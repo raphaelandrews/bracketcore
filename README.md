@@ -15,13 +15,7 @@ Reusable tournament bracket components for React, available as a [shadcn registr
 Install components directly from the registry:
 
 ```bash
-npx shadcn add https://bracketcore.dev/r/single-elimination.json
-```
-
-Or install the package:
-
-```bash
-npm install @bracketcore/registry
+npx shadcn add https://bracketcore.andrews.sh/r/single-elimination.json
 ```
 
 ## Development

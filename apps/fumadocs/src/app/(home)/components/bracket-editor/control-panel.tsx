@@ -1,13 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import type { Match, Team } from "@bracketcore/registry"
-import { Button, buttonVariants } from "@/components/ui/button"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import * as React from "react";
+import type { Match, Team } from "@bracketcore/registry";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   UsersIcon,
   SettingsIcon,
@@ -16,54 +12,54 @@ import {
   Redo2Icon,
   AlertCircleIcon,
   BarChartIcon,
-} from "lucide-react"
-import { TeamsEditor } from "./teams-editor"
-import { SettingsPanel } from "./settings-panel"
-import { MatchEditorPanel } from "./match-editor-panel"
+} from "lucide-react";
+import { TeamsEditor } from "./teams-editor";
+import { SettingsPanel } from "./settings-panel";
+import { MatchEditorPanel } from "./match-editor-panel";
 import type {
   BracketSize,
   ValidationError,
   ScheduleConflict,
   TeamStats,
-} from "./bracket-editor-types"
-import { cn } from "@/lib/cn"
+} from "./bracket-editor-types";
+import { cn } from "@/lib/cn";
 
 interface ControlPanelProps {
-  teams: Team[]
-  onTeamNameChange: (teamId: string, name: string) => void
-  onAddTeam: () => void
-  onRemoveTeam: (teamId: string) => void
-  connectorStyle: "default" | "simple"
-  onConnectorStyleChange: (style: "default" | "simple") => void
-  bestOf: number
-  onBestOfChange: (bestOf: number) => void
-  bracketSize: BracketSize
-  onBracketSizeChange: (size: BracketSize) => void
-  selectedMatch: Match | null
-  onMatchUpdate: (match: Match) => void
-  onReset: () => void
-  onShuffle: () => void
-  onSeedByRank: () => void
-  onAutoSchedule: () => void
-  onImport: (data: string) => void
-  onExport: () => void
-  onDuplicate: () => void
-  isExpanded: boolean
-  onToggle: () => void
-  canUndo: boolean
-  canRedo: boolean
-  onUndo: () => void
-  onRedo: () => void
-  validationErrors: ValidationError[]
-  scheduleConflicts: ScheduleConflict[]
-  teamStats: TeamStats[]
-  quickScores: [number, number][]
-  onForfeit: (teamIndex: 0 | 1) => void
-  onSwapTeams: () => void
-  onQuickScore: (scoreA: number, scoreB: number) => void
-  onNotesChange: (notes: string) => void
-  onStreamUrlChange: (streamUrl: string) => void
-  onVenueChange: (venue: string) => void
+  teams: Team[];
+  onTeamNameChange: (teamId: string, name: string) => void;
+  onAddTeam: () => void;
+  onRemoveTeam: (teamId: string) => void;
+  connectorStyle: "default" | "simple";
+  onConnectorStyleChange: (style: "default" | "simple") => void;
+  bestOf: number;
+  onBestOfChange: (bestOf: number) => void;
+  bracketSize: BracketSize;
+  onBracketSizeChange: (size: BracketSize) => void;
+  selectedMatch: Match | null;
+  onMatchUpdate: (match: Match) => void;
+  onReset: () => void;
+  onShuffle: () => void;
+  onSeedByRank: () => void;
+  onAutoSchedule: () => void;
+  onImport: (data: string) => void;
+  onExport: () => void;
+  onDuplicate: () => void;
+  isExpanded: boolean;
+  onToggle: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
+  onUndo: () => void;
+  onRedo: () => void;
+  validationErrors: ValidationError[];
+  scheduleConflicts: ScheduleConflict[];
+  teamStats: TeamStats[];
+  quickScores: [number, number][];
+  onForfeit: (teamIndex: 0 | 1) => void;
+  onSwapTeams: () => void;
+  onQuickScore: (scoreA: number, scoreB: number) => void;
+  onNotesChange: (notes: string) => void;
+  onStreamUrlChange: (streamUrl: string) => void;
+  onVenueChange: (venue: string) => void;
 }
 
 export function ControlPanel({
@@ -101,9 +97,9 @@ export function ControlPanel({
   onStreamUrlChange,
   onVenueChange,
 }: ControlPanelProps) {
-  const [showStats, setShowStats] = React.useState(false)
+  const [showStats, setShowStats] = React.useState(false);
 
-  const hasIssues = validationErrors.length > 0 || scheduleConflicts.length > 0
+  const hasIssues = validationErrors.length > 0 || scheduleConflicts.length > 0;
 
   return (
     <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 max-w-fit w-full px-4">
@@ -174,14 +170,12 @@ export function ControlPanel({
             className={cn(
               buttonVariants({ variant: "ghost", size: "sm" }),
               "h-8 gap-2",
-              hasIssues && "text-yellow-600 dark:text-yellow-400"
+              hasIssues && "text-yellow-600 dark:text-yellow-400",
             )}
           >
             <SettingsIcon className="size-4" />
             Settings
-            {hasIssues && (
-              <span className="flex size-2 rounded-full bg-yellow-500 animate-pulse" />
-            )}
+            {hasIssues && <span className="flex size-2 rounded-full bg-yellow-500 animate-pulse" />}
           </PopoverTrigger>
           <PopoverContent className="w-[340px] p-4" align="start" sideOffset={8}>
             <SettingsPanel
@@ -212,7 +206,7 @@ export function ControlPanel({
               "h-8 gap-2 transition-colors",
               selectedMatch
                 ? "bg-primary/10 text-primary hover:bg-primary/20"
-                : "text-muted-foreground"
+                : "text-muted-foreground",
             )}
           >
             <SwordsIcon className="size-4" />
@@ -246,5 +240,5 @@ export function ControlPanel({
         )}
       </div>
     </div>
-  )
+  );
 }

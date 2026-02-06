@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   CalendarIcon,
@@ -15,20 +15,16 @@ import {
   MapPinIcon,
   FileTextIcon,
   ZapIcon,
-} from "lucide-react"
-import type { Match, MatchStatus } from "@bracketcore/registry"
-import { Button, buttonVariants } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Calendar } from "@/components/ui/calendar"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { cn } from "@/lib/cn"
-import type { EditorMatch } from "./bracket-editor-types"
-import { isByeTeam } from "./bracket-editor-types"
+} from "lucide-react";
+import type { Match, MatchStatus } from "@bracketcore/registry";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/cn";
+import type { EditorMatch } from "./bracket-editor-types";
+import { isByeTeam } from "./bracket-editor-types";
 
 const statuses: { label: string; value: MatchStatus; icon: React.ReactNode; color: string }[] = [
   {
@@ -49,19 +45,19 @@ const statuses: { label: string; value: MatchStatus; icon: React.ReactNode; colo
     icon: <TrophyIcon className="size-3" />,
     color: "text-primary",
   },
-]
+];
 
 interface MatchEditorPanelProps {
-  match: Match | null
-  onUpdate: (match: Match) => void
-  bestOf: number
-  quickScores: [number, number][]
-  onForfeit: (teamIndex: 0 | 1) => void
-  onSwapTeams: () => void
-  onQuickScore: (scoreA: number, scoreB: number) => void
-  onNotesChange: (notes: string) => void
-  onStreamUrlChange: (streamUrl: string) => void
-  onVenueChange: (venue: string) => void
+  match: Match | null;
+  onUpdate: (match: Match) => void;
+  bestOf: number;
+  quickScores: [number, number][];
+  onForfeit: (teamIndex: 0 | 1) => void;
+  onSwapTeams: () => void;
+  onQuickScore: (scoreA: number, scoreB: number) => void;
+  onNotesChange: (notes: string) => void;
+  onStreamUrlChange: (streamUrl: string) => void;
+  onVenueChange: (venue: string) => void;
 }
 
 export function MatchEditorPanel({
@@ -92,139 +88,139 @@ export function MatchEditorPanel({
           <p className="text-sm text-muted-foreground">Click a match to edit</p>
         </div>
       </div>
-    )
+    );
   }
 
-  const editorMatch = match as EditorMatch
-  const hasTeams = !!(match.teams[0].team && match.teams[1].team)
-  const hasBye = match.teams.some((mt) => isByeTeam(mt.team))
-  const status = match.status ?? "upcoming"
-  const effectiveBestOf = match.bestOf ?? bestOf
+  const editorMatch = match as EditorMatch;
+  const hasTeams = !!(match.teams[0].team && match.teams[1].team);
+  const hasBye = match.teams.some((mt) => isByeTeam(mt.team));
+  const status = match.status ?? "upcoming";
+  const effectiveBestOf = match.bestOf ?? bestOf;
 
   function setStatus(next: MatchStatus) {
-    if (!match || !hasTeams) return
-    const updated = structuredClone(match)
-    updated.status = next
+    if (!match || !hasTeams) return;
+    const updated = structuredClone(match);
+    updated.status = next;
 
     if (next === "completed") {
-      const [a, b] = updated.teams
+      const [a, b] = updated.teams;
       if (a.score !== b.score) {
-        a.isWinner = a.score > b.score
-        b.isWinner = b.score > a.score
+        a.isWinner = a.score > b.score;
+        b.isWinner = b.score > a.score;
       } else {
-        a.isWinner = false
-        b.isWinner = false
+        a.isWinner = false;
+        b.isWinner = false;
       }
     } else {
-      updated.teams[0].isWinner = false
-      updated.teams[1].isWinner = false
+      updated.teams[0].isWinner = false;
+      updated.teams[1].isWinner = false;
     }
 
-    onUpdate(updated)
+    onUpdate(updated);
   }
 
   function setScore(teamIndex: 0 | 1, delta: number) {
-    if (!match || !hasTeams) return
+    if (!match || !hasTeams) return;
 
-    const currentScore = match.teams[teamIndex].score
-    const nextScore = currentScore + delta
+    const currentScore = match.teams[teamIndex].score;
+    const nextScore = currentScore + delta;
 
-    if (nextScore < 0) return
+    if (nextScore < 0) return;
 
-    const maxScore = Math.ceil(effectiveBestOf / 2)
-    const otherScore = match.teams[teamIndex === 0 ? 1 : 0].score
+    const maxScore = Math.ceil(effectiveBestOf / 2);
+    const otherScore = match.teams[teamIndex === 0 ? 1 : 0].score;
 
-    if (nextScore > maxScore) return
-    if (nextScore + otherScore > effectiveBestOf) return
+    if (nextScore > maxScore) return;
+    if (nextScore + otherScore > effectiveBestOf) return;
 
-    const updated = structuredClone(match)
-    updated.teams[teamIndex].score = nextScore
+    const updated = structuredClone(match);
+    updated.teams[teamIndex].score = nextScore;
 
     if (nextScore === maxScore) {
-      updated.status = "completed"
-      const [a, b] = updated.teams
-      a.isWinner = a.score > b.score
-      b.isWinner = b.score > a.score
+      updated.status = "completed";
+      const [a, b] = updated.teams;
+      a.isWinner = a.score > b.score;
+      b.isWinner = b.score > a.score;
     }
 
     if (updated.status === "completed") {
-      const [a, b] = updated.teams
+      const [a, b] = updated.teams;
       if (a.score < maxScore && b.score < maxScore) {
         if (a.score === b.score) {
-          a.isWinner = false
-          b.isWinner = false
+          a.isWinner = false;
+          b.isWinner = false;
         } else {
-          a.isWinner = a.score > b.score
-          b.isWinner = b.score > a.score
+          a.isWinner = a.score > b.score;
+          b.isWinner = b.score > a.score;
         }
       }
     }
 
-    onUpdate(updated)
+    onUpdate(updated);
   }
 
   function setBestOfMatch(value: number | undefined) {
-    if (!match) return
-    const updated = structuredClone(match)
-    updated.bestOf = value
-    updated.teams[0].score = 0
-    updated.teams[1].score = 0
-    updated.teams[0].isWinner = false
-    updated.teams[1].isWinner = false
-    updated.status = "upcoming"
-    onUpdate(updated)
+    if (!match) return;
+    const updated = structuredClone(match);
+    updated.bestOf = value;
+    updated.teams[0].score = 0;
+    updated.teams[1].score = 0;
+    updated.teams[0].isWinner = false;
+    updated.teams[1].isWinner = false;
+    updated.status = "upcoming";
+    onUpdate(updated);
   }
 
   const scheduledDate = match.scheduledAt
     ? match.scheduledAt instanceof Date
       ? match.scheduledAt
       : new Date(match.scheduledAt)
-    : undefined
+    : undefined;
 
   function setScheduledDate(date: Date | undefined) {
-    if (!match) return
-    const updated = structuredClone(match)
+    if (!match) return;
+    const updated = structuredClone(match);
 
     if (date) {
       const nextTime = updated.scheduledAt
         ? updated.scheduledAt instanceof Date
           ? updated.scheduledAt
           : new Date(updated.scheduledAt)
-        : new Date()
+        : new Date();
 
       if (!updated.scheduledAt) {
-        nextTime.setHours(12, 0, 0, 0)
+        nextTime.setHours(12, 0, 0, 0);
       }
 
-      const newDate = new Date(date)
-      newDate.setHours(nextTime.getHours(), nextTime.getMinutes(), 0, 0)
-      updated.scheduledAt = newDate
+      const newDate = new Date(date);
+      newDate.setHours(nextTime.getHours(), nextTime.getMinutes(), 0, 0);
+      updated.scheduledAt = newDate;
     } else {
-      updated.scheduledAt = undefined
+      updated.scheduledAt = undefined;
     }
-    onUpdate(updated)
+    onUpdate(updated);
   }
 
   function setScheduledTime(timeStr: string) {
-    if (!match || !scheduledDate) return
-    const [hours, minutes] = timeStr.split(":").map(Number)
-    const updated = structuredClone(match)
-    const d = new Date(scheduledDate)
-    d.setHours(hours, minutes)
-    updated.scheduledAt = d
-    onUpdate(updated)
+    if (!match || !scheduledDate) return;
+    const [hours, minutes] = timeStr.split(":").map(Number);
+    const updated = structuredClone(match);
+    const d = new Date(scheduledDate);
+    d.setHours(hours, minutes);
+    updated.scheduledAt = d;
+    onUpdate(updated);
   }
 
   function clearScheduledAt() {
-    if (!match) return
-    const updated = structuredClone(match)
-    updated.scheduledAt = undefined
-    onUpdate(updated)
+    if (!match) return;
+    const updated = structuredClone(match);
+    updated.scheduledAt = undefined;
+    onUpdate(updated);
   }
 
-  const bestOfOptions = [undefined, 1, 3, 5, 7] as const
+  const bestOfOptions = [undefined, 1, 3, 5, 7] as const;
 
-  const winnerQuickScores = quickScores.filter(([a, b]) => a > b)
+  const winnerQuickScores = quickScores.filter(([a, b]) => a > b);
 
   return (
     <div className="space-y-4">
@@ -256,9 +252,7 @@ export function MatchEditorPanel({
       {!hasTeams && !hasBye ? (
         <div className="rounded-md bg-muted/50 border border-dashed p-4 text-center">
           <ClockIcon className="size-5 text-muted-foreground mx-auto mb-2" />
-          <p className="text-xs text-muted-foreground">
-            Waiting for teams to be determined
-          </p>
+          <p className="text-xs text-muted-foreground">Waiting for teams to be determined</p>
         </div>
       ) : (
         hasTeams &&
@@ -278,7 +272,7 @@ export function MatchEditorPanel({
                       status === s.value
                         ? "bg-background shadow-sm"
                         : "text-muted-foreground hover:text-foreground",
-                      status === s.value && s.color
+                      status === s.value && s.color,
                     )}
                   >
                     {s.icon}
@@ -291,20 +285,20 @@ export function MatchEditorPanel({
             {/* Scores */}
             <div className="space-y-1.5">
               <span className="text-xs text-muted-foreground">Score</span>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col gap-2">
                 {match.teams.map((mt, i) => (
                   <div
                     key={i}
                     className={cn(
-                      "flex-1 flex items-center gap-2 p-2 rounded-lg border transition-colors",
-                      mt.isWinner && status === "completed" && "bg-primary/5 border-primary/30"
+                      "w-full flex items-center gap-2 p-2 rounded-lg border transition-colors",
+                      mt.isWinner && status === "completed" && "bg-primary/5 border-primary/30",
                     )}
                   >
                     <div className="flex-1 min-w-0">
                       <p
                         className={cn(
                           "text-xs font-medium truncate",
-                          mt.isWinner && status === "completed" && "text-primary"
+                          mt.isWinner && status === "completed" && "text-primary",
                         )}
                       >
                         {mt.team?.name ?? "TBD"}
@@ -315,7 +309,7 @@ export function MatchEditorPanel({
                         </p>
                       )}
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 shrink-0">
                       <Button
                         size="icon-xs"
                         variant="ghost"
@@ -328,7 +322,7 @@ export function MatchEditorPanel({
                       <span
                         className={cn(
                           "w-8 text-center tabular-nums text-lg font-semibold",
-                          mt.isWinner && status === "completed" && "text-primary"
+                          mt.isWinner && status === "completed" && "text-primary",
                         )}
                       >
                         {mt.score}
@@ -396,7 +390,7 @@ export function MatchEditorPanel({
                         "flex-1 px-2 py-1 text-xs font-medium rounded transition-all",
                         match.bestOf === bo
                           ? "bg-background shadow-sm text-foreground"
-                          : "text-muted-foreground hover:text-foreground"
+                          : "text-muted-foreground hover:text-foreground",
                       )}
                     >
                       {bo ? `${bo}` : "—"}
@@ -414,7 +408,7 @@ export function MatchEditorPanel({
                       className={cn(
                         buttonVariants({ variant: "outline", size: "sm" }),
                         "h-8 justify-start text-left font-normal text-xs",
-                        !match.scheduledAt && "text-muted-foreground"
+                        !match.scheduledAt && "text-muted-foreground",
                       )}
                     >
                       <CalendarIcon className="mr-1.5 size-3" />
@@ -543,5 +537,5 @@ export function MatchEditorPanel({
         )
       )}
     </div>
-  )
+  );
 }

@@ -114,9 +114,7 @@ export function MatchCard({ match, className, onMatchClick, variant = "default" 
           className={cn(
             "absolute bottom-full flex items-center justify-between px-2.5 py-1 text-xs rounded-t-sm",
             isLive ? "-inset-x-px" : "inset-x-0",
-            isLive
-              ? "text-primary bg-destructive"
-              : "text-muted-foreground bg-muted",
+            isLive ? "text-primary bg-destructive" : "text-muted-foreground bg-muted",
           )}
         >
           <span className="flex items-center gap-1.5">

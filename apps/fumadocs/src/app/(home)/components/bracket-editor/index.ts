@@ -1,9 +1,9 @@
-export { useBracketEditor } from "./use-bracket-editor"
-export { BracketCanvas } from "./bracket-canvas"
-export { ControlPanel } from "./control-panel"
-export { TeamsEditor } from "./teams-editor"
-export { SettingsPanel } from "./settings-panel"
-export { MatchEditorPanel } from "./match-editor-panel"
+export { useBracketEditor } from "./use-bracket-editor";
+export { BracketCanvas } from "./bracket-canvas";
+export { ControlPanel } from "./control-panel";
+export { TeamsEditor } from "./teams-editor";
+export { SettingsPanel } from "./settings-panel";
+export { MatchEditorPanel } from "./match-editor-panel";
 
 export type {
   EditorMatch,
@@ -14,8 +14,8 @@ export type {
   TeamStats,
   HistoryEntry,
   BracketSize,
-} from "./bracket-editor-types"
-export { BYE_TEAM, isByeTeam } from "./bracket-editor-types"
+} from "./bracket-editor-types";
+export { BYE_TEAM, isByeTeam } from "./bracket-editor-types";
 
 export {
   generateSeeding,
@@ -29,4 +29,4 @@ export {
   buildBracketForSize,
   fillWithByes,
   handleByeAdvancement,
-} from "./bracket-utils"
+} from "./bracket-utils";

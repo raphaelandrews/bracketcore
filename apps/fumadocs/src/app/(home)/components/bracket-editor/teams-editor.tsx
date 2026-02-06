@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import type { Team } from "@bracketcore/registry"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { UsersIcon, PlusIcon, XIcon, TrophyIcon, SwordsIcon, TargetIcon } from "lucide-react"
-import { cn } from "@/lib/cn"
-import type { TeamStats } from "./bracket-editor-types"
-import { isByeTeam } from "./bracket-editor-types"
+import type { Team } from "@bracketcore/registry";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { UsersIcon, PlusIcon, XIcon, TrophyIcon, SwordsIcon, TargetIcon } from "lucide-react";
+import { cn } from "@/lib/cn";
+import type { TeamStats } from "./bracket-editor-types";
+import { isByeTeam } from "./bracket-editor-types";
 
 interface TeamsEditorProps {
-  teams: Team[]
-  onTeamNameChange: (teamId: string, name: string) => void
-  onAddTeam: () => void
-  onRemoveTeam: (teamId: string) => void
-  teamStats: TeamStats[]
-  showStats?: boolean
+  teams: Team[];
+  onTeamNameChange: (teamId: string, name: string) => void;
+  onAddTeam: () => void;
+  onRemoveTeam: (teamId: string) => void;
+  teamStats: TeamStats[];
+  showStats?: boolean;
 }
 
 export function TeamsEditor({
@@ -27,16 +27,16 @@ export function TeamsEditor({
 }: TeamsEditorProps) {
   // Sort teams by seed (or falling back to original index order if seeds are missing)
   const sortedTeams = [...teams].sort((a, b) => {
-    if (isByeTeam(a) && !isByeTeam(b)) return 1
-    if (!isByeTeam(a) && isByeTeam(b)) return -1
-    return (a.seed || 0) - (b.seed || 0)
-  })
+    if (isByeTeam(a) && !isByeTeam(b)) return 1;
+    if (!isByeTeam(a) && isByeTeam(b)) return -1;
+    return (a.seed || 0) - (b.seed || 0);
+  });
 
-  const realTeams = teams.filter((t) => !isByeTeam(t))
-  const byeCount = teams.length - realTeams.length
+  const realTeams = teams.filter((t) => !isByeTeam(t));
+  const byeCount = teams.length - realTeams.length;
 
   function getStats(teamId: string): TeamStats | undefined {
-    return teamStats.find((s) => s.teamId === teamId)
+    return teamStats.find((s) => s.teamId === teamId);
   }
 
   return (
@@ -48,7 +48,8 @@ export function TeamsEditor({
           </div>
           <h3 className="text-sm font-medium">Teams</h3>
           <span className="text-xs text-muted-foreground">
-            ({realTeams.length} teams{byeCount > 0 && `, ${byeCount} BYE${byeCount > 1 ? "s" : ""}`})
+            ({realTeams.length} teams{byeCount > 0 && `, ${byeCount} BYE${byeCount > 1 ? "s" : ""}`}
+            )
           </span>
         </div>
         <Button variant="outline" size="sm" onClick={onAddTeam} className="h-7">
@@ -59,49 +60,46 @@ export function TeamsEditor({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {sortedTeams.map((team) => {
-          const isBye = isByeTeam(team)
-          const stats = !isBye ? getStats(team.id) : undefined
-          const seedLabel = team.seed ? team.seed : "?"
+          const isBye = isByeTeam(team);
+          const stats = !isBye ? getStats(team.id) : undefined;
+          const seedLabel = team.seed ? team.seed : "?";
 
           return (
-            <div
-              key={team.id}
-              className={cn(
-                "relative group",
-                isBye && "opacity-50"
-              )}
-            >
-              <div className="absolute left-2.5 top-1/2 -translate-y-1/2 flex items-center justify-center size-4 rounded-full bg-muted text-[10px] font-medium text-muted-foreground">
-                {isBye ? "—" : seedLabel}
-              </div>
-              {isBye ? (
-                <div className="h-8 pl-8 pr-3 flex items-center rounded-md border border-dashed bg-muted/30 text-sm text-muted-foreground">
-                  BYE
+            <div key={team.id} className={cn("group", isBye && "opacity-50")}>
+              {/* Input row with relative positioning for badge/button */}
+              <div className="relative">
+                <div className="absolute left-2.5 top-1/2 -translate-y-1/2 flex items-center justify-center size-4 rounded-full bg-muted text-[10px] font-medium text-muted-foreground">
+                  {isBye ? "—" : seedLabel}
                 </div>
-              ) : (
-                <>
-                  <Input
-                    type="text"
-                    value={team.name}
-                    onChange={(e) => onTeamNameChange(team.id, e.target.value)}
-                    className="h-8 pl-8 pr-8 text-sm"
-                    aria-label={`Team ${seedLabel} name`}
-                  />
-                  <Button
-                    variant="ghost"
-                    size="icon-xs"
-                    className="absolute right-1 top-1/2 -translate-y-1/2 size-6 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive"
-                    onClick={() => onRemoveTeam(team.id)}
-                    title="Remove team"
-                  >
-                    <XIcon className="size-3" />
-                  </Button>
-                </>
-              )}
+                {isBye ? (
+                  <div className="h-8 pl-8 pr-3 flex items-center rounded-md border border-dashed bg-muted/30 text-sm text-muted-foreground">
+                    BYE
+                  </div>
+                ) : (
+                  <>
+                    <Input
+                      type="text"
+                      value={team.name}
+                      onChange={(e) => onTeamNameChange(team.id, e.target.value)}
+                      className="h-8 pl-8 pr-8 text-sm"
+                      aria-label={`Team ${seedLabel} name`}
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      className="absolute right-1 top-1/2 -translate-y-1/2 size-6 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive"
+                      onClick={() => onRemoveTeam(team.id)}
+                      title="Remove team"
+                    >
+                      <XIcon className="size-3" />
+                    </Button>
+                  </>
+                )}
+              </div>
 
               {/* Mini stats display */}
               {showStats && stats && (
-                <div className="mt-1 flex items-center gap-3 text-[10px] text-muted-foreground">
+                <div className="mt-1 flex items-center gap-3 text-[10px] text-muted-foreground pl-8">
                   <span className="flex items-center gap-1">
                     <SwordsIcon className="size-2.5" />
                     {stats.matchesWon}W-{stats.matchesLost}L
@@ -113,7 +111,7 @@ export function TeamsEditor({
                 </div>
               )}
             </div>
-          )
+          );
         })}
       </div>
 
@@ -136,7 +134,7 @@ export function TeamsEditor({
                 key={stat.teamId}
                 className={cn(
                   "grid grid-cols-5 gap-2 py-1.5",
-                  i < teamStats.length - 1 && "border-b border-dashed"
+                  i < teamStats.length - 1 && "border-b border-dashed",
                 )}
               >
                 <div className="col-span-2 truncate font-medium">
@@ -153,7 +151,7 @@ export function TeamsEditor({
                   className={cn(
                     "text-center tabular-nums",
                     stat.mapsWon - stat.mapsLost > 0 && "text-green-600 dark:text-green-400",
-                    stat.mapsWon - stat.mapsLost < 0 && "text-red-600 dark:text-red-400"
+                    stat.mapsWon - stat.mapsLost < 0 && "text-red-600 dark:text-red-400",
                   )}
                 >
                   {stat.mapsWon - stat.mapsLost > 0 && "+"}
@@ -165,5 +163,5 @@ export function TeamsEditor({
         </div>
       )}
     </div>
-  )
+  );
 }
