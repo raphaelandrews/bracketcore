@@ -11,10 +11,8 @@ interface BracketCanvasProps {
 export function BracketCanvas({ bracket, connectorStyle, onMatchClick }: BracketCanvasProps) {
   return (
     <div className="relative">
-      {/* Gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-muted/30 via-background to-muted/20" />
 
-      {/* Grid pattern overlay */}
       <div
         className="absolute inset-0 opacity-[0.03] rounded-xl"
         style={{

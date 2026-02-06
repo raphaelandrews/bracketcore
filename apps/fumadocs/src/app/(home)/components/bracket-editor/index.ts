@@ -5,7 +5,6 @@ export { TeamsEditor } from "./teams-editor"
 export { SettingsPanel } from "./settings-panel"
 export { MatchEditorPanel } from "./match-editor-panel"
 
-// Types
 export type {
   EditorMatch,
   EditorDoubleEliminationBracket,
@@ -18,7 +17,6 @@ export type {
 } from "./bracket-editor-types"
 export { BYE_TEAM, isByeTeam } from "./bracket-editor-types"
 
-// Utilities
 export {
   generateSeeding,
   applySeeding,

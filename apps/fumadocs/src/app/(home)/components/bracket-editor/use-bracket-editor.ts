@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import type {
   DoubleEliminationBracket,
   Match,
@@ -28,10 +28,70 @@ import {
 } from "./bracket-utils"
 
 const DEFAULT_TEAMS: Team[] = [
-  { id: "t1", name: "Team Alpha", seed: 1 },
-  { id: "t2", name: "Team Bravo", seed: 2 },
-  { id: "t3", name: "Team Charlie", seed: 3 },
-  { id: "t4", name: "Team Delta", seed: 4 },
+  { id: "t1", name: "Team Spirit", seed: 1 },
+  { id: "t2", name: "Gaimin Gladiators", seed: 2 },
+  { id: "t3", name: "Team Liquid", seed: 3 },
+  { id: "t4", name: "LGD Gaming", seed: 4 },
+  { id: "t5", name: "Team Secret", seed: 5 },
+  { id: "t6", name: "OG", seed: 6 },
+  { id: "t7", name: "BetBoom Team", seed: 7 },
+  { id: "t8", name: "Team Falcons", seed: 8 },
+  { id: "t9", name: "Xtreme Gaming", seed: 9 },
+  { id: "t10", name: "Azure Ray", seed: 10 },
+  { id: "t11", name: "Tundra Esports", seed: 11 },
+  { id: "t12", name: "Shopify Rebellion", seed: 12 },
+  { id: "t13", name: "Nigma Galaxy", seed: 13 },
+  { id: "t14", name: "Evil Geniuses", seed: 14 },
+  { id: "t15", name: "Team DK", seed: 15 },
+  { id: "t16", name: "Execration", seed: 16 },
+  { id: "t17", name: "Alliance", seed: 17 },
+  { id: "t18", name: "Mineski", seed: 18 },
+  { id: "t19", name: "Team Aster", seed: 19 },
+  { id: "t20", name: "EHOME", seed: 20 },
+  { id: "t21", name: "Vici Gaming", seed: 21 },
+  { id: "t22", name: "Invictus Gaming", seed: 22 },
+  { id: "t23", name: "Wings Gaming", seed: 23 },
+  { id: "t24", name: "Newbee", seed: 24 },
+  { id: "t25", name: "TNC Predator", seed: 25 },
+  { id: "t26", name: "MVP Phoenix", seed: 26 },
+  { id: "t27", name: "Digital Chaos", seed: 27 },
+  { id: "t28", name: "CDEC Gaming", seed: 28 },
+  { id: "t29", name: "Royal Never Give Up", seed: 29 },
+  { id: "t30", name: "Quincy Crew", seed: 30 },
+  { id: "t31", name: "beastcoast", seed: 31 },
+  { id: "t32", name: "Entity", seed: 32 },
+  { id: "t33", name: "FaZe Clan", seed: 33 },
+  { id: "t34", name: "Natus Vincere", seed: 34 },
+  { id: "t35", name: "Team Vitality", seed: 35 },
+  { id: "t36", name: "G2 Esports", seed: 36 },
+  { id: "t37", name: "MOUZ", seed: 37 },
+  { id: "t38", name: "Monte", seed: 38 },
+  { id: "t39", name: "Virtus.pro", seed: 39 },
+  { id: "t40", name: "Cloud9", seed: 40 },
+  { id: "t41", name: "Astralis", seed: 41 },
+  { id: "t42", name: "Heroic", seed: 42 },
+  { id: "t43", name: "Eternal Fire", seed: 43 },
+  { id: "t44", name: "Complexity", seed: 44 },
+  { id: "t45", name: "FURIA Esports", seed: 45 },
+  { id: "t46", name: "The MongolZ", seed: 46 },
+  { id: "t47", name: "BIG", seed: 47 },
+  { id: "t48", name: "MIBR", seed: 48 },
+  { id: "t49", name: "Fnatic", seed: 49 },
+  { id: "t50", name: "Ninjas in Pyjamas", seed: 50 },
+  { id: "t51", name: "ENCE", seed: 51 },
+  { id: "t52", name: "Gambit Esports", seed: 52 },
+  { id: "t53", name: "SK Gaming", seed: 53 },
+  { id: "t54", name: "Luminosity Gaming", seed: 54 },
+  { id: "t55", name: "Team Envy", seed: 55 },
+  { id: "t56", name: "100 Thieves", seed: 56 },
+  { id: "t57", name: "NRG Esports", seed: 57 },
+  { id: "t58", name: "North", seed: 58 },
+  { id: "t59", name: "GODSENT", seed: 59 },
+  { id: "t60", name: "Dignitas", seed: 60 },
+  { id: "t61", name: "VeryGames", seed: 61 },
+  { id: "t62", name: "TITAN", seed: 62 },
+  { id: "t63", name: "iBUYPOWER", seed: 63 },
+  { id: "t64", name: "OpTic Gaming", seed: 64 },
 ]
 
 const MAX_HISTORY = 50
@@ -96,26 +156,36 @@ function updateMatchInBracket(
   return b
 }
 
+function getRandomTeams(count: number): Team[] {
+  const shuffled = [...DEFAULT_TEAMS].sort(() => Math.random() - 0.5)
+  return shuffled.slice(0, count).map((t, i) => ({ ...t, seed: i + 1 }))
+}
+
 export function useBracketEditor() {
   // Core state
-  const [teams, setTeams] = useState<Team[]>(DEFAULT_TEAMS)
+  // Initialize with deterministic data for SSR/Hydration match
+  const [teams, setTeams] = useState<Team[]>(() => DEFAULT_TEAMS.slice(0, 4))
   const [bracketSize, setBracketSize] = useState<BracketSize>(4)
   const [bracket, setBracket] = useState<DoubleEliminationBracket>(() =>
-    buildBracketForSize(DEFAULT_TEAMS, 4),
+    buildBracketForSize(DEFAULT_TEAMS.slice(0, 4), 4),
   )
+
+  // Randomize teams on client mount to satisfy user request
+  useEffect(() => {
+    const randomTeams = getRandomTeams(4)
+    setTeams(randomTeams)
+    setBracket(buildBracketForSize(randomTeams, 4))
+  }, [])
   const [bestOf, setBestOf] = useState<number>(3)
   const [connectorStyle, setConnectorStyle] = useState<"default" | "simple">("default")
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null)
   const [isPanelExpanded, setIsPanelExpanded] = useState(true)
 
-  // History for undo/redo
   const [history, setHistory] = useState<HistoryEntry[]>([])
   const [historyIndex, setHistoryIndex] = useState(-1)
 
-  // Compute bracket flow based on size
   const bracketFlow = useMemo(() => buildBracketFlow(bracketSize), [bracketSize])
 
-  // Validation and conflicts
   const validationErrors = useMemo(
     () => validateBracket(bracket, bestOf),
     [bracket, bestOf]
@@ -126,35 +196,28 @@ export function useBracketEditor() {
     [bracket]
   )
 
-  // Team statistics
   const teamStats = useMemo(
     () => computeTeamStats(bracket),
     [bracket]
   )
 
-  // Quick scores for current bestOf
   const quickScores = useMemo(
     () => getQuickScores(selectedMatch?.bestOf ?? bestOf),
     [selectedMatch?.bestOf, bestOf]
   )
 
-  // Push current state to history
   const pushHistory = useCallback((newBracket: DoubleEliminationBracket, newTeams: Team[]) => {
     setHistory((prev) => {
-      // Slice off any "future" states if we're in the middle of history
       const newHistory = prev.slice(0, historyIndex + 1)
       newHistory.push({
         bracket: structuredClone(newBracket),
         teams: structuredClone(newTeams),
         timestamp: Date.now(),
       })
-      // Keep only last MAX_HISTORY entries
       return newHistory.slice(-MAX_HISTORY)
     })
     setHistoryIndex((prev) => Math.min(prev + 1, MAX_HISTORY - 1))
   }, [historyIndex])
-
-  // Undo
   const canUndo = historyIndex > 0
   const undo = useCallback(() => {
     if (!canUndo) return
@@ -167,7 +230,6 @@ export function useBracketEditor() {
     }
   }, [canUndo, history, historyIndex])
 
-  // Redo
   const canRedo = historyIndex < history.length - 1
   const redo = useCallback(() => {
     if (!canRedo) return
@@ -180,7 +242,6 @@ export function useBracketEditor() {
     }
   }, [canRedo, history, historyIndex])
 
-  // Update bracket with history tracking
   const updateBracketWithHistory = useCallback((
     updater: (prev: DoubleEliminationBracket) => DoubleEliminationBracket,
     currentTeams?: Team[]
@@ -192,15 +253,14 @@ export function useBracketEditor() {
     })
   }, [pushHistory, teams])
 
-  const handleTeamNameChange = useCallback((index: number, name: string) => {
-    const newTeams = teams.map((t, i) =>
-      i === index ? { ...t, name } : t
+  const handleTeamNameChange = useCallback((teamId: string, name: string) => {
+    const newTeams = teams.map((t) =>
+      t.id === teamId ? { ...t, name } : t
     )
     setTeams(newTeams)
 
     setBracket((prev) => {
       const b = structuredClone(prev)
-      const teamId = teams[index].id
 
       function updateInMatches(matches: Match[]) {
         for (const match of matches) {
@@ -227,7 +287,6 @@ export function useBracketEditor() {
   }, [])
 
   const handleMatchUpdate = useCallback((updated: Match) => {
-    // Validation: Prevent completing if scores are tied
     if (updated.status === "completed") {
       const [a, b] = updated.teams
       if (a.score === b.score) {
@@ -336,7 +395,6 @@ export function useBracketEditor() {
     setSelectedMatch(updated)
   }, [bracketFlow, teams, pushHistory])
 
-  // Forfeit a team in the selected match
   const handleForfeit = useCallback((teamIndex: 0 | 1) => {
     if (!selectedMatch) return
     const hasTeams = !!(selectedMatch.teams[0].team && selectedMatch.teams[1].team)
@@ -351,14 +409,13 @@ export function useBracketEditor() {
     updated.teams[teamIndex].score = 0
     updated.teams[teamIndex].isWinner = false
     updated.teams[winningTeamIndex].isWinner = true
-    // Give winner enough maps to win the series
+
     const effectiveBestOf = updated.bestOf ?? bestOf
     updated.teams[winningTeamIndex].score = Math.ceil(effectiveBestOf / 2)
 
     handleMatchUpdate(updated)
   }, [selectedMatch, bestOf, handleMatchUpdate])
 
-  // Swap teams in the selected match
   const handleSwapTeams = useCallback(() => {
     if (!selectedMatch) return
     const updated = structuredClone(selectedMatch)
@@ -367,7 +424,6 @@ export function useBracketEditor() {
     handleMatchUpdate(updated)
   }, [selectedMatch, handleMatchUpdate])
 
-  // Apply quick score
   const handleQuickScore = useCallback((scoreA: number, scoreB: number) => {
     if (!selectedMatch) return
     const hasTeams = !!(selectedMatch.teams[0].team && selectedMatch.teams[1].team)
@@ -383,7 +439,6 @@ export function useBracketEditor() {
     handleMatchUpdate(updated)
   }, [selectedMatch, handleMatchUpdate])
 
-  // Update match notes/metadata
   const handleMatchNotesChange = useCallback((notes: string) => {
     if (!selectedMatch) return
     const updated = structuredClone(selectedMatch) as EditorMatch
@@ -409,7 +464,6 @@ export function useBracketEditor() {
     setIsPanelExpanded((prev) => !prev)
   }, [])
 
-  // Reset bracket
   const handleReset = useCallback(() => {
     const newBracket = buildBracketForSize(teams, bracketSize)
     setBracket(newBracket)
@@ -418,7 +472,6 @@ export function useBracketEditor() {
     pushHistory(newBracket, teams)
   }, [teams, bracketSize, pushHistory])
 
-  // Shuffle teams randomly
   const handleShuffle = useCallback(() => {
     const shuffled = [...teams].sort(() => Math.random() - 0.5)
     setTeams(shuffled)
@@ -428,7 +481,6 @@ export function useBracketEditor() {
     pushHistory(newBracket, shuffled)
   }, [teams, bracketSize, pushHistory])
 
-  // Apply standard tournament seeding
   const handleSeedByRank = useCallback(() => {
     const seeded = applySeeding(teams, bracketSize)
     setTeams(seeded)
@@ -438,23 +490,35 @@ export function useBracketEditor() {
     pushHistory(newBracket, seeded)
   }, [teams, bracketSize, pushHistory])
 
-  // Change bracket size
   const handleBracketSizeChange = useCallback((newSize: BracketSize) => {
     setBracketSize(newSize)
 
-    // Adjust teams to match new size
     let newTeams = [...teams]
     if (newTeams.length < newSize) {
-      // Add new default teams
-      for (let i = newTeams.length; i < newSize; i++) {
+      const existingIds = new Set(newTeams.map((t) => t.id))
+
+      const availableTeams = DEFAULT_TEAMS.filter((t) => !existingIds.has(t.id))
+
+      const shuffledAvailable = [...availableTeams].sort(() => Math.random() - 0.5)
+
+      const neededCount = newSize - newTeams.length
+      const teamsToAdd = shuffledAvailable.slice(0, neededCount)
+
+      for (let i = 0; i < teamsToAdd.length; i++) {
         newTeams.push({
-          id: `t${i + 1}`,
-          name: `Team ${i + 1}`,
-          seed: i + 1,
+          ...teamsToAdd[i],
+          seed: newTeams.length + 1,
+        })
+      }
+
+      while (newTeams.length < newSize) {
+        newTeams.push({
+          id: `t${newTeams.length + 1}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+          name: `Team ${newTeams.length + 1}`,
+          seed: newTeams.length + 1,
         })
       }
     } else if (newTeams.length > newSize) {
-      // Trim teams to size
       newTeams = newTeams.slice(0, newSize)
     }
 
@@ -465,28 +529,37 @@ export function useBracketEditor() {
     pushHistory(newBracket, newTeams)
   }, [teams, pushHistory])
 
-  // Add a new team
   const handleAddTeam = useCallback(() => {
-    const newTeam: Team = {
-      id: `t${teams.length + 1}-${Date.now()}`,
-      name: `Team ${teams.length + 1}`,
-      seed: teams.length + 1,
+    const existingIds = new Set(teams.map((t) => t.id))
+    const availableTeams = DEFAULT_TEAMS.filter((t) => !existingIds.has(t.id))
+
+    let newTeam: Team
+    if (availableTeams.length > 0) {
+      const randomIndex = Math.floor(Math.random() * availableTeams.length)
+      newTeam = {
+        ...availableTeams[randomIndex],
+        seed: teams.length + 1,
+      }
+    } else {
+      newTeam = {
+        id: `t${teams.length + 1}-${Date.now()}`,
+        name: `Team ${teams.length + 1}`,
+        seed: teams.length + 1,
+      }
     }
+
     const newTeams = [...teams, newTeam]
     setTeams(newTeams)
 
-    // Determine new bracket size (next power of 2)
     const newSize = Math.pow(2, Math.ceil(Math.log2(newTeams.length))) as BracketSize
-    if (newSize !== bracketSize && [4, 8, 16, 32].includes(newSize)) {
+    if (newSize !== bracketSize && [4, 8, 16, 32, 64].includes(newSize)) {
       setBracketSize(newSize as BracketSize)
-      // Fill remaining slots with BYEs
       const teamsWithByes = fillWithByes(newTeams, newSize as BracketSize)
       let newBracket = buildBracketForSize(teamsWithByes, newSize as BracketSize)
       newBracket = handleByeAdvancement(newBracket)
       setBracket(newBracket)
       pushHistory(newBracket, newTeams)
     } else {
-      // Just update the current bracket with the new team in first round
       const teamsWithByes = fillWithByes(newTeams, bracketSize)
       let newBracket = buildBracketForSize(teamsWithByes, bracketSize)
       newBracket = handleByeAdvancement(newBracket)
@@ -495,16 +568,14 @@ export function useBracketEditor() {
     }
   }, [teams, bracketSize, pushHistory])
 
-  // Remove a team
   const handleRemoveTeam = useCallback((teamId: string) => {
     const newTeams = teams.filter((t) => t.id !== teamId)
-    if (newTeams.length < 2) return // Minimum 2 teams
+    if (newTeams.length < 2) return
 
     setTeams(newTeams)
 
-    // Determine appropriate bracket size
     const newSize = Math.pow(2, Math.ceil(Math.log2(Math.max(newTeams.length, 2)))) as BracketSize
-    if (newSize !== bracketSize && [4, 8, 16, 32].includes(newSize)) {
+    if (newSize !== bracketSize && [4, 8, 16, 32, 64].includes(newSize)) {
       setBracketSize(newSize as BracketSize)
     }
 
@@ -516,7 +587,6 @@ export function useBracketEditor() {
     pushHistory(newBracket, newTeams)
   }, [teams, bracketSize, pushHistory])
 
-  // Auto-schedule matches
   const handleAutoSchedule = useCallback(() => {
     const start = new Date()
     start.setMinutes(0, 0, 0)
@@ -545,7 +615,6 @@ export function useBracketEditor() {
     })
   }, [teams, pushHistory])
 
-  // Import bracket from JSON
   const handleImport = useCallback((data: string) => {
     try {
       const parsed = JSON.parse(data)
@@ -563,7 +632,6 @@ export function useBracketEditor() {
     }
   }, [pushHistory])
 
-  // Export bracket to JSON
   const handleExport = useCallback(() => {
     const data = JSON.stringify(
       { teams, bracket, bestOf, connectorStyle, bracketSize },
@@ -579,7 +647,6 @@ export function useBracketEditor() {
     URL.revokeObjectURL(url)
   }, [teams, bracket, bestOf, connectorStyle, bracketSize])
 
-  // Copy bracket to clipboard
   const handleDuplicate = useCallback(() => {
     const data = JSON.stringify(
       { teams, bracket, bestOf, connectorStyle, bracketSize },
@@ -590,7 +657,6 @@ export function useBracketEditor() {
   }, [teams, bracket, bestOf, connectorStyle, bracketSize])
 
   return {
-    // Core state
     teams,
     bracket,
     bestOf,
@@ -601,27 +667,21 @@ export function useBracketEditor() {
     isPanelExpanded,
     bracketSize,
 
-    // Undo/redo
     canUndo,
     canRedo,
     undo,
     redo,
 
-    // Validation & stats
     validationErrors,
     scheduleConflicts,
     teamStats,
     quickScores,
 
-    // Panel controls
     togglePanel,
 
-    // Team management
     handleTeamNameChange,
     handleAddTeam,
     handleRemoveTeam,
-
-    // Match management
     handleMatchClick,
     handleMatchUpdate,
     handleForfeit,
@@ -630,8 +690,6 @@ export function useBracketEditor() {
     handleMatchNotesChange,
     handleMatchStreamUrlChange,
     handleMatchVenueChange,
-
-    // Bracket management
     handleReset,
     handleShuffle,
     handleSeedByRank,

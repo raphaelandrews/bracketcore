@@ -67,7 +67,7 @@ export function SettingsPanel({
             <span>Bracket Size</span>
           </div>
           <div className="flex rounded-lg border bg-muted/50 p-0.5">
-            {([4, 8, 16, 32] as BracketSize[]).map((size) => (
+            {([4, 8, 16, 32, 64] as BracketSize[]).map((size) => (
               <button
                 key={size}
                 onClick={() => onBracketSizeChange(size)}

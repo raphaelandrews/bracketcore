@@ -224,7 +224,6 @@ export function MatchEditorPanel({
 
   const bestOfOptions = [undefined, 1, 3, 5, 7] as const
 
-  // Filter quick scores to only show winner scores for first team
   const winnerQuickScores = quickScores.filter(([a, b]) => a > b)
 
   return (

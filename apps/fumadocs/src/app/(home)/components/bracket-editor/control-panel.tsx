@@ -1,10 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
 import type { Match, Team } from "@bracketcore/registry"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import {
   UsersIcon,
   SettingsIcon,
@@ -12,6 +15,7 @@ import {
   Undo2Icon,
   Redo2Icon,
   AlertCircleIcon,
+  BarChartIcon,
 } from "lucide-react"
 import { TeamsEditor } from "./teams-editor"
 import { SettingsPanel } from "./settings-panel"
@@ -26,7 +30,7 @@ import { cn } from "@/lib/cn"
 
 interface ControlPanelProps {
   teams: Team[]
-  onTeamNameChange: (index: number, name: string) => void
+  onTeamNameChange: (teamId: string, name: string) => void
   onAddTeam: () => void
   onRemoveTeam: (teamId: string) => void
   connectorStyle: "default" | "simple"
@@ -46,17 +50,13 @@ interface ControlPanelProps {
   onDuplicate: () => void
   isExpanded: boolean
   onToggle: () => void
-  // Undo/redo
   canUndo: boolean
   canRedo: boolean
   onUndo: () => void
   onRedo: () => void
-  // Validation
   validationErrors: ValidationError[]
   scheduleConflicts: ScheduleConflict[]
-  // Team stats
   teamStats: TeamStats[]
-  // Match editor extras
   quickScores: [number, number][]
   onForfeit: (teamIndex: 0 | 1) => void
   onSwapTeams: () => void
@@ -101,25 +101,24 @@ export function ControlPanel({
   onStreamUrlChange,
   onVenueChange,
 }: ControlPanelProps) {
-  const [activeTab, setActiveTab] = React.useState("teams")
   const [showStats, setShowStats] = React.useState(false)
 
   const hasIssues = validationErrors.length > 0 || scheduleConflicts.length > 0
 
   return (
-    <div className="bg-background border-t">
-      {/* Header with undo/redo */}
-      <div className="flex items-center justify-between px-4 py-2 border-b bg-muted/30">
-        <div className="flex items-center gap-2">
+    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 max-w-fit w-full px-4">
+      <div className="flex items-center gap-2 p-2 rounded-xl border bg-background/95 shadow-lg overflow-x-auto scrollbar-none">
+        {/* Undo/Redo Group */}
+        <div className="flex items-center gap-1 border-r pr-2 mr-1">
           <Button
             variant="ghost"
             size="icon-xs"
             onClick={onUndo}
             disabled={!canUndo}
             title="Undo (Ctrl+Z)"
-            className="size-7"
+            className="size-8"
           >
-            <Undo2Icon className="size-3.5" />
+            <Undo2Icon className="size-4" />
           </Button>
           <Button
             variant="ghost"
@@ -127,148 +126,125 @@ export function ControlPanel({
             onClick={onRedo}
             disabled={!canRedo}
             title="Redo (Ctrl+Shift+Z)"
-            className="size-7"
+            className="size-8"
           >
-            <Redo2Icon className="size-3.5" />
+            <Redo2Icon className="size-4" />
           </Button>
         </div>
 
+        {/* Teams Popover */}
+        <Popover>
+          <PopoverTrigger
+            className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "h-8 gap-2")}
+          >
+            <UsersIcon className="size-4" />
+            Teams
+            <span className="bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full text-[10px]">
+              {teams.length}
+            </span>
+          </PopoverTrigger>
+          <PopoverContent className="w-[400px] p-4" align="start" sideOffset={8}>
+            <div className="flex justify-end mb-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 text-xs gap-1.5"
+                onClick={() => setShowStats(!showStats)}
+              >
+                <BarChartIcon className="size-3.5" />
+                {showStats ? "Hide Stats" : "Show Stats"}
+              </Button>
+            </div>
+            <div className="max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+              <TeamsEditor
+                teams={teams}
+                onTeamNameChange={onTeamNameChange}
+                onAddTeam={onAddTeam}
+                onRemoveTeam={onRemoveTeam}
+                teamStats={teamStats}
+                showStats={showStats}
+              />
+            </div>
+          </PopoverContent>
+        </Popover>
+
+        {/* Settings Popover */}
+        <Popover>
+          <PopoverTrigger
+            className={cn(
+              buttonVariants({ variant: "ghost", size: "sm" }),
+              "h-8 gap-2",
+              hasIssues && "text-yellow-600 dark:text-yellow-400"
+            )}
+          >
+            <SettingsIcon className="size-4" />
+            Settings
+            {hasIssues && (
+              <span className="flex size-2 rounded-full bg-yellow-500 animate-pulse" />
+            )}
+          </PopoverTrigger>
+          <PopoverContent className="w-[340px] p-4" align="start" sideOffset={8}>
+            <SettingsPanel
+              connectorStyle={connectorStyle}
+              onConnectorStyleChange={onConnectorStyleChange}
+              bestOf={bestOf}
+              onBestOfChange={onBestOfChange}
+              bracketSize={bracketSize}
+              onBracketSizeChange={onBracketSizeChange}
+              onReset={onReset}
+              onShuffle={onShuffle}
+              onSeedByRank={onSeedByRank}
+              onAutoSchedule={onAutoSchedule}
+              onImport={onImport}
+              onExport={onExport}
+              onDuplicate={onDuplicate}
+              validationErrors={validationErrors}
+              scheduleConflicts={scheduleConflicts}
+            />
+          </PopoverContent>
+        </Popover>
+
+        {/* Match Editor Popover */}
+        <Popover>
+          <PopoverTrigger
+            className={cn(
+              buttonVariants({ variant: "ghost", size: "sm" }),
+              "h-8 gap-2 transition-colors",
+              selectedMatch
+                ? "bg-primary/10 text-primary hover:bg-primary/20"
+                : "text-muted-foreground"
+            )}
+          >
+            <SwordsIcon className="size-4" />
+            Match Details
+            {selectedMatch && <span className="flex size-2 rounded-full bg-primary" />}
+          </PopoverTrigger>
+          <PopoverContent className="w-[360px] p-4" align="start" sideOffset={8}>
+            <MatchEditorPanel
+              match={selectedMatch}
+              onUpdate={onMatchUpdate}
+              bestOf={bestOf}
+              quickScores={quickScores}
+              onForfeit={onForfeit}
+              onSwapTeams={onSwapTeams}
+              onQuickScore={onQuickScore}
+              onNotesChange={onNotesChange}
+              onStreamUrlChange={onStreamUrlChange}
+              onVenueChange={onVenueChange}
+            />
+          </PopoverContent>
+        </Popover>
+
+        {/* Issue Indicator (Global) */}
         {hasIssues && (
-          <div className="flex items-center gap-1.5 text-yellow-600 dark:text-yellow-400">
+          <div className="ml-auto flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border border-yellow-500/20">
             <AlertCircleIcon className="size-3.5" />
-            <span className="text-xs font-medium">
+            <span className="text-[10px] font-medium">
               {validationErrors.length + scheduleConflicts.length} issue(s)
             </span>
           </div>
         )}
       </div>
-
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="overflow-x-auto scrollbar-none border-b">
-          <TabsList className="bg-transparent h-12 p-0 w-full justify-start rounded-none min-w-max border-b-0">
-            <TabsTrigger
-              value="teams"
-              className="h-full rounded-none border-0 border-transparent px-4 data-[state=active]:bg-transparent data-[state=active]:border-primary data-[state=active]:shadow-none flex-shrink-0 transition-colors"
-            >
-              <UsersIcon className="mr-2 size-4" />
-              Teams
-            </TabsTrigger>
-            <TabsTrigger
-              value="settings"
-              className={cn(
-                "h-full rounded-none border-0 border-transparent px-4 data-[state=active]:bg-transparent data-[state=active]:border-primary data-[state=active]:shadow-none flex-shrink-0 transition-colors",
-                hasIssues && "text-yellow-600 dark:text-yellow-400"
-              )}
-            >
-              <SettingsIcon className="mr-2 size-4" />
-              Settings
-              {hasIssues && (
-                <span className="ml-2 flex size-1.5 rounded-full bg-yellow-500" />
-              )}
-            </TabsTrigger>
-            <TabsTrigger
-              value="match"
-              className="h-full rounded-none border-0 border-transparent px-4 data-[state=active]:bg-transparent data-[state=active]:border-primary data-[state=active]:shadow-none flex-shrink-0 transition-colors"
-            >
-              <SwordsIcon className="mr-2 size-4" />
-              Match Details
-              {selectedMatch && (
-                <span className="ml-2 flex size-1.5 rounded-full bg-primary" />
-              )}
-            </TabsTrigger>
-          </TabsList>
-        </div>
-
-        <div className="overflow-hidden">
-          <motion.div
-            initial={false}
-            animate={{ height: "auto" }}
-            transition={{ type: "spring", bounce: 0, duration: 0.3 }}
-          >
-            <div className="p-4 max-w-3xl mx-auto">
-              <AnimatePresence mode="wait" initial={false}>
-                {activeTab === "teams" && (
-                  <motion.div
-                    key="teams"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="flex justify-end mb-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-7 text-xs"
-                        onClick={() => setShowStats(!showStats)}
-                      >
-                        {showStats ? "Hide Stats" : "Show Stats"}
-                      </Button>
-                    </div>
-                    <TeamsEditor
-                      teams={teams}
-                      onTeamNameChange={onTeamNameChange}
-                      onAddTeam={onAddTeam}
-                      onRemoveTeam={onRemoveTeam}
-                      teamStats={teamStats}
-                      showStats={showStats}
-                    />
-                  </motion.div>
-                )}
-                {activeTab === "settings" && (
-                  <motion.div
-                    key="settings"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <SettingsPanel
-                      connectorStyle={connectorStyle}
-                      onConnectorStyleChange={onConnectorStyleChange}
-                      bestOf={bestOf}
-                      onBestOfChange={onBestOfChange}
-                      bracketSize={bracketSize}
-                      onBracketSizeChange={onBracketSizeChange}
-                      onReset={onReset}
-                      onShuffle={onShuffle}
-                      onSeedByRank={onSeedByRank}
-                      onAutoSchedule={onAutoSchedule}
-                      onImport={onImport}
-                      onExport={onExport}
-                      onDuplicate={onDuplicate}
-                      validationErrors={validationErrors}
-                      scheduleConflicts={scheduleConflicts}
-                    />
-                  </motion.div>
-                )}
-                {activeTab === "match" && (
-                  <motion.div
-                    key="match"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <MatchEditorPanel
-                      match={selectedMatch}
-                      onUpdate={onMatchUpdate}
-                      bestOf={bestOf}
-                      quickScores={quickScores}
-                      onForfeit={onForfeit}
-                      onSwapTeams={onSwapTeams}
-                      onQuickScore={onQuickScore}
-                      onNotesChange={onNotesChange}
-                      onStreamUrlChange={onStreamUrlChange}
-                      onVenueChange={onVenueChange}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-        </div>
-      </Tabs>
     </div>
   )
 }

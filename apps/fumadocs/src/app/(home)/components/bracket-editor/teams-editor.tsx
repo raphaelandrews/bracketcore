@@ -10,7 +10,7 @@ import { isByeTeam } from "./bracket-editor-types"
 
 interface TeamsEditorProps {
   teams: Team[]
-  onTeamNameChange: (index: number, name: string) => void
+  onTeamNameChange: (teamId: string, name: string) => void
   onAddTeam: () => void
   onRemoveTeam: (teamId: string) => void
   teamStats: TeamStats[]
@@ -25,6 +25,13 @@ export function TeamsEditor({
   teamStats,
   showStats = false,
 }: TeamsEditorProps) {
+  // Sort teams by seed (or falling back to original index order if seeds are missing)
+  const sortedTeams = [...teams].sort((a, b) => {
+    if (isByeTeam(a) && !isByeTeam(b)) return 1
+    if (!isByeTeam(a) && isByeTeam(b)) return -1
+    return (a.seed || 0) - (b.seed || 0)
+  })
+
   const realTeams = teams.filter((t) => !isByeTeam(t))
   const byeCount = teams.length - realTeams.length
 
@@ -51,9 +58,10 @@ export function TeamsEditor({
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        {teams.map((team, i) => {
+        {sortedTeams.map((team) => {
           const isBye = isByeTeam(team)
           const stats = !isBye ? getStats(team.id) : undefined
+          const seedLabel = team.seed ? team.seed : "?"
 
           return (
             <div
@@ -64,7 +72,7 @@ export function TeamsEditor({
               )}
             >
               <div className="absolute left-2.5 top-1/2 -translate-y-1/2 flex items-center justify-center size-4 rounded-full bg-muted text-[10px] font-medium text-muted-foreground">
-                {isBye ? "—" : i + 1}
+                {isBye ? "—" : seedLabel}
               </div>
               {isBye ? (
                 <div className="h-8 pl-8 pr-3 flex items-center rounded-md border border-dashed bg-muted/30 text-sm text-muted-foreground">
@@ -75,9 +83,9 @@ export function TeamsEditor({
                   <Input
                     type="text"
                     value={team.name}
-                    onChange={(e) => onTeamNameChange(i, e.target.value)}
+                    onChange={(e) => onTeamNameChange(team.id, e.target.value)}
                     className="h-8 pl-8 pr-8 text-sm"
-                    aria-label={`Team ${i + 1} name`}
+                    aria-label={`Team ${seedLabel} name`}
                   />
                   <Button
                     variant="ghost"
