@@ -12,6 +12,7 @@ import {
 
 export function HeroSection() {
   const {
+    // Core state
     teams,
     bracket,
     bestOf,
@@ -20,15 +21,45 @@ export function HeroSection() {
     setConnectorStyle,
     selectedMatch,
     isPanelExpanded,
+    bracketSize,
     togglePanel,
+
+    // Undo/redo
+    canUndo,
+    canRedo,
+    undo,
+    redo,
+
+    // Validation & stats
+    validationErrors,
+    scheduleConflicts,
+    teamStats,
+    quickScores,
+
+    // Team management
     handleTeamNameChange,
+    handleAddTeam,
+    handleRemoveTeam,
+
+    // Match management
     handleMatchClick,
     handleMatchUpdate,
+    handleForfeit,
+    handleSwapTeams,
+    handleQuickScore,
+    handleMatchNotesChange,
+    handleMatchStreamUrlChange,
+    handleMatchVenueChange,
+
+    // Bracket management
     handleReset,
     handleShuffle,
+    handleSeedByRank,
+    handleBracketSizeChange,
     handleAutoSchedule,
     handleImport,
     handleExport,
+    handleDuplicate,
   } = useBracketEditor()
 
   return (
@@ -89,19 +120,39 @@ export function HeroSection() {
               <ControlPanel
                 teams={teams}
                 onTeamNameChange={handleTeamNameChange}
+                onAddTeam={handleAddTeam}
+                onRemoveTeam={handleRemoveTeam}
                 connectorStyle={connectorStyle}
                 onConnectorStyleChange={setConnectorStyle}
                 bestOf={bestOf}
                 onBestOfChange={setBestOf}
+                bracketSize={bracketSize}
+                onBracketSizeChange={handleBracketSizeChange}
                 selectedMatch={selectedMatch}
                 onMatchUpdate={handleMatchUpdate}
                 onReset={handleReset}
                 onShuffle={handleShuffle}
+                onSeedByRank={handleSeedByRank}
                 onAutoSchedule={handleAutoSchedule}
                 onImport={handleImport}
                 onExport={handleExport}
+                onDuplicate={handleDuplicate}
                 isExpanded={isPanelExpanded}
                 onToggle={togglePanel}
+                canUndo={canUndo}
+                canRedo={canRedo}
+                onUndo={undo}
+                onRedo={redo}
+                validationErrors={validationErrors}
+                scheduleConflicts={scheduleConflicts}
+                teamStats={teamStats}
+                quickScores={quickScores}
+                onForfeit={handleForfeit}
+                onSwapTeams={handleSwapTeams}
+                onQuickScore={handleQuickScore}
+                onNotesChange={handleMatchNotesChange}
+                onStreamUrlChange={handleMatchStreamUrlChange}
+                onVenueChange={handleMatchVenueChange}
               />
             </div>
           </div>
