@@ -89,7 +89,7 @@ const FaqSection = () => {
             <p className="text-muted-foreground mb-4">
               Still have questions? We&apos;re here to help.
             </p>
-            <Button className='cursor-pointer' render={<a href="#contact" />}>
+            <Button className='cursor-pointer' nativeButton={false} render={<a href="#contact" />}>
               Contact Support
             </Button>
           </div>

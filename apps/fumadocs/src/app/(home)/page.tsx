@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 
 import { siteConfig } from "@/lib/config";
-import { BracketBuilder } from "./components/bracket-builder";
 
 export const metadata: Metadata = {
   description: siteConfig.description,
@@ -27,5 +26,5 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  return <BracketBuilder />;
+  return ;
 }

@@ -1,13 +1,31 @@
 "use client"
 
 import Link from 'next/link'
-import Image from 'next/image'
-import { ArrowRight, Play, Star } from 'lucide-react'
+import { GithubIcon, FileText } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { DotPattern } from '@/components/dot-pattern'
+import {
+  useBracketEditor,
+  BracketCanvas,
+  ControlPanel,
+} from "./bracket-editor"
 
 export function HeroSection() {
+  const {
+    teams,
+    bracket,
+    bestOf,
+    setBestOf,
+    connectorStyle,
+    setConnectorStyle,
+    selectedMatch,
+    isPanelExpanded,
+    togglePanel,
+    handleTeamNameChange,
+    handleMatchClick,
+    handleMatchUpdate,
+  } = useBracketEditor()
+
   return (
     <section id="hero" className="relative overflow-hidden bg-gradient-to-b from-background to-background/80 pt-16 sm:pt-20 pb-16">
       <div className="absolute inset-0">
@@ -16,34 +34,25 @@ export function HeroSection() {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="mx-auto max-w-4xl text-center">
-          <div className="mb-8 flex justify-center">
-            <Badge variant="outline" className="px-4 py-2 border-foreground">
-              <Star className="w-3 h-3 mr-2 fill-current" />
-              New: Premium Template Collection
-              <ArrowRight className="w-3 h-3 ml-2" />
-            </Badge>
-          </div>
-
           <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
             Build Better
             <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              {" "}Web Applications{" "}
+              {" "}Tournament Brackets{" "}
             </span>
-            with Ready-Made Components
+            with Bracketcore
           </h1>
 
           <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-            Accelerate your development with our curated collection of blocks, templates, landing pages,
-            and admin dashboards. From free components to complete solutions, built with shadcn/ui.
+            A comprehensive collection of tournament bracket components, built with shadcn/ui. Open source, accessible, and ready to drop into your next project.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-            <Button size="lg" className="text-base cursor-pointer" render={<Link href="/auth/sign-up" />}>
-              Get Started Free
-              <ArrowRight className="ml-2 h-4 w-4" />
+            <Button size="lg" className="text-base cursor-pointer" nativeButton={false} render={<Link href="/docs" />}>
+              <FileText size={16} />
+              Read the Docs
             </Button>
-            <Button variant="outline" size="lg" className="text-base cursor-pointer" render={<a href="#" />}>
-              <Play className="mr-2 h-4 w-4" />
-              Watch Demo
+            <Button variant="outline" size="lg" className="text-base cursor-pointer" nativeButton={false} render={<a href="https://github.com/raphaelandrews/bracketcore" target="_blank" rel="noopener noreferrer" />}>
+              <GithubIcon size={16} />
+              Star on GitHub
             </Button>
           </div>
         </div>
@@ -52,36 +61,25 @@ export function HeroSection() {
           <div className="relative group">
             <div className="absolute top-2 lg:-top-8 left-1/2 transform -translate-x-1/2 w-[90%] mx-auto h-24 lg:h-80 bg-primary/50 rounded-full blur-3xl"></div>
 
-            <div className="relative rounded-xl border bg-card shadow-2xl">
-              <Image
-                src="/dashboard-light.png"
-                alt="Dashboard Preview - Light Mode"
-                width={1200}
-                height={800}
-                className="w-full rounded-xl object-cover block dark:hidden"
-                priority
+            <div className="relative rounded-xl border bg-card shadow-2xl overflow-hidden">
+              <BracketCanvas
+                bracket={bracket}
+                connectorStyle={connectorStyle}
+                onMatchClick={handleMatchClick}
               />
 
-              <Image
-                src="/dashboard-dark.png"
-                alt="Dashboard Preview - Dark Mode"
-                width={1200}
-                height={800}
-                className="w-full rounded-xl object-cover hidden dark:block"
-                priority
+              <ControlPanel
+                teams={teams}
+                onTeamNameChange={handleTeamNameChange}
+                connectorStyle={connectorStyle}
+                onConnectorStyleChange={setConnectorStyle}
+                bestOf={bestOf}
+                onBestOfChange={setBestOf}
+                selectedMatch={selectedMatch}
+                onMatchUpdate={handleMatchUpdate}
+                isExpanded={isPanelExpanded}
+                onToggle={togglePanel}
               />
-
-              <div className="absolute bottom-0 left-0 w-full h-32 md:h-40 lg:h-48 bg-gradient-to-b from-background/0 via-background/70 to-background rounded-b-xl"></div>
-
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Button
-                  size="lg"
-                  className="rounded-full h-16 w-16 p-0 cursor-pointer hover:scale-105 transition-transform"
-                  render={<a href="#" aria-label="Watch demo video" />}
-                >
-                  <Play className="h-6 w-6 fill-current" />
-                </Button>
-              </div>
             </div>
           </div>
         </div>

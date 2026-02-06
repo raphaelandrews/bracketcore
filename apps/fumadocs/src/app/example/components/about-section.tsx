@@ -70,6 +70,7 @@ export function AboutSection() {
             <Button
               size="lg"
               className="cursor-pointer"
+              nativeButton={false}
               render={
                 <a
                   href="https://github.com/silicondeck/shadcn-dashboard-landing-template"
@@ -85,6 +86,7 @@ export function AboutSection() {
               size="lg"
               variant="outline"
               className="cursor-pointer"
+              nativeButton={false}
               render={
                 <a
                   href="https://discord.com/invite/XEQhPc9a6p"

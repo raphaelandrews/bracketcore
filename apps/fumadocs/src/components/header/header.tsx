@@ -50,11 +50,3 @@ function MainNavSkeleton() {
     </div>
   );
 }
-
-function DrawerSkeleton() {
-  return (
-    <Button className="shrink-0 p-2 hover:bg-muted/50 lg:hidden" size="sm" variant="ghost" disabled>
-      <MenuIcon className="size-4" />
-    </Button>
-  );
-}
