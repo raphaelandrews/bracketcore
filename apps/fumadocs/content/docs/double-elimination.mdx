@@ -5,93 +5,95 @@ description: A double elimination bracket using CSS Grid for precise GF alignmen
 
 ## Preview
 
-<ComponentPreview code={`import { DoubleElimination } from "@/components/bracketcore/double-elimination";
-import type { DoubleEliminationBracket, Match } from "@/types/bracketcore";
+<ComponentPreview code={`import { DoubleElimination } from "@/components/bracketcore/double-elimination"
+import type { DoubleEliminationBracket, Match } from "@/types/bracketcore"
 
 function m(
-id: string,
-round: number,
-position: number,
-a: string,
-sa: number,
-b: string,
-sb: number,
-bo: number,
+  id: string,
+  round: number,
+  position: number,
+  a: string,
+  sa: number,
+  b: string,
+  sb: number,
+  bo: number
 ): Match {
-const aWins = sa > sb;
-return {
-id,
-round,
-position,
-bestOf: bo,
-status: "completed",
-teams: [
-{
-team: { id: a.toLowerCase().replace(/\\s+/g, "-"), name: a },
-score: sa,
-isWinner: aWins,
-},
-{
-team: { id: b.toLowerCase().replace(/\\s+/g, "-"), name: b },
-score: sb,
-isWinner: !aWins,
-},
-],
-};
+  const aWins = sa > sb
+  return {
+    id,
+    round,
+    position,
+    bestOf: bo,
+    status: "completed",
+    teams: [
+      {
+        team: { id: a.toLowerCase().replace(/\\s+/g, "-"), name: a },
+        score: sa,
+        isWinner: aWins,
+      },
+      {
+        team: { id: b.toLowerCase().replace(/\\s+/g, "-"), name: b },
+        score: sb,
+        isWinner: !aWins,
+      },
+    ],
+  }
 }
 
 const bracket: DoubleEliminationBracket = {
-type: "double-elimination",
-upper: [
-{
-name: "UB Round 1",
-matches: [
-m("ub1-1", 0, 0, "Spirit", 2, "Falcons", 0, 3),
-m("ub1-2", 0, 1, "Vitality", 2, "The MongolZ", 1, 3),
-m("ub1-3", 0, 2, "FURIA", 0, "Natus Vincere", 2, 3),
-m("ub1-4", 0, 3, "MOUZ", 1, "FaZe", 2, 3),
-],
-},
-{
-name: "UB Semi-final",
-matches: [
-m("ub2-1", 1, 0, "Spirit", 2, "Vitality", 1, 3),
-m("ub2-2", 1, 1, "Natus Vincere", 0, "FaZe", 2, 3),
-],
-},
-{
-name: "UB Final",
-matches: [m("ub3-1", 2, 0, "Spirit", 2, "FaZe", 1, 3)],
-},
-],
-lower: [
-{
-name: "LB Round 1",
-matches: [
-m("lb1-1", 0, 0, "Falcons", 2, "The MongolZ", 0, 3),
-m("lb1-2", 0, 1, "FURIA", 1, "MOUZ", 2, 3),
-],
-},
-{
-name: "LB Round 2",
-matches: [
-m("lb2-1", 1, 0, "Vitality", 2, "Falcons", 1, 3),
-m("lb2-2", 1, 1, "Natus Vincere", 2, "MOUZ", 0, 3),
-],
-},
-{
-name: "LB Semi-final",
-matches: [m("lb3-1", 2, 0, "Vitality", 2, "Natus Vincere", 1, 3)],
-},
-{
-name: "LB Final",
-matches: [m("lb4-1", 3, 0, "FaZe", 2, "Vitality", 1, 3)],
-},
-],
-grandFinal: m("gf", 0, 0, "Spirit", 3, "FaZe", 2, 5),
-};
+  type: "double-elimination",
+  upper: [
+    {
+      name: "UB Round 1",
+      matches: [
+        m("ub1-1", 0, 0, "Spirit", 2, "Falcons", 0, 3),
+        m("ub1-2", 0, 1, "Vitality", 2, "The MongolZ", 1, 3),
+        m("ub1-3", 0, 2, "FURIA", 0, "Natus Vincere", 2, 3),
+        m("ub1-4", 0, 3, "MOUZ", 1, "FaZe", 2, 3),
+      ],
+    },
+    {
+      name: "UB Semi-final",
+      matches: [
+        m("ub2-1", 1, 0, "Spirit", 2, "Vitality", 1, 3),
+        m("ub2-2", 1, 1, "Natus Vincere", 0, "FaZe", 2, 3),
+      ],
+    },
+    {
+      name: "UB Final",
+      matches: [m("ub3-1", 2, 0, "Spirit", 2, "FaZe", 1, 3)],
+    },
+  ],
+  lower: [
+    {
+      name: "LB Round 1",
+      matches: [
+        m("lb1-1", 0, 0, "Falcons", 2, "The MongolZ", 0, 3),
+        m("lb1-2", 0, 1, "FURIA", 1, "MOUZ", 2, 3),
+      ],
+    },
+    {
+      name: "LB Round 2",
+      matches: [
+        m("lb2-1", 1, 0, "Vitality", 2, "Falcons", 1, 3),
+        m("lb2-2", 1, 1, "Natus Vincere", 2, "MOUZ", 0, 3),
+      ],
+    },
+    {
+      name: "LB Semi-final",
+      matches: [m("lb3-1", 2, 0, "Vitality", 2, "Natus Vincere", 1, 3)],
+    },
+    {
+      name: "LB Final",
+      matches: [m("lb4-1", 3, 0, "FaZe", 2, "Vitality", 1, 3)],
+    },
+  ],
+  grandFinal: m("gf", 0, 0, "Spirit", 3, "FaZe", 2, 5),
+}
 
-<DoubleElimination bracket={bracket} />
+export function DoubleEliminationDemo() {
+  return <DoubleElimination bracket={bracket} />
+}
 `}>
 <DoubleEliminationPreview />
 </ComponentPreview>
@@ -120,8 +122,8 @@ const bracket: DoubleEliminationBracket = {
           bestOf: 3,
           status: "completed",
           teams: [
-            { team: { id: "a", name: "Team A" }, score: 2, isWinner: true },
-            { team: { id: "b", name: "Team B" }, score: 0, isWinner: false },
+            { team: { id: "spirit", name: "Team Spirit" }, score: 2, isWinner: true },
+            { team: { id: "gg", name: "Gaimin Gladiators" }, score: 0, isWinner: false },
           ],
         },
         {
@@ -131,8 +133,8 @@ const bracket: DoubleEliminationBracket = {
           bestOf: 3,
           status: "completed",
           teams: [
-            { team: { id: "c", name: "Team C" }, score: 1, isWinner: false },
-            { team: { id: "d", name: "Team D" }, score: 2, isWinner: true },
+            { team: { id: "liquid", name: "Team Liquid" }, score: 1, isWinner: false },
+            { team: { id: "lgd", name: "LGD Gaming" }, score: 2, isWinner: true },
           ],
         },
       ],
@@ -147,8 +149,8 @@ const bracket: DoubleEliminationBracket = {
           bestOf: 3,
           status: "completed",
           teams: [
-            { team: { id: "a", name: "Team A" }, score: 2, isWinner: true },
-            { team: { id: "d", name: "Team D" }, score: 1, isWinner: false },
+            { team: { id: "spirit", name: "Team Spirit" }, score: 2, isWinner: true },
+            { team: { id: "lgd", name: "LGD Gaming" }, score: 1, isWinner: false },
           ],
         },
       ],
@@ -165,8 +167,8 @@ const bracket: DoubleEliminationBracket = {
           bestOf: 3,
           status: "completed",
           teams: [
-            { team: { id: "b", name: "Team B" }, score: 0, isWinner: false },
-            { team: { id: "c", name: "Team C" }, score: 2, isWinner: true },
+            { team: { id: "gg", name: "Gaimin Gladiators" }, score: 0, isWinner: false },
+            { team: { id: "liquid", name: "Team Liquid" }, score: 2, isWinner: true },
           ],
         },
       ],
@@ -181,8 +183,8 @@ const bracket: DoubleEliminationBracket = {
           bestOf: 3,
           status: "completed",
           teams: [
-            { team: { id: "d", name: "Team D" }, score: 2, isWinner: true },
-            { team: { id: "c", name: "Team C" }, score: 0, isWinner: false },
+            { team: { id: "lgd", name: "LGD Gaming" }, score: 2, isWinner: true },
+            { team: { id: "liquid", name: "Team Liquid" }, score: 0, isWinner: false },
           ],
         },
       ],
@@ -195,8 +197,8 @@ const bracket: DoubleEliminationBracket = {
     bestOf: 5,
     status: "completed",
     teams: [
-      { team: { id: "a", name: "Team A" }, score: 3, isWinner: true },
-      { team: { id: "d", name: "Team D" }, score: 1, isWinner: false },
+      { team: { id: "spirit", name: "Team Spirit" }, score: 3, isWinner: true },
+      { team: { id: "lgd", name: "LGD Gaming" }, score: 1, isWinner: false },
     ],
   },
 };
@@ -219,7 +221,7 @@ import type { DoubleEliminationBracket } from "@/types/bracketcore";
 
 Lower bracket has twice as many rounds as the upper bracket. Upper bracket columns automatically space out to stay aligned with the lower bracket.
 
-<ComponentPreview code={`const bracketRatio2: DoubleEliminationBracket = {
+<ComponentPreview code={`const bracket: DoubleEliminationBracket = {
   type: "double-elimination",
   upper: [
     {
@@ -277,9 +279,11 @@ Lower bracket has twice as many rounds as the upper bracket. Upper bracket colum
     },
   ],
   grandFinal: m("r2-gf", 0, 0, "Team Liquid", 3, "OG", 1, 5),
-};
+}
 
-<DoubleElimination bracket={bracketRatio2} />
+export function DoubleEliminationRatio2Demo() {
+  return <DoubleElimination bracket={bracket} />
+}
 `}>
 <DoubleEliminationRatio2 />
 </ComponentPreview>
@@ -288,7 +292,7 @@ Lower bracket has twice as many rounds as the upper bracket. Upper bracket colum
 
 Use the `ubAlignToLBRound` prop to start the upper bracket at a specific lower bracket round index. This is useful when the lower bracket has preliminary rounds (e.g. losers from a previous stage) before the upper bracket losers drop down.
 
-<ComponentPreview code={`const bracketLBStartsEarlier: DoubleEliminationBracket = {
+<ComponentPreview code={`const bracket: DoubleEliminationBracket = {
   type: "double-elimination",
   upper: [
     {
@@ -355,9 +359,11 @@ Use the `ubAlignToLBRound` prop to start the upper bracket at a specific lower b
     },
   ],
   grandFinal: m("gf", 0, 0, "Team Liquid", 3, "Vici Gaming", 1, 5),
-};
+}
 
-<DoubleElimination bracket={bracketLBStartsEarlier} ubAlignToLBRound={1} />
+export function DoubleEliminationLBStartsEarlierDemo() {
+  return <DoubleElimination bracket={bracket} ubAlignToLBRound={1} />
+}
 `}>
 <DoubleEliminationLBStartsEarlier />
 </ComponentPreview>
@@ -371,7 +377,9 @@ You can customize the connector style using the `connectorStyle` prop. Available
 Use the `connectorStyle="simple"` prop to switch from standard curved/merged lines to squared-off, direct lines. This style features distinct paths for each match feed and "stub" connectors for drops from the Upper Bracket.
 
 <ComponentPreview
-  code={`<DoubleElimination bracket={bracket} connectorStyle="simple" />
+  code={`export function DoubleEliminationSimpleDemo() {
+  return <DoubleElimination bracket={bracket} connectorStyle="simple" />
+}
 `}
 >
   <DoubleEliminationSimplePreview />

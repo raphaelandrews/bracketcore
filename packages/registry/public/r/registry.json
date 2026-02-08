@@ -8,19 +8,20 @@
       "type": "registry:component",
       "title": "Match Card",
       "description": "Displays a single match with two teams, scores, best-of label and schedule info.",
-      "dependencies": ["clsx", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "path": "registry/bracketcore/match-card.tsx",
-          "type": "registry:component"
+          "type": "registry:component",
+          "target": "components/bracketcore/match-card.tsx"
         },
         {
           "path": "registry/bracketcore/bracket-types.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "registry/bracketcore/cn.ts",
-          "type": "registry:lib"
+          "type": "registry:lib",
+          "target": "types/bracketcore.ts"
         }
       ]
     },
@@ -29,24 +30,28 @@
       "type": "registry:component",
       "title": "Single Elimination Bracket",
       "description": "A full single elimination bracket with rounds, match cards, and connector lines.",
-      "dependencies": ["clsx", "tailwind-merge"],
-      "registryDependencies": ["match-card"],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://bracketcore.andrews.sh/r/match-card.json"
+      ],
       "files": [
         {
           "path": "registry/bracketcore/single-elimination.tsx",
-          "type": "registry:component"
+          "type": "registry:component",
+          "target": "components/bracketcore/single-elimination.tsx"
         },
         {
           "path": "registry/bracketcore/match-card.tsx",
-          "type": "registry:component"
+          "type": "registry:component",
+          "target": "components/bracketcore/match-card.tsx"
         },
         {
           "path": "registry/bracketcore/bracket-types.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "registry/bracketcore/cn.ts",
-          "type": "registry:lib"
+          "type": "registry:lib",
+          "target": "types/bracketcore.ts"
         }
       ]
     },
@@ -55,24 +60,29 @@
       "type": "registry:component",
       "title": "Swiss Stage",
       "description": "Swiss system bracket with round-by-round matches and standings table.",
-      "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
-      "registryDependencies": ["match-card"],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://bracketcore.andrews.sh/r/match-card.json"
+      ],
       "files": [
         {
           "path": "registry/bracketcore/swiss-stage.tsx",
-          "type": "registry:component"
+          "type": "registry:component",
+          "target": "components/bracketcore/swiss-stage.tsx"
         },
         {
           "path": "registry/bracketcore/match-card.tsx",
-          "type": "registry:component"
+          "type": "registry:component",
+          "target": "components/bracketcore/match-card.tsx"
         },
         {
           "path": "registry/bracketcore/bracket-types.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "registry/bracketcore/cn.ts",
-          "type": "registry:lib"
+          "type": "registry:lib",
+          "target": "types/bracketcore.ts"
         }
       ]
     },
@@ -81,28 +91,33 @@
       "type": "registry:component",
       "title": "Group Stage",
       "description": "Group stage with standings tables and match cards per group.",
-      "dependencies": ["clsx", "tailwind-merge"],
-      "registryDependencies": ["match-card"],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://bracketcore.andrews.sh/r/match-card.json"
+      ],
       "files": [
         {
           "path": "registry/bracketcore/group-stage.tsx",
-          "type": "registry:component"
+          "type": "registry:component",
+          "target": "components/bracketcore/group-stage.tsx"
         },
         {
           "path": "registry/bracketcore/match-card.tsx",
-          "type": "registry:component"
+          "type": "registry:component",
+          "target": "components/bracketcore/match-card.tsx"
         },
         {
           "path": "registry/bracketcore/table.tsx",
-          "type": "registry:lib"
+          "type": "registry:component",
+          "target": "components/bracketcore/table.tsx"
         },
         {
           "path": "registry/bracketcore/bracket-types.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "registry/bracketcore/cn.ts",
-          "type": "registry:lib"
+          "type": "registry:lib",
+          "target": "types/bracketcore.ts"
         }
       ]
     },
@@ -111,24 +126,28 @@
       "type": "registry:component",
       "title": "Double Elimination",
       "description": "A double elimination bracket using CSS Grid for precise alignment.",
-      "dependencies": ["clsx", "tailwind-merge"],
-      "registryDependencies": ["match-card"],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://bracketcore.andrews.sh/r/match-card.json"
+      ],
       "files": [
         {
           "path": "registry/bracketcore/double-elimination.tsx",
-          "type": "registry:component"
+          "type": "registry:component",
+          "target": "components/bracketcore/double-elimination.tsx"
         },
         {
           "path": "registry/bracketcore/match-card.tsx",
-          "type": "registry:component"
+          "type": "registry:component",
+          "target": "components/bracketcore/match-card.tsx"
         },
         {
           "path": "registry/bracketcore/bracket-types.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "registry/bracketcore/cn.ts",
-          "type": "registry:lib"
+          "type": "registry:lib",
+          "target": "types/bracketcore.ts"
         }
       ]
     }

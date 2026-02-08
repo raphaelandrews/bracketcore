@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, BracketsIcon, TwitterIcon, GithubIcon } from "lucide-react";
+import { Menu, X, BracketsIcon, TwitterIcon, GithubIcon, NetworkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { SearchToggleLarge } from "@/components/layout/docs";
@@ -16,7 +16,7 @@ export function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
         <div className="flex items-center space-x-2">
           <Link href="/" className="flex items-center space-x-2 cursor-pointer">
-            <BracketsIcon size={32} />
+            <NetworkIcon size={24} className="rotate-90" />
             <span className="font-bold">Bracketcore</span>
           </Link>
         </div>
@@ -79,7 +79,7 @@ export function Header() {
               <SheetHeader className="p-4 border-b flex flex-row items-center justify-between space-y-0">
                 <div className="flex items-center gap-2">
                   <div className="p-1.5 bg-primary/10 rounded-lg">
-                    <BracketsIcon size={18} className="text-primary" />
+                    <NetworkIcon size={18} className="rotate-90" />
                   </div>
                   <SheetTitle className="text-base font-bold">Bracketcore</SheetTitle>
                 </div>

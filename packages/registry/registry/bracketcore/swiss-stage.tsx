@@ -1,7 +1,24 @@
 import type { SwissBracket, Match, Team } from "@/types/bracketcore";
 import { MatchCard } from "@/components/bracketcore/match-card";
 import { cn } from "@/lib/utils";
-import { ChevronsRight } from "lucide-react";
+
+function ArrowIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="m6 17 5-5-5-5" />
+      <path d="m13 17 5-5-5-5" />
+    </svg>
+  );
+}
 
 export interface SwissStageProps {
   bracket: SwissBracket;
@@ -149,7 +166,7 @@ function MatchPoolBlock({
             )}
           >
             <div className="relative">
-              <ChevronsRight className={cn("w-6 h-6", isFinal ? "-rotate-90" : "-rotate-30")} />
+              <ArrowIcon className={cn("w-6 h-6", isFinal ? "-rotate-90" : "-rotate-30")} />
             </div>
           </div>
         )}
@@ -160,7 +177,7 @@ function MatchPoolBlock({
               isFinal ? "right-1/2 -bottom-8 translate-x-1/2" : "-right-10 -bottom-4",
             )}
           >
-            <ChevronsRight className={cn("w-6 h-6", isFinal ? "rotate-90" : "rotate-30")} />
+            <ArrowIcon className={cn("w-6 h-6", isFinal ? "rotate-90" : "rotate-30")} />
           </div>
         )}
       </div>

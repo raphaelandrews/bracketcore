@@ -5,30 +5,32 @@ description: The atomic building block for all bracket types — displays a sing
 
 ## Preview
 
-<ComponentPreview code={`import { MatchCard } from "@/components/bracketcore/match-card";
-import type { Match } from "@/types/bracketcore";
+<ComponentPreview code={`import { MatchCard } from "@/components/bracketcore/match-card"
+import type { Match } from "@/types/bracketcore"
 
-const completed: Match = {
-id: "demo-completed",
-round: 0,
-position: 0,
-bestOf: 3,
-status: "completed",
-teams: [
-{
-team: { id: "team-liquid", name: "Team Liquid" },
-score: 2,
-isWinner: true,
-},
-{
-team: { id: "og", name: "OG" },
-score: 0,
-isWinner: false,
-},
-],
-};
+const match: Match = {
+  id: "demo-completed",
+  round: 0,
+  position: 0,
+  bestOf: 3,
+  status: "completed",
+  teams: [
+    {
+      team: { id: "team-liquid", name: "Team Liquid" },
+      score: 2,
+      isWinner: true,
+    },
+    {
+      team: { id: "og", name: "OG" },
+      score: 0,
+      isWinner: false,
+    },
+  ],
+}
 
-<MatchCard match={completed} />
+export function MatchCardDemo() {
+  return <MatchCard match={match} />
+}
 `}>
 <MatchCardPreview />
 </ComponentPreview>
@@ -52,12 +54,12 @@ const match: Match = {
   status: "completed",
   teams: [
     {
-      team: { id: "spirit", name: "Spirit" },
+      team: { id: "spirit", name: "Team Spirit" },
       score: 2,
       isWinner: true,
     },
     {
-      team: { id: "falcons", name: "Falcons" },
+      team: { id: "falcons", name: "Team Falcons" },
       score: 0,
       isWinner: false,
     },
@@ -82,7 +84,16 @@ import type { Match } from "@/types/bracketcore";
 
 A live match shows a destructive border, a pulsing live indicator in the header, and colored scores — green for the leading team, red for the trailing team.
 
-<ComponentPreview code={`const live: Match = {
+<ComponentPreview code={`import { MatchCard } from "@/components/bracketcore/match-card"
+import type { Match } from "@/types/bracketcore"
+
+function todayAt(hours: number, minutes: number) {
+  const d = new Date()
+  d.setHours(hours, minutes, 0, 0)
+  return d
+}
+
+const match: Match = {
   id: "demo-live",
   round: 0,
   position: 0,
@@ -99,15 +110,11 @@ A live match shows a destructive border, a pulsing live indicator in the header,
       score: 1,
     },
   ],
-};
-
-function todayAt(hours: number, minutes: number) {
-const d = new Date();
-d.setHours(hours, minutes, 0, 0);
-return d;
 }
 
-<MatchCard match={live} />
+export function MatchCardLiveDemo() {
+  return <MatchCard match={match} />
+}
 `}>
 <MatchCardLive />
 </ComponentPreview>
@@ -116,7 +123,17 @@ return d;
 
 An upcoming match displays the scheduled time and relative day in the header. The format adapts automatically: "Today", "Tomorrow", weekday name (within 7 days), or "Month Day".
 
-<ComponentPreview code={`const upcoming: Match = {
+<ComponentPreview code={`import { MatchCard } from "@/components/bracketcore/match-card"
+import type { Match } from "@/types/bracketcore"
+
+function daysFromNow(days: number, hours: number, minutes: number) {
+  const d = new Date()
+  d.setDate(d.getDate() + days)
+  d.setHours(hours, minutes, 0, 0)
+  return d
+}
+
+const match: Match = {
   id: "demo-upcoming",
   round: 0,
   position: 0,
@@ -133,16 +150,11 @@ An upcoming match displays the scheduled time and relative day in the header. Th
       score: 0,
     },
   ],
-};
-
-function daysFromNow(days: number, hours: number, minutes: number) {
-const d = new Date();
-d.setDate(d.getDate() + days);
-d.setHours(hours, minutes, 0, 0);
-return d;
 }
 
-<MatchCard match={upcoming} />
+export function MatchCardUpcomingDemo() {
+  return <MatchCard match={match} />
+}
 `}>
 <MatchCardUpcoming />
 </ComponentPreview>
@@ -151,7 +163,17 @@ return d;
 
 When teams are not yet determined but the match is already scheduled, the header shows the date while both team slots display "TBD".
 
-<ComponentPreview code={`const scheduled: Match = {
+<ComponentPreview code={`import { MatchCard } from "@/components/bracketcore/match-card"
+import type { Match } from "@/types/bracketcore"
+
+function daysFromNow(days: number, hours: number, minutes: number) {
+  const d = new Date()
+  d.setDate(d.getDate() + days)
+  d.setHours(hours, minutes, 0, 0)
+  return d
+}
+
+const match: Match = {
   id: "demo-scheduled",
   round: 0,
   position: 0,
@@ -162,9 +184,11 @@ When teams are not yet determined but the match is already scheduled, the header
     { team: null, score: 0 },
     { team: null, score: 0 },
   ],
-};
+}
 
-<MatchCard match={scheduled} />
+export function MatchCardScheduledDemo() {
+  return <MatchCard match={match} />
+}
 `}>
 <MatchCardScheduled />
 </ComponentPreview>
@@ -173,7 +197,10 @@ When teams are not yet determined but the match is already scheduled, the header
 
 Use `variant="bordered"` to show a colored left border on each team row when a match is completed.
 
-<ComponentPreview code={`const completed: Match = {
+<ComponentPreview code={`import { MatchCard } from "@/components/bracketcore/match-card"
+import type { Match } from "@/types/bracketcore"
+
+const match: Match = {
   id: "demo-bordered",
   round: 0,
   position: 0,
@@ -191,9 +218,11 @@ Use `variant="bordered"` to show a colored left border on each team row when a m
       isWinner: false,
     },
   ],
-};
+}
 
-<MatchCard match={completed} variant="bordered" />
+export function MatchCardBorderedDemo() {
+  return <MatchCard match={match} variant="bordered" />
+}
 `}>
 <MatchCardBordered />
 </ComponentPreview>
@@ -202,7 +231,10 @@ Use `variant="bordered"` to show a colored left border on each team row when a m
 
 When `team` is `null` and no schedule is set, the card shows italic "TBD" text with no header.
 
-<ComponentPreview code={`const tbd: Match = {
+<ComponentPreview code={`import { MatchCard } from "@/components/bracketcore/match-card"
+import type { Match } from "@/types/bracketcore"
+
+const match: Match = {
   id: "demo-tbd",
   round: 0,
   position: 0,
@@ -212,9 +244,11 @@ When `team` is `null` and no schedule is set, the card shows italic "TBD" text w
     { team: null, score: 0 },
     { team: null, score: 0 },
   ],
-};
+}
 
-<MatchCard match={tbd} />
+export function MatchCardTBDDemo() {
+  return <MatchCard match={match} />
+}
 `}>
 <MatchCardTBD />
 </ComponentPreview>
